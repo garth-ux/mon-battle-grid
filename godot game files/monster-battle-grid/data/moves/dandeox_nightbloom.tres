@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdandeox2"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dandeox_nightbloom"
+display_name = "Nightbloom"
+move_type = "grass"
+mana_cost = 5
+cooldown_ms = 1000
+description = "For 5s, every hit you take heals back half of it and BLINDS the attacker 3s."
+effect_id = "nightbloom"

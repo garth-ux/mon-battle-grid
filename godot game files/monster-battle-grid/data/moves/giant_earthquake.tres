@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://cjlvl1iomkg8a"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "giant_earthquake"
+display_name = "Earthquake"
+move_type = "earth"
+mana_cost = 10
+cooldown_ms = 2000
+description = "Shatter every block on the field. Each fighter takes 15 DMG per block that stood on their side — yours included."
+effect_id = "earthquake"
+damage = 15

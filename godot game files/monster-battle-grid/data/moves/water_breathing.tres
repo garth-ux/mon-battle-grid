@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaobqmuw1gf"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "water_breathing"
+display_name = "Water Breathing"
+move_type = "water"
+mana_cost = 4
+cooldown_ms = 1000
+description = "8s buff: heal 5 HP/sec, water cards ×1.5, immune to frozen tiles."
+effect_id = "water_breathing"
+damage = 0
+self_buff_id = "water_breathing"
+buff_duration_ms = 8000

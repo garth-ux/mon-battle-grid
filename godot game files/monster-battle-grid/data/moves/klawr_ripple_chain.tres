@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvklawr002"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "klawr_ripple_chain"
+display_name = "Ripple Chain"
+move_type = "water"
+mana_cost = 5
+cooldown_ms = 1000
+description = "4 arcs of 10, each jumping to the nearest new target within 3 tiles — turrets count, and an arc into YOU heals 10."
+effect_id = "ripple_chain"
+damage = 10

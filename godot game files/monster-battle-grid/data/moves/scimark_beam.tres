@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://cnktjxriv8inj"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "scimark_beam"
+display_name = "Beam"
+move_type = "water"
+mana_cost = 3
+cooldown_ms = 1000
+description = "20 DMG per cell. Sweeping beam — locks you in place while firing."
+effect_id = "beam"
+damage = 20
+caster_lock_ms = 500

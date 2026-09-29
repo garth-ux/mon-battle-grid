@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movetopple000"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "topple"
+display_name = "Topple"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1100
+description = "Topple your front wall — 40 DMG projectile. 1 mana refund if no wall."
+effect_id = "topple"
+damage = 40

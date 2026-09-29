@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=13 format=3 uid="uid://b1mondroopid"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/droopider.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/night_terror.tres" id="3_t1"]
+[ext_resource type="Resource" path="res://data/traits/waking_dream.tres" id="4_t2"]
+[ext_resource type="Resource" path="res://data/traits/nightmare.tres" id="5_t3"]
+[ext_resource type="Resource" path="res://data/moves/icage_mind_spike.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/icage_telekinesis.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/goo_trap.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/vine_snare.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/lily_pad_trap.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/silence_bomb.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/event_horizon.tres" id="12_m7"]
+
+[resource]
+script = ExtResource("1_script")
+id = "droopider"
+display_name = "Droopider"
+monster_type = "mind"
+max_hp = 70
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "droopider_basic"
+basic_attack_kind = "sleep_shot"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7")]
+trait_pool = [ExtResource("3_t1"), ExtResource("4_t2"), ExtResource("5_t3")]

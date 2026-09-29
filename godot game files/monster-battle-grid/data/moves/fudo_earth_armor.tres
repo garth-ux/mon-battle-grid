@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dic6g80n1b0ce"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fudo_earth_armor"
+display_name = "Earth Armour"
+move_type = "earth"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Gain 25 Armor. For 5s, every earth card you play heals 3 HP."
+effect_id = "earth_armor"
+armor_gain = 25
+buff_duration_ms = 5000

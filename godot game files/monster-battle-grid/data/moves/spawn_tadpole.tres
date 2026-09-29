@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faalbaxr7nmx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "spawn_tadpole"
+display_name = "Spawn Tadpole"
+move_type = "water"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Summon a homing tadpole that locks onto the enemy's row and rushes forward. 10 DMG on contact."
+effect_id = "spawn_tadpole"
+damage = 10

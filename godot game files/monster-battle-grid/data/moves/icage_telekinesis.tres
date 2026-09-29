@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b31gu0nio0bsm"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "icage_telekinesis"
+display_name = "Telekinesis"
+move_type = "mind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "4 gravity tiles on the enemy's front column for 8s — drags them 1 tile toward you every second."
+effect_id = "gravity_well"

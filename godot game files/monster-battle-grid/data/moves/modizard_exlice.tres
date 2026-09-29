@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca55txt005m1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_exlice"
+display_name = "Exlice"
+move_type = "fighting"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Telegraphed X centered 3 tiles ahead (center + 4 diagonals). After 2s, each cell takes 20 DMG."
+effect_id = "exlice"
+damage = 20

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=10 format=3 uid="uid://b1mondefmshm"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/mushroom.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/spore_veil.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/sleep_spores.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/root_convert.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/absorb_poison.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/bomb.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/silence_bomb.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/fairy_ring.tres" id="9_m4"]
+
+[resource]
+script = ExtResource("1_script")
+id = "mushroom"
+display_name = "Mushroom"
+monster_type = "grass"
+max_hp = 70
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "mushroom_basic"
+basic_attack_kind = "charged_walker"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

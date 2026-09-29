@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveslime_smash"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "slime_smash"
+display_name = "Slime Smash"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1000
+description = "40 DMG. Body-slam the tile directly in front."
+effect_id = "punch"
+damage = 40
+range_tiles = 1

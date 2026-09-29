@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0015"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "all_in"
+display_name = "All In"
+description = "Cards deal 1.3x damage, basic shots deal half."
+rarity = 0.2
+effects = {
+"all_card_mult": 1.3, "bullet_mult": 0.5
+}

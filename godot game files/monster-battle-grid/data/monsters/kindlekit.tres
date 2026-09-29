@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=16 format=3 uid="uid://b1monkindlek"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/kindlekit.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/tinder_nerves.tres" id="3_t1"]
+[ext_resource type="Resource" path="res://data/traits/predator_instinct.tres" id="4_t2"]
+[ext_resource type="Resource" path="res://data/traits/warm_glow.tres" id="5_t3"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_cinder_rush.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_meteor_knuckle.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_ember_guard.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_immolation_point.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_cremate.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/modizard_explosive_skin.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/fudo_flame_breath.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/thorn_shield.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/modizard_exlice.tres" id="14_m9"]
+[ext_resource type="Resource" path="res://data/moves/grunt_cross_counter.tres" id="15_m10"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kindlekit"
+display_name = "Kindlekit"
+monster_type = "fire"
+max_hp = 85
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "kindlekit_basic"
+basic_attack_kind = "bullet"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9"), ExtResource("15_m10")]
+trait_pool = [ExtResource("3_t1"), ExtResource("4_t2"), ExtResource("5_t3")]

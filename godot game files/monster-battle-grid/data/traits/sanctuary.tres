@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trgo0o0003"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "sanctuary"
+display_name = "Sanctuary"
+description = "One of your earth cards also blesses its target with HOLY GROUND."
+rarity = 0.2
+effects = {}

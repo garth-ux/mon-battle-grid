@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dloe0r1vrxfu"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kingfencer_wing_dance"
+display_name = "Wing Dance"
+move_type = "wind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Homing feather blade sweeps the enemy's row — 15 DMG."
+effect_id = "flying_sword"
+damage = 15

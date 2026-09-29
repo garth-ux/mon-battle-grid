@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0014"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "clinch"
+display_name = "Clinch"
+description = "Stunning an enemy heals 3 HP."
+rarity = 0.4
+effects = {
+"heal_on_stun": 3
+}

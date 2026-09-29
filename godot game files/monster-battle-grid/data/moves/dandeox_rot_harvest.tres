@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdandeox5"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dandeox_rot_harvest"
+display_name = "Rot Harvest"
+move_type = "dark"
+mana_cost = 8
+cooldown_ms = 1000
+description = "An enemy carrying ANY status takes 20. Heal 15 per active status on the field. 3+ statuses on them = 2s stun."
+effect_id = "rot_harvest"
+damage = 20

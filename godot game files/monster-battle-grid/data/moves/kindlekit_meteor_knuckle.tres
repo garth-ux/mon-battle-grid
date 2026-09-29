@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvkindle02"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kindlekit_meteor_knuckle"
+display_name = "Meteor Knuckle"
+move_type = "fighting"
+mana_cost = 7
+cooldown_ms = 1000
+description = "2s windup: 75 to the tile ahead. Empty tile → 25 shockwave at depth 2. Taking damage cancels it and refunds 3 mana."
+effect_id = "meteor_knuckle"
+damage = 75

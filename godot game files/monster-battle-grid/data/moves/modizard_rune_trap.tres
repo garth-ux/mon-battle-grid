@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca6jq0qjefc1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_rune_trap"
+display_name = "Rune Trap"
+move_type = "water"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Hidden rune on a random enemy tile — 10 DMG + long stun + poison on contact."
+effect_id = "goo_trap"
+tile_lifetime_ms = 16800

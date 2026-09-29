@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0049"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dense_matter"
+display_name = "Dense Matter"
+description = "Take 10% less damage."
+rarity = 0.4
+effects = {
+"dmg_taken_mult": 0.9
+}

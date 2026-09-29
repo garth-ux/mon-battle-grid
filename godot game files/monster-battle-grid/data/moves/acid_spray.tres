@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveacid_spray_"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "acid_spray"
+display_name = "Acid Spray"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 1200
+description = "20 DMG per cell. Corrosive sweep across the row."
+effect_id = "beam"
+damage = 20

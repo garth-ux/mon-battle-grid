@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movescrap_toss"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "scrap_toss"
+display_name = "Scrap Toss"
+move_type = "grass"
+mana_cost = 2
+cooldown_ms = 1000
+description = "35 DMG. Hurl junk at the tile in front."
+effect_id = "punch"
+damage = 35
+range_tiles = 1

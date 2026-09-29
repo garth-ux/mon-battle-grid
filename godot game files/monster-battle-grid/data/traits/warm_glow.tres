@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trkindle03"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "warm_glow"
+display_name = "Warm Glow"
+description = "Fire cards heal you 5 HP whenever they are played."
+rarity = 0.2
+effects = {
+"card_type_heal_fire": 5
+}

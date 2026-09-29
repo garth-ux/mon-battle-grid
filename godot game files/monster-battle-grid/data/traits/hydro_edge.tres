@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0034"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "hydro_edge"
+display_name = "Hydro Edge"
+description = "Basic shots deal +1 DMG."
+rarity = 0.4
+effects = {
+"bullet_bonus": 1
+}

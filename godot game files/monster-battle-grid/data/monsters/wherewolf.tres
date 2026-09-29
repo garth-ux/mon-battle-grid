@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=13 format=3 uid="uid://b1monwherewf"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/wherewolf.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/lingering_shadow.tres" id="3_trait"]
+[ext_resource type="Resource" path="res://data/traits/opportunist.tres" id="4_trait"]
+[ext_resource type="Resource" path="res://data/traits/phantom_fang.tres" id="5_trait"]
+[ext_resource type="Resource" path="res://data/moves/shadow_dive.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/slash.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/blood_drain.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/sonic_screech.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/giant_vanish.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/iai.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/fudo_glare.tres" id="12_m7"]
+
+[resource]
+script = ExtResource("1_script")
+id = "wherewolf"
+display_name = "Wherewolf"
+monster_type = "dark"
+max_hp = 80
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "wherewolf_basic"
+basic_attack_kind = "charged_shadow"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7")]
+trait_pool = [ExtResource("3_trait"), ExtResource("4_trait"), ExtResource("5_trait")]

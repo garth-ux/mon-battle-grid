@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://boo5aeh4dwu2t"]
+
+[ext_resource type="PackedScene" uid="uid://cksr6xkq610v4" path="res://BlockTile_1781894212.glb" id="1_a202f"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="BlockTile_1781894212" parent="." instance=ExtResource("1_a202f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.93933, 0.220969, -8.81759)

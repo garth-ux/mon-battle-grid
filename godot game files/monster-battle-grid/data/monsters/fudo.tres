@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=18 format=3 uid="uid://b1mondeffudo"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/fudo.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/loyal_heart.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/guard_dog.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/warding_aura.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/punch.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/hog_wall.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/topple.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/fudo_dust_devil.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/bomb.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/slash.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/fudo_flame_breath.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/fudo_guardian_stance.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/fudo_glare.tres" id="14_m9"]
+[ext_resource type="Resource" path="res://data/moves/giant_brick_break.tres" id="15_m10"]
+[ext_resource type="Resource" path="res://data/moves/fudo_earth_armor.tres" id="16_m11"]
+[ext_resource type="Resource" path="res://data/moves/fudo_crush_earth.tres" id="17_m12"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fudo"
+display_name = "Fudo"
+monster_type = "earth"
+max_hp = 120
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "fudo_basic"
+basic_attack_kind = "statue_builder"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9"), ExtResource("15_m10"), ExtResource("16_m11"), ExtResource("17_m12")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

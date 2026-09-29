@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdandeox3"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dandeox_creeping_row"
+display_name = "Creeping Row"
+move_type = "dark"
+mana_cost = 4
+cooldown_ms = 1000
+description = "The enemy's row chokes with vines for 4s: cells are sticky to leave and drain 5 dark damage per second."
+effect_id = "creeping_row"

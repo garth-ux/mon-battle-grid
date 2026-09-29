@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaljaipjjic"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "tidal_wave"
+display_name = "Tidal Wave"
+move_type = "water"
+mana_cost = 5
+cooldown_ms = 1000
+description = "15 DMG per cell. Slow 2-row wave sweeps from your rear all the way to the enemy's far side."
+effect_id = "tidal_wave"
+damage = 15

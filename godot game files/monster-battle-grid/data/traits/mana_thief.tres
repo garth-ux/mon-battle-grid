@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trdandeox3"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "mana_thief"
+display_name = "Mana Thief"
+description = "Every 5th card you play steals 5 mana from the opponent."
+rarity = 0.2
+effects = {
+"mana_steal_every": 5,
+"mana_steal_amount": 5
+}

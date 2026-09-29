@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dic6gcy04fyke"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fudo_dust_devil"
+display_name = "Dust Devil"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Whirlwind — 20 DMG to the 4 tiles adjacent to your mirror cell on the enemy grid."
+effect_id = "dust_devil"
+damage = 20

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0050"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "time_sip"
+display_name = "Time Sip"
+description = "Time cards heal 10 HP on use."
+rarity = 0.4
+effects = {
+"card_type_heal_time": 10
+}

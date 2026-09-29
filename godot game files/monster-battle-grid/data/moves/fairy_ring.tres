@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e886bf03erae"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fairy_ring"
+display_name = "Fairy Ring"
+move_type = "grass"
+mana_cost = 5
+cooldown_ms = 2000
+description = "Summon 2 mushrooms that march forward leaving poison tiles in their wake."
+effect_id = "fairy_ring"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvgo0o0003"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gozo_judgment_slab"
+display_name = "Judgment Slab"
+move_type = "light"
+mana_cost = 6
+cooldown_ms = 1000
+description = "A slab falls on the enemy's tile after 3s: 35 DMG (55 if you're at full HP), then the tile is rubble for 4s."
+effect_id = "judgment_slab"
+damage = 35

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movehog_wall0"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "hog_wall"
+display_name = "Wall"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 1500
+description = "Build a 4-block scrap column 2 tiles ahead."
+effect_id = "wall_column"
+self_heal = 0

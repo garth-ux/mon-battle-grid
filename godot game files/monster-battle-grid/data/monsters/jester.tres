@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=13 format=3 uid="uid://b1monjester0"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/jester.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/limelight.tres" id="3_trait"]
+[ext_resource type="Resource" path="res://data/traits/bright_ward.tres" id="4_trait"]
+[ext_resource type="Resource" path="res://data/traits/afterglow.tres" id="5_trait"]
+[ext_resource type="Resource" path="res://data/moves/holy_tile.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/healing_font.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/stunning_gleam.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/kingfencer_lunge.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/kingfencer_riposte.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/modizard_blink.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/hex_tiles.tres" id="12_m7"]
+
+[resource]
+script = ExtResource("1_script")
+id = "jester"
+display_name = "Jester"
+monster_type = "light"
+max_hp = 75
+max_mana = 10
+max_ammo = 3
+reload_ms = 5000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "jester_basic"
+basic_attack_kind = "jester_beam"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7")]
+trait_pool = [ExtResource("3_trait"), ExtResource("4_trait"), ExtResource("5_trait")]

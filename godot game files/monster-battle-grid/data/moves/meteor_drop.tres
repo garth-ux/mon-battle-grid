@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaefqlvbymx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "meteor_drop"
+display_name = "Meteor Drop"
+move_type = "fire"
+mana_cost = 4
+cooldown_ms = 1000
+description = "1.5s delayed mine 2 cells ahead. Plus-shape detonation: 40 DMG center, 10 DMG each cardinal."
+effect_id = "meteor_drop"
+damage = 40

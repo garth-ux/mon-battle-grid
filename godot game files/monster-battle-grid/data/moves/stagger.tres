@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movestagger00"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "stagger"
+display_name = "Stagger"
+move_type = "dark"
+mana_cost = 2
+cooldown_ms = 1100
+description = "10 DMG + shove the front enemy back 1 tile."
+effect_id = "displace"
+damage = 10
+target_displacement = Vector2i(1, 0)

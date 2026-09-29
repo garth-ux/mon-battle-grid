@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ge158ox7dism"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "giant_friend_of_forest"
+display_name = "Friend of the Forest"
+move_type = "grass"
+mana_cost = 4
+cooldown_ms = 2000
+description = "3 telegraphed line strikes sweep the enemy field, 2s apart — 10 DMG each. Blocks stop a line."
+effect_id = "friend_of_forest"
+damage = 10

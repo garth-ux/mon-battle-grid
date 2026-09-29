@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca51no5jbv81u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_arcane_storm"
+display_name = "Arcane Storm"
+move_type = "water"
+mana_cost = 5
+cooldown_ms = 1000
+description = "Arcane tempest across the entire row — 20 DMG + stun."
+effect_id = "beam"
+damage = 20
+status_id = "stun"
+status_duration_ms = 1680

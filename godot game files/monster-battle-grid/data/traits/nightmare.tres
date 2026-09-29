@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trdroop003"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "nightmare"
+display_name = "Nightmare"
+description = "SECRET: one of your MIND cards (rolled each battle) puts the enemy to SLEEP for 3s every time it's played (damage wakes them)."
+rarity = 0.2
+effects = {
+"sleep_on_mind_card": true
+}

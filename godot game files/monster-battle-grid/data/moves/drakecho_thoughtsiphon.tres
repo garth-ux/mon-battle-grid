@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdrake004"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "drakecho_thoughtsiphon"
+display_name = "Thoughtsiphon"
+move_type = "mind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Psychic reach: 20 + drain 3 mana. A target under 3 mana takes 45 and is stunned 2s instead."
+effect_id = "thoughtsiphon"
+damage = 20

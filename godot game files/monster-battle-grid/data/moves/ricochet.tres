@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaji8wf3ngx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "ricochet"
+display_name = "Ricochet"
+move_type = "dark"
+mana_cost = 2
+cooldown_ms = 1000
+description = "15 DMG. Bullet bounces back for a second pass if it misses."
+effect_id = "ricochet"
+damage = 15

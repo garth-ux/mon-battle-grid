@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveslime_ball"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "slime_ball"
+display_name = "Slime Ball"
+move_type = "mind"
+mana_cost = 1
+cooldown_ms = 1000
+description = "10 DMG at 2 tiles ahead + poison trap at the deeper cell."
+effect_id = "slime_ball"
+damage = 10
+tile_lifetime_ms = 11200

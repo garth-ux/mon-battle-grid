@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=11 format=3 uid="uid://cv6g38aaej84f"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/krrrrin.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_cinder_rush.tres" id="3_m1"]
+[ext_resource type="Resource" path="res://data/moves/meteor_drop.tres" id="4_m2"]
+[ext_resource type="Resource" path="res://data/moves/fudo_flame_breath.tres" id="5_m3"]
+[ext_resource type="Resource" path="res://data/moves/modizard_explosive_skin.tres" id="6_m4"]
+[ext_resource type="Resource" path="res://data/moves/kindlekit_cremate.tres" id="7_m5"]
+[ext_resource type="Resource" path="res://data/traits/bracing_charge.tres" id="8_t1"]
+[ext_resource type="Resource" path="res://data/traits/cinder_trail.tres" id="9_t2"]
+[ext_resource type="Resource" path="res://data/traits/searing_brand.tres" id="10_t3"]
+
+[resource]
+script = ExtResource("1_script")
+id = "krrrrin"
+display_name = "Krrrrin"
+monster_type = "fire"
+max_hp = 90
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "krrrrin_basic"
+basic_attack_kind = "ram_shot"
+deck = [ExtResource("3_m1"), ExtResource("4_m2"), ExtResource("5_m3"), ExtResource("6_m4"), ExtResource("7_m5")]
+trait_pool = [ExtResource("8_t1"), ExtResource("9_t2"), ExtResource("10_t3")]

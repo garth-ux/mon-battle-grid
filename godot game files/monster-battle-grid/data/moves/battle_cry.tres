@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movebattle_cry"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "battle_cry"
+display_name = "Battle Cry"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 2000
+description = "Deal 50% more damage for 3s."
+effect_id = "self_buff"
+self_buff_id = "battle_cry"
+buff_mult = 1.5
+buff_duration_ms = 3000

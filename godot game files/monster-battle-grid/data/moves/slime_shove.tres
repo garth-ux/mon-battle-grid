@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveslime_shove"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "slime_shove"
+display_name = "Slime Shove"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1100
+description = "12 DMG + shove the front enemy 1 tile back."
+effect_id = "displace"
+damage = 12
+target_displacement = Vector2i(1, 0)

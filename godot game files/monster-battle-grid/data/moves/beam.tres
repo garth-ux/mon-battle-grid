@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e882e6u4namx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "beam"
+display_name = "Beam"
+move_type = "dark"
+mana_cost = 3
+cooldown_ms = 1300
+description = "20 DMG per cell. Beam sweeps the row in front."
+effect_id = "beam"
+damage = 20

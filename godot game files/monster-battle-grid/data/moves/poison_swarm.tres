@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faahppvwj08x"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "poison_swarm"
+display_name = "Poison Swarm"
+move_type = "dark"
+mana_cost = 5
+cooldown_ms = 1500
+description = "Summon 3 rats that advance erratically forward, dropping poison trails and exploding on contact (5 DMG)."
+effect_id = "poison_swarm"
+damage = 0

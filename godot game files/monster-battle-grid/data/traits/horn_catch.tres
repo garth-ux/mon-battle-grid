@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0003"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "horn_catch"
+display_name = "Horn Catch"
+description = "Catching your boomerang heals 5 HP."
+rarity = 0.2
+effects = {
+"boomerang_catch_heal": 5
+}

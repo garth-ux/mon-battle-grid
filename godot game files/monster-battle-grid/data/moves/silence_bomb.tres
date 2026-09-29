@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://beuoxgpief1sj"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "silence_bomb"
+display_name = "Silence Bomb"
+move_type = "dark"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Contact mine 2 ahead — 10 DMG + 3s silence (can't play cards) on contact."
+effect_id = "silence_bomb"
+tile_lifetime_ms = 10000

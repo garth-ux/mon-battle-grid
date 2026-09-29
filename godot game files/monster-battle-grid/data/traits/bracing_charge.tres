@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trkrrrn01"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "bracing_charge"
+display_name = "Bracing Charge"
+description = "When your Ram hits, gain GUARDED (half damage from cards AND basics) while you recoil."
+rarity = 0.4
+effects = {
+"guarded_on_ram": true
+}

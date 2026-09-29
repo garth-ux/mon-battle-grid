@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faakxlwtnamx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "swoop"
+display_name = "Swoop"
+move_type = "wind"
+mana_cost = 2
+cooldown_ms = 1000
+description = "15 DMG. Wing sweep across your row — knocks the enemy 1 cell further on hit."
+effect_id = "swoop"
+damage = 15
+is_movement_card = true

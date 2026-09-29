@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0006"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "reinforce"
+display_name = "Reinforce"
+description = "Your walls take 2 extra hits to crumble."
+rarity = 0.2
+effects = {
+"wall_bonus_hp": 2
+}

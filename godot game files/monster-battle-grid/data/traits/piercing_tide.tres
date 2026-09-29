@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0036"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "piercing_tide"
+display_name = "Piercing Tide"
+description = "Water cards deal 1.3x damage."
+rarity = 0.2
+effects = {
+"card_type_mult_water": 1.3
+}

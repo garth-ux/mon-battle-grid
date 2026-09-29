@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0029"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "sleep_spores"
+display_name = "Sleep Spores"
+description = "Basic shots briefly put enemies to sleep (stun)."
+rarity = 0.4
+effects = {
+"basic_stuns": true
+}

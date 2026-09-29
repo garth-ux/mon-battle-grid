@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://d213fgw6p8vot"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "thunder_clap"
+display_name = "Thunder Clap"
+move_type = "electric"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Lightning orb orbits opponent's grid perimeter (12 cells × 8 DMG)."
+effect_id = "thunder_clap"
+damage = 8

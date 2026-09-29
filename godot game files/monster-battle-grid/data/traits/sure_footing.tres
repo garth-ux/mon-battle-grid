@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0041"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "sure_footing"
+display_name = "Sure Footing"
+description = "You cannot be stunned or frozen."
+rarity = 0.4
+effects = {
+"immune_stun": true
+}

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0044"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "shell_cover"
+display_name = "Shell Cover"
+description = "Guarded while a block stands directly in front of you."
+rarity = 0.4
+effects = {
+"guarded_behind_block": true
+}

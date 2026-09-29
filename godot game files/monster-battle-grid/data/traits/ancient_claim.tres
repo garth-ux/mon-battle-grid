@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0027"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "ancient_claim"
+display_name = "Ancient Claim"
+description = "Zone steal lasts 50% longer if you haven't been hit for 10s."
+rarity = 0.2
+effects = {
+"steal_duration": true
+}

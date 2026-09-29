@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trjester03"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "afterglow"
+display_name = "Afterglow"
+description = "SECRET: every Halo Beam leaves healing light under you — a 3s tile that heals you 3 HP/s while you stand on it."
+rarity = 0.2
+effects = {
+"afterglow": true
+}

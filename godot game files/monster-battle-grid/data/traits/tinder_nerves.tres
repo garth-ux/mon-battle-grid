@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trkindle01"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "tinder_nerves"
+display_name = "Tinder Nerves"
+description = "Water damage BLINDS you 1s. Fire or fighting damage charges your next fire/fighting card to deal 1.2x."
+rarity = 0.4
+effects = {
+"blind_self_on_water_ms": 1000,
+"tinder_charge_mult": 1.2
+}

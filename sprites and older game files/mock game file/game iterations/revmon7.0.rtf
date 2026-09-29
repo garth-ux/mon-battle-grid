@@ -1,0 +1,4470 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import React, \{\
+  useState,\
+  useEffect,\
+  useCallback,\
+  useRef,\
+  useMemo,\
+\} from "react";\
+import \{ Canvas \} from "@react-three/fiber";\
+import \{ OrbitControls, Text, Box, Sphere, Cone \} from "@react-three/drei";\
+import * as THREE from "three";\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// TYPES\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+type Character = \{ name: string; emoji: string; moves: Move[] \};\
+type Position = \{ x: number; y: number \};\
+type Bullet = Position & \{\
+  direction: "left" | "right";\
+  isRat?: boolean;\
+  chargePower?: number;\
+  isQuickdraw?: boolean;\
+  isRicochet?: boolean;\
+  hasBounced?: boolean;\
+  isThorn?: boolean;\
+\};\
+type Block = Position & \{ health: number \};\
+type Beam = Position & \{ direction: "left" | "right"; ttl: number \};\
+type TimedEffect = Position & \{\
+  ttl: number;\
+  effectType?:\
+    | "leafstorm"\
+    | "flyingsword"\
+    | "explosion"\
+    | "clawingsword"\
+    | "ratpack"\
+    | "ratstorm"\
+    | "tonguewhip"\
+    | "teleport"\
+    | "chorus"\
+    | "lilypad"\
+    | "dustdevil"\
+    | "sporecloud"\
+    | "croakbeam"\
+    | "vinesnare"\
+    | "poisondot"\
+    | "healpuddle"\
+    | "poisontrap";\
+  direction?: "left" | "right";\
+  damagePerTick?: number;\
+  hasDamaged?: boolean;\
+\};\
+type Bomb = Position;\
+type DelayBomb = Position & \{ timer: number \};\
+type Boomerang = Position & \{\
+  phase: "forward" | "backward";\
+  distanceTraveled: number;\
+\};\
+type Move = \{\
+  name: string;\
+  manaCost: number;\
+  cooldown: number;\
+  description: string;\
+\};\
+type EnemyDef = \{\
+  type: string;\
+  emoji: string;\
+  hp: number;\
+  shootChance: number;\
+  speed: number;\
+\};\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// CONSTANTS\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const GRID_SIZE = 4;\
+const MAX_SHOTS = 2;\
+const GAME_TICK = 50;\
+const OPPONENT_MOVE_INTERVAL = 5;\
+const MAX_HAND_SIZE = 2;\
+const MAX_MANA = 10;\
+const DELAY_BOMB_TIMER = 30;\
+const MAX_DECK_SIZE = 6;\
+\
+const OW_TILE = 40;\
+const OW_COLS = 24;\
+const OW_ROWS = 18;\
+const ENCOUNTER_RATE = 0.2;\
+\
+const TL = \{\
+  GRASS: 0,\
+  PATH: 1,\
+  WATER: 2,\
+  TREE: 3,\
+  TALL_GRASS: 4,\
+  HOUSE: 5,\
+  FLOWER: 6,\
+  ROCK: 7,\
+  BRIDGE: 8,\
+  SIGN: 9,\
+\} as const;\
+\
+const WORLD_MAP: number[][] = [\
+  [3, 3, 3, 3, 3, 0, 0, 4, 4, 4, 0, 0, 0, 3, 3, 3, 0, 0, 4, 4, 0, 0, 3, 3],\
+  [3, 0, 0, 0, 3, 0, 4, 4, 0, 4, 4, 0, 0, 0, 3, 0, 0, 4, 4, 4, 0, 0, 0, 3],\
+  [3, 0, 6, 0, 0, 0, 4, 4, 4, 0, 0, 0, 6, 0, 0, 0, 4, 4, 0, 0, 0, 6, 0, 3],\
+  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0],\
+  [0, 4, 4, 1, 0, 0, 5, 0, 0, 9, 0, 0, 0, 1, 0, 0, 4, 4, 4, 4, 0, 0, 4, 0],\
+  [0, 4, 4, 1, 0, 6, 0, 0, 6, 0, 0, 6, 0, 1, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0],\
+  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],\
+  [7, 0, 0, 1, 1, 1, 1, 8, 8, 1, 1, 1, 1, 1, 0, 0, 0, 7, 7, 0, 0, 0, 0, 7],\
+  [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0],\
+  [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 4, 4, 0, 0, 0, 4, 4, 0, 0],\
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 4, 0, 0],\
+  [0, 4, 4, 0, 0, 7, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 7],\
+  [0, 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 4, 4, 0, 0, 0, 7, 7],\
+  [0, 0, 0, 6, 0, 0, 0, 1, 0, 5, 0, 6, 0, 0, 1, 0, 4, 4, 4, 4, 0, 0, 0, 0],\
+  [3, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 4, 4, 0, 0, 6, 0, 3],\
+  [3, 0, 4, 4, 0, 7, 0, 1, 1, 1, 1, 9, 1, 1, 1, 0, 0, 0, 0, 0, 7, 0, 0, 3],\
+  [3, 3, 4, 4, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 7, 7, 0, 3, 3],\
+  [3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3],\
+];\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// CHARACTER DEFINITIONS \'97 descriptions show DMG + effects\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const CHARACTERS: Character[] = [\
+  \{\
+    name: "Cowboy",\
+    emoji: "\uc0\u55358 \u56608 ",\
+    moves: [\
+      \{\
+        name: "slash",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "30 DMG. Hits 3 tiles in front.",\
+      \},\
+      \{\
+        name: "beam",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "20 DMG. Laser across entire enemy row.",\
+      \},\
+      \{\
+        name: "punch",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "40 DMG. Melee strike one tile ahead.",\
+      \},\
+      \{\
+        name: "bomb",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description: "40 DMG. Thrown explosive, detonates on contact.",\
+      \},\
+      \{\
+        name: "tractor beam",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "10 DMG. Pulls enemy 2 tiles closer.",\
+      \},\
+      \{\
+        name: "delay bomb",\
+        manaCost: 5,\
+        cooldown: 1000,\
+        description: "40 DMG center + 10 DMG AOE. 3s fuse timer.",\
+      \},\
+      \{\
+        name: "boomerang",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "30 DMG. Returns to hand after throw.",\
+      \},\
+      \{\
+        name: "lasso",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "15 DMG + Stun. Pull enemy to grid edge.",\
+      \},\
+      \{\
+        name: "quickdraw",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "25 DMG. 2\'d7 speed bullet, travels fast.",\
+      \},\
+      \{\
+        name: "dust devil",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "20 DMG. Whirlwind hits all 4 adjacent tiles.",\
+      \},\
+      \{\
+        name: "ricochet",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "15 DMG. Bullet bounces back if it misses.",\
+      \},\
+    ],\
+  \},\
+  \{\
+    name: "Hogglin",\
+    emoji: "\uc0\u55358 \u56724 ",\
+    moves: [\
+      \{\
+        name: "leafstorm",\
+        manaCost: 5,\
+        cooldown: 1000,\
+        description: "20 DMG + Stun. Storm across entire row.",\
+      \},\
+      \{\
+        name: "flying sword",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "15 DMG. Homing sword sweeps across field.",\
+      \},\
+      \{\
+        name: "wall",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description: "No DMG. Place 4-block defensive column.",\
+      \},\
+      \{\
+        name: "clawingsword",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "30 DMG. Advancing slash across field.",\
+      \},\
+      \{\
+        name: "thorn shield",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "30 DMG retaliation. Blocks next hit, fires thorn bullet.",\
+      \},\
+      \{\
+        name: "vine snare",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "10 DMG + Long Stun. Vine trap on random enemy tile.",\
+      \},\
+      \{\
+        name: "spore cloud",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description: "2 DMG/tick for 4s. Lingering poison cloud.",\
+      \},\
+    ],\
+  \},\
+  \{\
+    name: "Rat King",\
+    emoji: "\uc0\u55357 \u56320 ",\
+    moves: [\
+      \{\
+        name: "rat pack",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "10 DMG each. Summon 2 rat minions.",\
+      \},\
+      \{\
+        name: "trash toss",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "10 DMG. Homing debris projectile.",\
+      \},\
+      \{\
+        name: "street swarm",\
+        manaCost: 5,\
+        cooldown: 1000,\
+        description: "10 DMG each. 4 homing rat swarm.",\
+      \},\
+      \{\
+        name: "plague bite",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "20 DMG + 5 DMG/s Poison for 5s. Same-row melee.",\
+      \},\
+      \{\
+        name: "tunnel",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "No DMG. Burrow to random safe tile.",\
+      \},\
+      \{\
+        name: "scavenge",\
+        manaCost: 0,\
+        cooldown: 1000,\
+        description: "No DMG. Restore 3 mana instantly.",\
+      \},\
+    ],\
+  \},\
+  \{\
+    name: "Malipole",\
+    emoji: "\uc0\u55357 \u56376 ",\
+    moves: [\
+      \{\
+        name: "tongue whip",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "15 DMG + Stun. Long-range tongue strike.",\
+      \},\
+      \{\
+        name: "random hop",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "5 DMG. Teleport enemy to random tile.",\
+      \},\
+      \{\
+        name: "frog chorus",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description: "Buff: ALL attacks deal 1-5\'d7 random DMG. Stacks.",\
+      \},\
+      \{\
+        name: "lily pad trap",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "10 DMG + Stun. Place 2 hidden trap tiles.",\
+      \},\
+      \{\
+        name: "mud slap",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "35 DMG + Stun. Melee hit 1 tile ahead only.",\
+      \},\
+      \{\
+        name: "croak blast",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "20 DMG/tile. Delayed beam sweeps across row.",\
+      \},\
+      \{\
+        name: "spawn tadpole",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "10 DMG. Homing tadpole, lasts ~7 seconds.",\
+      \},\
+    ],\
+  \},\
+];\
+\
+const MONSTER_CHARACTERS: Character[] = [\
+  \{\
+    name: "Grunt",\
+    emoji: "\uc0\u55357 \u56446 ",\
+    moves: [\
+      \{\
+        name: "plasma shot",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "15 DMG. Fast energy projectile.",\
+      \},\
+      \{\
+        name: "shield bash",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "30 DMG + Stun. Melee hit 1 tile ahead.",\
+      \},\
+      \{\
+        name: "overcharge",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "Buff: Next 3 shots deal 2\'d7 DMG.",\
+      \},\
+      \{\
+        name: "emp blast",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description:\
+          "15 DMG + Stun. Hits adjacent tiles. Clears all traps & effects.",\
+      \},\
+      \{\
+        name: "barrier",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description: "No DMG. Place 4-block defensive column.",\
+      \},\
+      \{\
+        name: "gravity well",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "10 DMG. Pulls enemy 2 tiles closer.",\
+      \},\
+      \{\
+        name: "power surge",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "20 DMG. Beam across entire enemy row.",\
+      \},\
+    ],\
+  \},\
+  \{\
+    name: "Slime",\
+    emoji: "\uc0\u55357 \u57321 ",\
+    moves: [\
+      \{\
+        name: "slime ball",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "10 DMG + Poison. Hit 2 tiles ahead, leave poison trap.",\
+      \},\
+      \{\
+        name: "slime trail",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description:\
+          "Place 2 healing puddles on your grid. Heal 10 HP on contact.",\
+      \},\
+      \{\
+        name: "dissolve",\
+        manaCost: 4,\
+        cooldown: 1000,\
+        description: "2 DMG/tick for 4s. Acid pool on enemy tile.",\
+      \},\
+      \{\
+        name: "bounce",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "No DMG. Teleport to random safe tile.",\
+      \},\
+      \{\
+        name: "goo trap",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "10 DMG + Long Stun + Poison. Sticky trap on random tile.",\
+      \},\
+      \{\
+        name: "absorb",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "Heal 20 HP if enemy is stunned or poisoned.",\
+      \},\
+      \{\
+        name: "toxic wave",\
+        manaCost: 5,\
+        cooldown: 1000,\
+        description: "20 DMG + Stun. Wave across entire row.",\
+      \},\
+    ],\
+  \},\
+  \{\
+    name: "Bat",\
+    emoji: "\uc0\u55358 \u56711 ",\
+    moves: [\
+      \{\
+        name: "sonic screech",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "20 DMG. Beam across entire enemy row.",\
+      \},\
+      \{\
+        name: "wing slash",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "25 DMG. Melee hit 1 tile ahead.",\
+      \},\
+      \{\
+        name: "sonar jam",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "Buff: 2\'d7 mana regen + silence enemy for 2s.",\
+      \},\
+      \{\
+        name: "swoop",\
+        manaCost: 2,\
+        cooldown: 1000,\
+        description: "15 DMG. Sweeps from you toward the enemy.",\
+      \},\
+      \{\
+        name: "blood drain",\
+        manaCost: 3,\
+        cooldown: 1000,\
+        description: "10 DMG + Heal 10 HP. Same-row attack.",\
+      \},\
+      \{\
+        name: "shadow dive",\
+        manaCost: 1,\
+        cooldown: 1000,\
+        description: "5 DMG. Teleport enemy to random tile.",\
+      \},\
+      \{\
+        name: "night shriek",\
+        manaCost: 5,\
+        cooldown: 1000,\
+        description: "10 DMG each. 4 homing sonic waves.",\
+      \},\
+    ],\
+  \},\
+];\
+\
+const CATCH_MOVE: Move = \{\
+  name: "catch",\
+  manaCost: 3,\
+  cooldown: 1000,\
+  description: "Catch enemy below 20 HP. Chance scales with low HP.",\
+\};\
+\
+const ENEMY_TYPES: EnemyDef[] = [\
+  \{ type: "grunt", emoji: "\uc0\u55357 \u56446 ", hp: 100, shootChance: 0.3, speed: 5 \},\
+  \{ type: "slime", emoji: "\uc0\u55357 \u57321 ", hp: 60, shootChance: 0.15, speed: 8 \},\
+  \{ type: "bat", emoji: "\uc0\u55358 \u56711 ", hp: 45, shootChance: 0.4, speed: 3 \},\
+];\
+\
+const generateEnemyWave = (): EnemyDef[] => \{\
+  const roll = Math.random();\
+  const count = roll < 0.4 ? 1 : roll < 0.8 ? 2 : 3;\
+  return Array.from(\
+    \{ length: count \},\
+    () => ENEMY_TYPES[Math.floor(Math.random() * ENEMY_TYPES.length)]\
+  );\
+\};\
+\
+const ALL_CHARS = [...CHARACTERS, ...MONSTER_CHARACTERS];\
+\
+const getDefaultDeck = (charName: string): string[] => \{\
+  const ch = ALL_CHARS.find((c) => c.name === charName);\
+  if (!ch) return [];\
+  return ch.moves.slice(0, MAX_DECK_SIZE).map((m) => m.name);\
+\};\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// 3D COMPONENTS\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const Tile3D: React.FC<\{\
+  x: number;\
+  y: number;\
+  isPlayerGrid: boolean;\
+  color: string;\
+  highlight?: boolean;\
+\}> = (\{ x, y, isPlayerGrid, color, highlight \}) => (\
+  <Box\
+    position=\{[x + (isPlayerGrid ? GRID_SIZE : 0), 0, y]\}\
+    args=\{[0.9, 0.1, 0.9]\}\
+    castShadow\
+    receiveShadow\
+  >\
+    <meshStandardMaterial\
+      color=\{color\}\
+      emissive=\{highlight ? color : "#000000"\}\
+      emissiveIntensity=\{highlight ? 0.5 : 0\}\
+    />\
+  </Box>\
+);\
+\
+const Character3D: React.FC<\{\
+  x: number;\
+  y: number;\
+  emoji: string;\
+  isOpponent?: boolean;\
+  stunned?: boolean;\
+  isCharging?: boolean;\
+  frenzy?: boolean;\
+\}> = (\{ x, y, emoji, isOpponent = false, stunned, isCharging, frenzy \}) => (\
+  <group position=\{[x + (isOpponent ? 0 : GRID_SIZE), 0.8, y]\}>\
+    <Sphere args=\{[0.3, 16, 16]\} castShadow>\
+      <meshStandardMaterial\
+        color=\{\
+          stunned\
+            ? "#808080"\
+            : frenzy\
+            ? "#00ff00"\
+            : isOpponent\
+            ? "#4444ff"\
+            : "#ff4444"\
+        \}\
+        emissive=\{frenzy ? "#00ff00" : "#000000"\}\
+        emissiveIntensity=\{frenzy ? 0.8 : 0\}\
+      />\
+    </Sphere>\
+    <Text\
+      position=\{[0, 0.5, 0]\}\
+      fontSize=\{0.4\}\
+      color="white"\
+      anchorX="center"\
+      anchorY="middle"\
+    >\
+      \{stunned ? "\uc0\u55357 \u56885 " : emoji\}\
+    </Text>\
+    \{isCharging && (\
+      <Sphere args=\{[0.4, 16, 16]\}>\
+        <meshStandardMaterial\
+          color="#ffff00"\
+          transparent\
+          opacity=\{0.3\}\
+          emissive="#ffff00"\
+          emissiveIntensity=\{1\}\
+        />\
+      </Sphere>\
+    )\}\
+  </group>\
+);\
+\
+const Projectile3D: React.FC<\{\
+  x: number;\
+  y: number;\
+  type:\
+    | "normal"\
+    | "rat"\
+    | "charged"\
+    | "opponent"\
+    | "quickdraw"\
+    | "ricochet"\
+    | "thorn";\
+  direction: "left" | "right";\
+\}> = (\{ x, y, type, direction \}) => \{\
+  const getColor = () => \{\
+    switch (type) \{\
+      case "rat":\
+        return "#ff9900";\
+      case "charged":\
+        return "#00ff00";\
+      case "opponent":\
+        return "#4444ff";\
+      case "quickdraw":\
+        return "#ff4444";\
+      case "ricochet":\
+        return "#ffaa00";\
+      case "thorn":\
+        return "#44cc44";\
+      default:\
+        return "#ffff00";\
+    \}\
+  \};\
+  return (\
+    <group\
+      position=\{[x, 0.4, y]\}\
+      rotation=\{[0, direction === "left" ? Math.PI : 0, 0]\}\
+    >\
+      <Cone args=\{[0.15, 0.4, 8]\} rotation=\{[0, 0, -Math.PI / 2]\} castShadow>\
+        <meshStandardMaterial\
+          color=\{getColor()\}\
+          emissive=\{getColor()\}\
+          emissiveIntensity=\{0.5\}\
+        />\
+      </Cone>\
+    </group>\
+  );\
+\};\
+\
+const Effect3D: React.FC<\{\
+  x: number;\
+  y: number;\
+  type: string;\
+  ttl: number;\
+\}> = (\{ x, y, type, ttl \}) => \{\
+  const scale = Math.min(1, ttl / 10);\
+  const getColor = () => \{\
+    switch (type) \{\
+      case "explosion":\
+        return "#ff0000";\
+      case "leafstorm":\
+        return "#00ff00";\
+      case "flyingsword":\
+      case "clawingsword":\
+        return "#9900ff";\
+      case "ratpack":\
+      case "ratstorm":\
+        return "#ff9900";\
+      case "tonguewhip":\
+        return "#ff00ff";\
+      case "teleport":\
+        return "#00ffff";\
+      case "chorus":\
+        return "#00ff00";\
+      case "lilypad":\
+        return "#88ff88";\
+      case "dustdevil":\
+        return "#c4a060";\
+      case "sporecloud":\
+        return "#88cc44";\
+      case "croakbeam":\
+        return "#44aaff";\
+      case "vinesnare":\
+        return "#33aa33";\
+      case "poisondot":\
+        return "#99ff00";\
+      case "healpuddle":\
+        return "#44ff88";\
+      case "poisontrap":\
+        return "#aa44ff";\
+      default:\
+        return "#ffffff";\
+    \}\
+  \};\
+  return (\
+    <Sphere position=\{[x, 0.5, y]\} args=\{[0.3 * scale, 16, 16]\} castShadow>\
+      <meshStandardMaterial\
+        color=\{getColor()\}\
+        transparent\
+        opacity=\{0.6\}\
+        emissive=\{getColor()\}\
+        emissiveIntensity=\{1\}\
+      />\
+    </Sphere>\
+  );\
+\};\
+\
+const Block3D: React.FC<\{ x: number; y: number; health: number \}> = (\{\
+  x,\
+  y,\
+  health,\
+\}) => (\
+  <Box position=\{[x, 0.4, y]\} args=\{[0.8, 0.8, 0.8]\} castShadow>\
+    <meshStandardMaterial color=\{health > 1 ? "#ff8800" : "#ff4400"\} />\
+  </Box>\
+);\
+\
+const Beam3D: React.FC<\{\
+  y: number;\
+  direction: "left" | "right";\
+  side: "player" | "opponent";\
+\}> = (\{ y, side \}) => \{\
+  const startX = side === "player" ? GRID_SIZE : 0;\
+  const endX = side === "player" ? GRID_SIZE * 2 : GRID_SIZE;\
+  return (\
+    <Box\
+      position=\{[(startX + endX) / 2, 0.3, y]\}\
+      args=\{[GRID_SIZE, 0.1, 0.3]\}\
+      castShadow\
+    >\
+      <meshStandardMaterial\
+        color="#9900ff"\
+        emissive="#9900ff"\
+        emissiveIntensity=\{1\}\
+        transparent\
+        opacity=\{0.7\}\
+      />\
+    </Box>\
+  );\
+\};\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// 3D GAME SCENE\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const GameScene3D: React.FC<\{\
+  playerPos: Position;\
+  opponentPos: Position;\
+  playerBullets: Bullet[];\
+  opponentBullets: Bullet[];\
+  blocks: Block[];\
+  beams: Beam[];\
+  explosionEffects: TimedEffect[];\
+  bombs: Bomb[];\
+  delayBombs: DelayBomb[];\
+  boomerang: Boomerang | null;\
+  tractorBeam: Beam | null;\
+  selectedCharacter: Character;\
+  opponentStunned: number;\
+  isCharging: boolean;\
+  malipoleFrenzyActive: boolean;\
+  lilyPadTraps: TimedEffect[];\
+  tongueWhipActive: TimedEffect | null;\
+  slash: TimedEffect[];\
+  punch: TimedEffect | null;\
+  lasso: TimedEffect | null;\
+  enemyEmoji: string;\
+\}> = (props) => \{\
+  const \{\
+    playerPos,\
+    opponentPos,\
+    playerBullets,\
+    opponentBullets,\
+    blocks,\
+    beams,\
+    explosionEffects,\
+    bombs,\
+    delayBombs,\
+    boomerang,\
+    tractorBeam,\
+    selectedCharacter,\
+    opponentStunned,\
+    isCharging,\
+    malipoleFrenzyActive,\
+    lilyPadTraps,\
+    tongueWhipActive,\
+    slash,\
+    punch,\
+    lasso,\
+    enemyEmoji,\
+  \} = props;\
+  return (\
+    <>\
+      <ambientLight intensity=\{0.5\} />\
+      <directionalLight\
+        position=\{[10, 20, 10]\}\
+        intensity=\{1\}\
+        castShadow\
+        shadow-mapSize-width=\{2048\}\
+        shadow-mapSize-height=\{2048\}\
+      />\
+      <pointLight position=\{[GRID_SIZE, 5, GRID_SIZE]\} intensity=\{0.5\} />\
+      \{Array.from(\{ length: GRID_SIZE * 2 \}, (_, x) =>\
+        Array.from(\{ length: GRID_SIZE \}, (_, y) => \{\
+          const isPlayerGrid = x >= GRID_SIZE;\
+          const localX = isPlayerGrid ? x - GRID_SIZE : x;\
+          let highlight = false;\
+          if (isPlayerGrid && localX === playerPos.x && y === playerPos.y)\
+            highlight = true;\
+          if (!isPlayerGrid && localX === opponentPos.x && y === opponentPos.y)\
+            highlight = true;\
+          return (\
+            <Tile3D\
+              key=\{`tile-$\{x\}-$\{y\}`\}\
+              x=\{localX\}\
+              y=\{y\}\
+              isPlayerGrid=\{isPlayerGrid\}\
+              color=\{isPlayerGrid ? "#ff4444" : "#4444ff"\}\
+              highlight=\{highlight\}\
+            />\
+          );\
+        \})\
+      )\}\
+      <Character3D\
+        x=\{playerPos.x\}\
+        y=\{playerPos.y\}\
+        emoji=\{selectedCharacter.emoji\}\
+        isCharging=\{isCharging\}\
+        frenzy=\{malipoleFrenzyActive\}\
+      />\
+      <Character3D\
+        x=\{opponentPos.x\}\
+        y=\{opponentPos.y\}\
+        emoji=\{enemyEmoji\}\
+        isOpponent\
+        stunned=\{opponentStunned > 0\}\
+      />\
+      \{playerBullets.map((b, i) => \{\
+        let ptype:\
+          | "normal"\
+          | "rat"\
+          | "charged"\
+          | "opponent"\
+          | "quickdraw"\
+          | "ricochet"\
+          | "thorn" = "normal";\
+        if (b.isRat) ptype = "rat";\
+        else if (b.chargePower) ptype = "charged";\
+        else if (b.isQuickdraw) ptype = "quickdraw";\
+        else if (b.isRicochet) ptype = "ricochet";\
+        else if (b.isThorn) ptype = "thorn";\
+        return (\
+          <Projectile3D\
+            key=\{`pb-$\{i\}`\}\
+            x=\{b.x\}\
+            y=\{b.y\}\
+            type=\{ptype\}\
+            direction=\{b.direction\}\
+          />\
+        );\
+      \})\}\
+      \{opponentBullets.map((b, i) => (\
+        <Projectile3D\
+          key=\{`ob-$\{i\}`\}\
+          x=\{b.x\}\
+          y=\{b.y\}\
+          type="opponent"\
+          direction="right"\
+        />\
+      ))\}\
+      \{blocks.map((b, i) => (\
+        <Block3D key=\{`bl-$\{i\}`\} x=\{b.x\} y=\{b.y\} health=\{b.health\} />\
+      ))\}\
+      \{beams.map((b, i) => (\
+        <Beam3D\
+          key=\{`bm-$\{i\}`\}\
+          y=\{b.y\}\
+          direction=\{b.direction\}\
+          side="opponent"\
+        />\
+      ))\}\
+      \{tractorBeam && (\
+        <Beam3D\
+          y=\{tractorBeam.y\}\
+          direction=\{tractorBeam.direction\}\
+          side="opponent"\
+        />\
+      )\}\
+      \{explosionEffects.map((e, i) => (\
+        <Effect3D\
+          key=\{`ef-$\{i\}`\}\
+          x=\{e.x\}\
+          y=\{e.y\}\
+          type=\{e.effectType || "explosion"\}\
+          ttl=\{e.ttl\}\
+        />\
+      ))\}\
+      \{lilyPadTraps.map((t, i) => (\
+        <Effect3D\
+          key=\{`lp-$\{i\}`\}\
+          x=\{t.x\}\
+          y=\{t.y\}\
+          type=\{t.effectType || "lilypad"\}\
+          ttl=\{t.ttl\}\
+        />\
+      ))\}\
+      \{tongueWhipActive && (\
+        <Effect3D\
+          x=\{tongueWhipActive.x\}\
+          y=\{tongueWhipActive.y\}\
+          type="tonguewhip"\
+          ttl=\{tongueWhipActive.ttl\}\
+        />\
+      )\}\
+      \{slash.map((s, i) => (\
+        <Effect3D\
+          key=\{`sl-$\{i\}`\}\
+          x=\{s.x\}\
+          y=\{s.y\}\
+          type="flyingsword"\
+          ttl=\{s.ttl\}\
+        />\
+      ))\}\
+      \{punch && (\
+        <Effect3D x=\{punch.x\} y=\{punch.y\} type="explosion" ttl=\{punch.ttl\} />\
+      )\}\
+      \{lasso && (\
+        <Effect3D x=\{lasso.x\} y=\{lasso.y\} type="tonguewhip" ttl=\{lasso.ttl\} />\
+      )\}\
+      \{bombs.map((b, i) => (\
+        <Sphere\
+          key=\{`bo-$\{i\}`\}\
+          position=\{[b.x, 0.3, b.y]\}\
+          args=\{[0.25, 16, 16]\}\
+          castShadow\
+        >\
+          <meshStandardMaterial color="#333333" />\
+        </Sphere>\
+      ))\}\
+      \{delayBombs.map((b, i) => (\
+        <group key=\{`db-$\{i\}`\} position=\{[b.x, 0.3, b.y]\}>\
+          <Sphere args=\{[0.25, 16, 16]\} castShadow>\
+            <meshStandardMaterial\
+              color="#ff00ff"\
+              emissive="#ff00ff"\
+              emissiveIntensity=\{0.5\}\
+            />\
+          </Sphere>\
+          <Text position=\{[0, 0.5, 0]\} fontSize=\{0.2\} color="white">\
+            \{Math.ceil(b.timer / 10)\}\
+          </Text>\
+        </group>\
+      ))\}\
+      \{boomerang && (\
+        <Sphere\
+          position=\{[boomerang.x, 0.4, boomerang.y]\}\
+          args=\{[0.2, 16, 16]\}\
+          castShadow\
+        >\
+          <meshStandardMaterial\
+            color="#ffff00"\
+            emissive="#ffff00"\
+            emissiveIntensity=\{0.7\}\
+          />\
+        </Sphere>\
+      )\}\
+      <mesh\
+        receiveShadow\
+        rotation=\{[-Math.PI / 2, 0, 0]\}\
+        position=\{[GRID_SIZE, -0.1, GRID_SIZE / 2]\}\
+      >\
+        <planeGeometry args=\{[GRID_SIZE * 3, GRID_SIZE * 2]\} />\
+        <meshStandardMaterial color="#1a1a1a" />\
+      </mesh>\
+    </>\
+  );\
+\};\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// OVERWORLD TILE RENDERER\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const OverworldTile: React.FC<\{\
+  type: number;\
+  x: number;\
+  y: number;\
+  animFrame: number;\
+\}> = (\{ type, x, y, animFrame \}) => \{\
+  const base: React.CSSProperties = \{\
+    position: "absolute",\
+    left: x * OW_TILE,\
+    top: y * OW_TILE,\
+    width: OW_TILE,\
+    height: OW_TILE,\
+    imageRendering: "pixelated",\
+  \};\
+  switch (type) \{\
+    case TL.GRASS:\
+      return (\
+        <div style=\{\{ ...base, background: "#7EC850" \}\}>\
+          \{(x + y) % 5 === 0 && (\
+            <div\
+              style=\{\{\
+                position: "absolute",\
+                left: 14,\
+                top: 18,\
+                fontSize: 6,\
+                opacity: 0.3,\
+                color: "#5a9a30",\
+              \}\}\
+            >\
+              \'b7\
+            </div>\
+          )\}\
+          \{(x * y) % 7 === 0 && (\
+            <div\
+              style=\{\{\
+                position: "absolute",\
+                left: 26,\
+                top: 10,\
+                fontSize: 6,\
+                opacity: 0.25,\
+                color: "#5a9a30",\
+              \}\}\
+            >\
+              \'b7\
+            </div>\
+          )\}\
+        </div>\
+      );\
+    case TL.TALL_GRASS:\
+      return (\
+        <div style=\{\{ ...base, background: "#4d9a2a", overflow: "hidden" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              bottom: 2,\
+              left: 0,\
+              right: 0,\
+              textAlign: "center",\
+              fontSize: 14,\
+              lineHeight: "16px",\
+              color: "#3a7a1a",\
+              transform: `translateX($\{\
+                Math.sin((animFrame + x * 3) * 0.12) * 2\
+              \}px)`,\
+            \}\}\
+          >\
+            \uc0\u5169 \u5169 \u5169 \
+          </div>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              bottom: 10,\
+              left: 2,\
+              right: 2,\
+              textAlign: "center",\
+              fontSize: 12,\
+              color: "#3a7a1a",\
+              opacity: 0.7,\
+              transform: `translateX($\{\
+                Math.sin((animFrame + y * 2) * 0.1) * -1.5\
+              \}px)`,\
+            \}\}\
+          >\
+            \uc0\u5169 \u5169 \
+          </div>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              top: 1,\
+              right: 2,\
+              fontSize: 7,\
+              color: "#ff6b35",\
+              fontWeight: "bold",\
+              fontFamily: "'Courier New', monospace",\
+            \}\}\
+          >\
+            !\
+          </div>\
+        </div>\
+      );\
+    case TL.PATH:\
+      return (\
+        <div\
+          style=\{\{\
+            ...base,\
+            background: "#C4A96A",\
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.12)",\
+          \}\}\
+        />\
+      );\
+    case TL.WATER:\
+      return (\
+        <div style=\{\{ ...base, background: "#3B7DD8", overflow: "hidden" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              width: "200%",\
+              height: "100%",\
+              background:\
+                "repeating-linear-gradient(90deg, transparent, rgba(255,255,255,0.12) 8px, transparent 16px)",\
+              left: `-$\{(animFrame * 1.5) % 32\}px`,\
+            \}\}\
+          />\
+        </div>\
+      );\
+    case TL.TREE:\
+      return (\
+        <div style=\{\{ ...base, background: "#7EC850" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              left: "50%",\
+              top: "50%",\
+              transform: "translate(-50%, -55%)",\
+              fontSize: 24,\
+            \}\}\
+          >\
+            \uc0\u55356 \u57138 \
+          </div>\
+        </div>\
+      );\
+    case TL.HOUSE:\
+      return (\
+        <div style=\{\{ ...base, background: "#C4A96A" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              left: "50%",\
+              top: "50%",\
+              transform: "translate(-50%, -55%)",\
+              fontSize: 26,\
+            \}\}\
+          >\
+            \uc0\u55356 \u57312 \
+          </div>\
+        </div>\
+      );\
+    case TL.FLOWER:\
+      return (\
+        <div style=\{\{ ...base, background: "#7EC850" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              left: "50%",\
+              top: "50%",\
+              transform: "translate(-50%, -50%)",\
+              fontSize: 14,\
+            \}\}\
+          >\
+            \{(x + y) % 2 === 0 ? "\uc0\u55356 \u57144 " : "\u55356 \u57148 "\}\
+          </div>\
+        </div>\
+      );\
+    case TL.ROCK:\
+      return (\
+        <div style=\{\{ ...base, background: "#7EC850" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              left: "50%",\
+              top: "50%",\
+              transform: "translate(-50%, -50%)",\
+              fontSize: 20,\
+            \}\}\
+          >\
+            \uc0\u55358 \u57000 \
+          </div>\
+        </div>\
+      );\
+    case TL.BRIDGE:\
+      return (\
+        <div\
+          style=\{\{\
+            ...base,\
+            background: "#8B5E3C",\
+            border: "2px solid #6B3E1C",\
+            boxSizing: "border-box",\
+          \}\}\
+        >\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              top: 0,\
+              left: "50%",\
+              transform: "translateX(-50%)",\
+              width: 3,\
+              height: "100%",\
+              background: "#6B3E1C",\
+              opacity: 0.3,\
+            \}\}\
+          />\
+        </div>\
+      );\
+    case TL.SIGN:\
+      return (\
+        <div style=\{\{ ...base, background: "#C4A96A" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              left: "50%",\
+              top: "50%",\
+              transform: "translate(-50%, -55%)",\
+              fontSize: 20,\
+            \}\}\
+          >\
+            \uc0\u55358 \u56999 \
+          </div>\
+        </div>\
+      );\
+    default:\
+      return <div style=\{\{ ...base, background: "#7EC850" \}\} />;\
+  \}\
+\};\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// LOADOUT SCREEN\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const LoadoutScreen: React.FC<\{\
+  character: Character;\
+  selectedMoves: string[];\
+  onToggleMove: (n: string) => void;\
+  onClose: () => void;\
+\}> = (\{ character, selectedMoves, onToggleMove, onClose \}) => (\
+  <div\
+    style=\{\{\
+      position: "fixed",\
+      inset: 0,\
+      background: "rgba(0,0,0,0.85)",\
+      zIndex: 200,\
+      display: "flex",\
+      alignItems: "center",\
+      justifyContent: "center",\
+      fontFamily: "'Courier New', monospace",\
+    \}\}\
+  >\
+    <div\
+      style=\{\{\
+        background: "#e3decb",\
+        border: "4px solid #080808",\
+        padding: "2rem",\
+        width: 800,\
+        maxHeight: "85vh",\
+        overflow: "auto",\
+        boxShadow: "16px 16px 0 rgba(0,0,0,0.3)",\
+      \}\}\
+    >\
+      <div\
+        style=\{\{\
+          display: "flex",\
+          justifyContent: "space-between",\
+          alignItems: "center",\
+          borderBottom: "2px solid #080808",\
+          paddingBottom: "1rem",\
+          marginBottom: "1.5rem",\
+        \}\}\
+      >\
+        <div>\
+          <h2\
+            style=\{\{\
+              fontFamily: "Impact, sans-serif",\
+              fontSize: "2.5rem",\
+              margin: 0,\
+              textTransform: "uppercase",\
+              letterSpacing: "-1px",\
+            \}\}\
+          >\
+            LOADOUT\
+          </h2>\
+          <span\
+            style=\{\{ fontSize: "0.7rem", opacity: 0.6, letterSpacing: "2px" \}\}\
+          >\
+            \{character.emoji\} \{character.name.toUpperCase()\} // SELECT UP TO\{" "\}\
+            \{MAX_DECK_SIZE\} CARDS\
+          </span>\
+        </div>\
+        <div style=\{\{ textAlign: "right" \}\}>\
+          <div\
+            style=\{\{\
+              fontFamily: "Impact, sans-serif",\
+              fontSize: "2rem",\
+              color:\
+                selectedMoves.length === MAX_DECK_SIZE ? "#4d9a2a" : "#080808",\
+            \}\}\
+          >\
+            \{selectedMoves.length\}/\{MAX_DECK_SIZE\}\
+          </div>\
+          <button\
+            onClick=\{onClose\}\
+            style=\{\{\
+              background: "#080808",\
+              color: "#e3decb",\
+              border: "none",\
+              padding: "0.5rem 1.5rem",\
+              cursor: "pointer",\
+              fontFamily: "Impact, sans-serif",\
+              fontSize: "1rem",\
+              letterSpacing: "2px",\
+              marginTop: "0.5rem",\
+            \}\}\
+          >\
+            CLOSE [P]\
+          </button>\
+        </div>\
+      </div>\
+      <div\
+        style=\{\{\
+          display: "grid",\
+          gridTemplateColumns: "repeat(3, 1fr)",\
+          gap: "1rem",\
+        \}\}\
+      >\
+        \{[...character.moves, CATCH_MOVE].map((move) => \{\
+          const isSel = selectedMoves.includes(move.name);\
+          const canAdd = selectedMoves.length < MAX_DECK_SIZE;\
+          const isCatch = move.name === "catch";\
+          return (\
+            <div\
+              key=\{move.name\}\
+              onClick=\{() => \{\
+                if (isSel || canAdd) onToggleMove(move.name);\
+              \}\}\
+              style=\{\{\
+                background: isSel ? "#d4e8c2" : isCatch ? "#e8e0f0" : "white",\
+                border: `2px solid $\{\
+                  isSel ? "#4d9a2a" : isCatch ? "#6644aa" : "#080808"\
+                \}`,\
+                padding: "0.75rem",\
+                cursor: isSel || canAdd ? "pointer" : "not-allowed",\
+                opacity: !isSel && !canAdd ? 0.4 : 1,\
+                transition: "all 0.1s",\
+                position: "relative",\
+                boxShadow: isSel\
+                  ? "4px 4px 0 rgba(77,154,42,0.3)"\
+                  : isCatch\
+                  ? "4px 4px 0 rgba(102,68,170,0.2)"\
+                  : "4px 4px 0 rgba(0,0,0,0.1)",\
+              \}\}\
+            >\
+              \{isSel && (\
+                <div\
+                  style=\{\{\
+                    position: "absolute",\
+                    top: 4,\
+                    right: 6,\
+                    fontSize: "0.7rem",\
+                    color: "#4d9a2a",\
+                    fontWeight: "bold",\
+                  \}\}\
+                >\
+                  \uc0\u10003 \
+                </div>\
+              )\}\
+              \{isCatch && (\
+                <div\
+                  style=\{\{\
+                    position: "absolute",\
+                    top: 4,\
+                    left: 6,\
+                    fontSize: "0.6rem",\
+                    color: "#6644aa",\
+                    fontWeight: "bold",\
+                  \}\}\
+                >\
+                  \uc0\u55358 \u56996 \
+                </div>\
+              )\}\
+              <div\
+                style=\{\{\
+                  width: "100%",\
+                  height: 36,\
+                  background: isCatch ? "#3a2266" : "#1a1a1a",\
+                  marginBottom: "0.4rem",\
+                  display: "flex",\
+                  alignItems: "center",\
+                  justifyContent: "center",\
+                \}\}\
+              >\
+                <span\
+                  style=\{\{\
+                    fontFamily: "Impact, sans-serif",\
+                    fontSize: "1.2rem",\
+                    color: "#d4d0c8",\
+                  \}\}\
+                >\
+                  \{move.manaCost\}\
+                </span>\
+              </div>\
+              <div\
+                style=\{\{\
+                  fontFamily: "Impact, sans-serif",\
+                  fontSize: "0.9rem",\
+                  textTransform: "uppercase",\
+                  marginBottom: "0.3rem",\
+                  color: isCatch ? "#6644aa" : "#080808",\
+                \}\}\
+              >\
+                \{move.name\}\
+              </div>\
+              <div\
+                style=\{\{ fontSize: "0.6rem", lineHeight: "1.3", opacity: 0.7 \}\}\
+              >\
+                \{move.description\}\
+              </div>\
+              <div\
+                style=\{\{\
+                  fontSize: "0.55rem",\
+                  borderTop: "1px solid #ccc",\
+                  paddingTop: "0.3rem",\
+                  marginTop: "0.3rem",\
+                  opacity: 0.5,\
+                \}\}\
+              >\
+                \{isCatch ? "UNIVERSAL CARD" : `COST: $\{move.manaCost\} MANA`\}\
+              </div>\
+            </div>\
+          );\
+        \})\}\
+      </div>\
+    </div>\
+  </div>\
+);\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// BATTLE COMPONENT\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const BattleScreen: React.FC<\{\
+  selectedCharacter: Character;\
+  persistentHP: number;\
+  activeDeck: Move[];\
+  onBattleEnd: (result: "win" | "lose", remainingHP: number) => void;\
+  onCatchMonster: (monsterName: string) => void;\
+  caughtMonsterNames: string[];\
+\}> = (\{\
+  selectedCharacter,\
+  persistentHP,\
+  activeDeck,\
+  onBattleEnd,\
+  onCatchMonster,\
+  caughtMonsterNames,\
+\}) => \{\
+  const [enemyWave] = useState<EnemyDef[]>(() => generateEnemyWave());\
+  const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);\
+  const currentEnemy = enemyWave[currentEnemyIndex];\
+  const [playerPos, setPlayerPos] = useState<Position>(\{ x: 3, y: 1 \});\
+  const [opponentPos, setOpponentPos] = useState<Position>(\{ x: 0, y: 1 \});\
+  const [playerHP, setPlayerHP] = useState(persistentHP);\
+  const [opponentHP, setOpponentHP] = useState(enemyWave[0].hp);\
+  const [opponentMaxHP, setOpponentMaxHP] = useState(enemyWave[0].hp);\
+  const [playerBullets, setPlayerBullets] = useState<Bullet[]>([]);\
+  const [opponentBullets, setOpponentBullets] = useState<Bullet[]>([]);\
+  const [blocks, setBlocks] = useState<Block[]>([]);\
+  const [beams, setBeams] = useState<Beam[]>([]);\
+  const [punch, setPunch] = useState<TimedEffect | null>(null);\
+  const [slash, setSlash] = useState<TimedEffect[]>([]);\
+  const [bombs, setBombs] = useState<Bomb[]>([]);\
+  const [delayBombs, setDelayBombs] = useState<DelayBomb[]>([]);\
+  const [tractorBeam, setTractorBeam] = useState<Beam | null>(null);\
+  const [boomerang, setBoomerang] = useState<Boomerang | null>(null);\
+  const [lasso, setLasso] = useState<TimedEffect | null>(null);\
+  const [opponentStunned, setOpponentStunned] = useState(0);\
+  const [gameOver, setGameOver] = useState(false);\
+  const [tickCount, setTickCount] = useState(0);\
+  const [playerMana, setPlayerMana] = useState(5);\
+  const [hand, setHand] = useState<Move[]>([]);\
+  const [deck, setDeck] = useState<Move[]>([...activeDeck]);\
+  const [explosionEffects, setExplosionEffects] = useState<TimedEffect[]>([]);\
+  const [chargeTime, setChargeTime] = useState(0);\
+  const [isCharging, setIsCharging] = useState(false);\
+  const [malipoleFrenzyActive, setMalipoleFrenzyActive] = useState(false);\
+  const [malipoleFrenzyTimer, setMalipoleFrenzyTimer] = useState(0);\
+  const [malipoleBulletHits, setMalipoleBulletHits] = useState(0);\
+  const [tongueWhipActive, setTongueWhipActive] = useState<TimedEffect | null>(\
+    null\
+  );\
+  const [lilyPadTraps, setLilyPadTraps] = useState<TimedEffect[]>([]);\
+  const [thornShieldActive, setThornShieldActive] = useState(false);\
+  const [poisonDotTimer, setPoisonDotTimer] = useState(0);\
+  const [catchAnim, setCatchAnim] = useState<\
+    null | "attempting" | "success" | "fail" | "toostrong" | "already"\
+  >(null);\
+  const [catchTimer, setCatchTimer] = useState(0);\
+  const [silenceTimer, setSilenceTimer] = useState(0);\
+  const [manaBoostTimer, setManaBoostTimer] = useState(0);\
+\
+  const battleEndRef = useRef(false);\
+  const waveTransitioning = useRef(false);\
+  const playerHPRef = useRef(persistentHP);\
+  const opponentPosRef = useRef(opponentPos);\
+  const prevOpponentPosRef = useRef(opponentPos);\
+  useEffect(() => \{\
+    playerHPRef.current = playerHP;\
+  \}, [playerHP]);\
+  useEffect(() => \{\
+    opponentPosRef.current = opponentPos;\
+  \}, [opponentPos]);\
+\
+  const movePlayer = useCallback(\
+    (dx: number, dy: number) => \{\
+      if (gameOver) return;\
+      setPlayerPos((p) => (\{\
+        x: Math.max(0, Math.min(GRID_SIZE - 1, p.x + dx)),\
+        y: Math.max(0, Math.min(GRID_SIZE - 1, p.y + dy)),\
+      \}));\
+    \},\
+    [gameOver]\
+  );\
+\
+  const fireBullet = useCallback(\
+    (isPlayer: boolean) => \{\
+      if (gameOver) return;\
+      if (isPlayer) \{\
+        if (selectedCharacter.name === "Malipole") \{\
+          if (isCharging) \{\
+            if (playerBullets.length >= MAX_SHOTS) return;\
+            const cl = Math.min(3, Math.floor(chargeTime / 10));\
+            if (cl > 0)\
+              setPlayerBullets((p) => [\
+                ...p,\
+                \{\
+                  x: playerPos.x + GRID_SIZE - 1,\
+                  y: playerPos.y,\
+                  direction: "left",\
+                  chargePower: cl,\
+                \},\
+              ]);\
+            setChargeTime(0);\
+            setIsCharging(false);\
+          \} else setIsCharging(true);\
+          return;\
+        \} else if (selectedCharacter.name === "Rat King") \{\
+          if (isCharging) \{\
+            if (chargeTime >= 50 && playerBullets.length < MAX_SHOTS) \{\
+              const ry = Math.floor(Math.random() * GRID_SIZE);\
+              setPlayerBullets((p) => [\
+                ...p,\
+                \{\
+                  x: playerPos.x + GRID_SIZE - 1,\
+                  y: ry,\
+                  direction: "left",\
+                  isRat: true,\
+                \},\
+              ]);\
+            \}\
+            setChargeTime(0);\
+            setIsCharging(false);\
+          \} else setIsCharging(true);\
+          return;\
+        \} else if (selectedCharacter.name === "Hogglin") \{\
+          if (blocks.length >= MAX_SHOTS) return;\
+          setBlocks((p) => [\
+            ...p,\
+            \{ x: playerPos.x + GRID_SIZE - 1, y: playerPos.y, health: 2 \},\
+          ]);\
+        \} else \{\
+          if (playerBullets.length >= MAX_SHOTS) return;\
+          setPlayerBullets((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE - 1,\
+              y: playerPos.y,\
+              direction: "left",\
+            \},\
+          ]);\
+        \}\
+      \} else \{\
+        if (opponentBullets.length >= MAX_SHOTS) return;\
+        setOpponentBullets((p) => [\
+          ...p,\
+          \{ x: opponentPos.x, y: opponentPos.y, direction: "right" \},\
+        ]);\
+      \}\
+    \},\
+    [\
+      gameOver,\
+      playerBullets,\
+      opponentBullets,\
+      playerPos,\
+      opponentPos,\
+      selectedCharacter,\
+      blocks,\
+      isCharging,\
+      chargeTime,\
+    ]\
+  );\
+\
+  const useMove = useCallback(\
+    (moveName: string) => \{\
+      if (gameOver) return;\
+      const move = hand.find((m) => m.name === moveName);\
+      if (!move || playerMana < move.manaCost) return;\
+      setPlayerMana((p) => p - move.manaCost);\
+      setHand((p) => p.filter((m) => m !== move));\
+      setDeck((p) => [...p, move]);\
+\
+      // \uc0\u9472 \u9472  CATCH CARD \u9472 \u9472 \
+      if (moveName === "catch") \{\
+        if (!currentEnemy) return;\
+        const monsterName =\
+          currentEnemy.type.charAt(0).toUpperCase() +\
+          currentEnemy.type.slice(1);\
+        if (caughtMonsterNames.includes(monsterName)) \{\
+          setCatchAnim("already");\
+          setCatchTimer(40);\
+          return;\
+        \}\
+        if (opponentHP > 20) \{\
+          setCatchAnim("toostrong");\
+          setCatchTimer(40);\
+          return;\
+        \}\
+        setCatchAnim("attempting");\
+        setCatchTimer(60);\
+        const chance = 0.9 - (opponentHP - 1) * (0.5 / 19); // 90% at 1HP, 40% at 20HP\
+        setTimeout(() => \{\
+          if (Math.random() < chance) \{\
+            setCatchAnim("success");\
+            setCatchTimer(80);\
+            onCatchMonster(monsterName);\
+            setTimeout(() => \{\
+              if (currentEnemyIndex < enemyWave.length - 1) \{\
+                waveTransitioning.current = true;\
+                const nextIdx = currentEnemyIndex + 1;\
+                const next = enemyWave[nextIdx];\
+                setCurrentEnemyIndex(nextIdx);\
+                setOpponentHP(next.hp);\
+                setOpponentMaxHP(next.hp);\
+                const wp = \{\
+                  x: Math.floor(Math.random() * GRID_SIZE),\
+                  y: Math.floor(Math.random() * GRID_SIZE),\
+                \};\
+                setOpponentPos(wp);\
+                opponentPosRef.current = wp;\
+                setOpponentBullets([]);\
+                setOpponentStunned(0);\
+                setTimeout(() => \{\
+                  waveTransitioning.current = false;\
+                \}, 200);\
+              \} else \{\
+                setGameOver(true);\
+              \}\
+              setCatchAnim(null);\
+            \}, 2000);\
+          \} else \{\
+            setCatchAnim("fail");\
+            setCatchTimer(40);\
+          \}\
+        \}, 1500);\
+        return;\
+      \}\
+\
+      // \uc0\u9472 \u9472  MALIPOLE MOVES \u9472 \u9472 \
+      if (selectedCharacter.name === "Malipole") \{\
+        switch (moveName) \{\
+          case "tongue whip": \{\
+            const wx = playerPos.x + GRID_SIZE - 3;\
+            setTongueWhipActive(\{\
+              x: wx,\
+              y: playerPos.y,\
+              ttl: 2,\
+              effectType: "tonguewhip",\
+            \});\
+            if (opponentPos.x <= wx && opponentPos.y === playerPos.y) \{\
+              setOpponentHP((p) => Math.max(0, p - 15));\
+              setOpponentStunned(20);\
+            \}\
+            break;\
+          \}\
+          case "random hop": \{\
+            // 5 DMG + teleport enemy to random tile\
+            setOpponentHP((p) => Math.max(0, p - 5));\
+            const rx = Math.floor(Math.random() * GRID_SIZE),\
+              ry = Math.floor(Math.random() * GRID_SIZE);\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{\
+                x: opponentPos.x,\
+                y: opponentPos.y,\
+                ttl: 5,\
+                effectType: "teleport",\
+              \},\
+              \{ x: rx, y: ry, ttl: 5, effectType: "teleport" \},\
+            ]);\
+            const hopPos = \{ x: rx, y: ry \};\
+            setOpponentPos(hopPos);\
+            opponentPosRef.current = hopPos;\
+            break;\
+          \}\
+          case "frog chorus": \{\
+            setMalipoleFrenzyActive(true);\
+            setMalipoleFrenzyTimer(50);\
+            const ce: TimedEffect[] = [];\
+            for (let i = 0; i < GRID_SIZE; i++)\
+              ce.push(\{\
+                x: i,\
+                y: Math.floor(Math.random() * GRID_SIZE),\
+                ttl: 10,\
+                effectType: "chorus",\
+              \});\
+            setExplosionEffects((p) => [...p, ...ce]);\
+            break;\
+          \}\
+          case "lily pad trap": \{\
+            const spots = [\
+              \{ x: Math.floor(GRID_SIZE / 2), y: Math.floor(GRID_SIZE / 2) \},\
+              \{ x: 1, y: 1 \},\
+              \{ x: 1, y: GRID_SIZE - 2 \},\
+              \{ x: GRID_SIZE - 2, y: 1 \},\
+              \{ x: GRID_SIZE - 2, y: GRID_SIZE - 2 \},\
+            ];\
+            const sel = spots.sort(() => Math.random() - 0.5).slice(0, 2);\
+            setLilyPadTraps((p) => [\
+              ...p,\
+              ...sel.map((s) => (\{\
+                x: s.x,\
+                y: s.y,\
+                ttl: 100,\
+                effectType: "lilypad" as const,\
+              \})),\
+            ]);\
+            break;\
+          \}\
+          // Mud slap: melee 1 tile ahead, 35 DMG + stun\
+          case "mud slap": \{\
+            const meleeX =\
+              playerPos.x === 0 ? GRID_SIZE - 1 : playerPos.x - 1 + GRID_SIZE;\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{ x: meleeX, y: playerPos.y, ttl: 4, effectType: "explosion" \},\
+            ]);\
+            if (meleeX === opponentPos.x && opponentPos.y === playerPos.y) \{\
+              setOpponentHP((p) => Math.max(0, p - 35));\
+              setOpponentStunned(10);\
+            \}\
+            break;\
+          \}\
+          // Croak blast: sweeping beam like flying sword with delay between tiles\
+          case "croak blast": \{\
+            // Spawn at right edge of opponent grid, moves left 1 tile every 3 ticks\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{\
+                x: GRID_SIZE,\
+                y: playerPos.y,\
+                ttl: GRID_SIZE * 3 + 1,\
+                effectType: "croakbeam",\
+              \},\
+            ]);\
+            break;\
+          \}\
+          // Spawn tadpole: homing, lasts ~7 seconds (70 ticks)\
+          case "spawn tadpole": \{\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{\
+                x: GRID_SIZE,\
+                y: opponentPos.y,\
+                ttl: 70,\
+                effectType: "ratstorm",\
+              \},\
+            ]);\
+            break;\
+          \}\
+        \}\
+        return;\
+      \}\
+\
+      // \uc0\u9472 \u9472  ALL OTHER MOVES \u9472 \u9472 \
+      switch (moveName) \{\
+        case "beam":\
+          setBeams((p) => [\
+            ...p,\
+            \{ x: playerPos.x, y: playerPos.y, direction: "left", ttl: 1 \},\
+          ]);\
+          break;\
+        case "punch": \{\
+          const px =\
+            playerPos.x === 0 ? GRID_SIZE - 1 : playerPos.x - 1 + GRID_SIZE;\
+          setPunch(\{ x: px, y: playerPos.y, ttl: 1 \});\
+          break;\
+        \}\
+        case "slash": \{\
+          const bx =\
+            playerPos.x === 0 ? GRID_SIZE - 1 : playerPos.x - 1 + GRID_SIZE;\
+          setSlash(\
+            [\
+              \{ x: bx, y: playerPos.y - 1, ttl: 1 \},\
+              \{ x: bx, y: playerPos.y, ttl: 1 \},\
+              \{ x: bx, y: playerPos.y + 1, ttl: 1 \},\
+            ].filter((s) => s.y >= 0 && s.y < GRID_SIZE)\
+          );\
+          break;\
+        \}\
+        case "bomb": \{\
+          const bx2 =\
+            playerPos.x <= 1\
+              ? GRID_SIZE - 2 + playerPos.x\
+              : playerPos.x - 2 + GRID_SIZE;\
+          setBombs((p) => [...p, \{ x: bx2, y: playerPos.y \}]);\
+          break;\
+        \}\
+        case "tractor beam":\
+          setTractorBeam(\{\
+            x: playerPos.x + GRID_SIZE - 1,\
+            y: playerPos.y,\
+            direction: "left",\
+            ttl: 1,\
+          \});\
+          break;\
+        case "delay bomb": \{\
+          const dbx =\
+            playerPos.x <= 1\
+              ? GRID_SIZE - 2 + playerPos.x\
+              : playerPos.x - 2 + GRID_SIZE;\
+          setDelayBombs((p) => [\
+            ...p,\
+            \{ x: dbx, y: playerPos.y, timer: DELAY_BOMB_TIMER \},\
+          ]);\
+          break;\
+        \}\
+        case "boomerang":\
+          setBoomerang(\{\
+            x: playerPos.x + GRID_SIZE - 1,\
+            y: playerPos.y,\
+            phase: "forward",\
+            distanceTraveled: 0,\
+          \});\
+          break;\
+        case "lasso":\
+          setLasso(\{ x: playerPos.x + GRID_SIZE - 4, y: playerPos.y, ttl: 1 \});\
+          break;\
+        case "leafstorm": \{\
+          const lse: TimedEffect[] = [];\
+          for (let i = 0; i < GRID_SIZE; i++) \{\
+            lse.push(\{\
+              x: i,\
+              y: playerPos.y,\
+              ttl: 15,\
+              effectType: "leafstorm",\
+            \});\
+            if (opponentPos.x === i && opponentPos.y === playerPos.y) \{\
+              setOpponentHP((p) => Math.max(0, p - 20));\
+              setOpponentStunned(15);\
+            \}\
+          \}\
+          setExplosionEffects((p) => [...p, ...lse]);\
+          break;\
+        \}\
+        case "flying sword":\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: GRID_SIZE,\
+              y: opponentPos.y,\
+              ttl: GRID_SIZE * 2 + 1,\
+              effectType: "flyingsword",\
+              direction: "right",\
+            \},\
+          ]);\
+          break;\
+        case "clawingsword":\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: -1,\
+              y: playerPos.y,\
+              ttl: GRID_SIZE * 2 + 1,\
+              effectType: "clawingsword",\
+              direction: "left",\
+            \},\
+          ]);\
+          break;\
+        case "wall": \{\
+          const wx = playerPos.x + GRID_SIZE - 2;\
+          for (let i = 0; i < GRID_SIZE; i++)\
+            setBlocks((p) => [...p, \{ x: wx, y: i, health: 1 \}]);\
+          break;\
+        \}\
+        case "rat pack": \{\
+          const f1 = playerPos.x + GRID_SIZE - 1,\
+            f2 = playerPos.x + GRID_SIZE - 2;\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{ x: f1, y: playerPos.y, ttl: 3, effectType: "ratpack" \},\
+            \{ x: f2, y: playerPos.y, ttl: 3, effectType: "ratpack" \},\
+          ]);\
+          break;\
+        \}\
+        case "trash toss":\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE - 4,\
+              y: playerPos.y,\
+              ttl: 20,\
+              effectType: "ratstorm",\
+            \},\
+          ]);\
+          break;\
+        case "street swarm": \{\
+          const se: TimedEffect[] = [];\
+          for (let i = 0; i < 4; i++) \{\
+            const ry = Math.max(\
+              0,\
+              Math.min(GRID_SIZE - 1, Math.round(playerPos.y + (i - 1.5)))\
+            );\
+            se.push(\{\
+              x: playerPos.x + GRID_SIZE,\
+              y: ry,\
+              ttl: 50,\
+              effectType: "ratstorm",\
+            \});\
+          \}\
+          setExplosionEffects((p) => [...p, ...se]);\
+          break;\
+        \}\
+        // Quickdraw: fast bullet at 2\'d7 speed, 25 DMG\
+        case "quickdraw": \{\
+          setPlayerBullets((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE - 1,\
+              y: playerPos.y,\
+              direction: "left",\
+              isQuickdraw: true,\
+            \},\
+          ]);\
+          break;\
+        \}\
+        // Dust devil: AOE hits 4 adjacent tiles, 20 DMG\
+        case "dust devil": \{\
+          const adj = [\
+            \{ dx: -1, dy: 0 \},\
+            \{ dx: 1, dy: 0 \},\
+            \{ dx: 0, dy: -1 \},\
+            \{ dx: 0, dy: 1 \},\
+          ];\
+          adj.forEach((a) => \{\
+            const ex = playerPos.x + a.dx + GRID_SIZE,\
+              ey = playerPos.y + a.dy;\
+            if (ey >= 0 && ey < GRID_SIZE && ex >= 0 && ex < GRID_SIZE * 2) \{\
+              setExplosionEffects((p) => [\
+                ...p,\
+                \{ x: ex, y: ey, ttl: 5, effectType: "dustdevil" \},\
+              ]);\
+              if (ex === opponentPos.x && ey === opponentPos.y)\
+                setOpponentHP((p) => Math.max(0, p - 20));\
+            \}\
+          \});\
+          break;\
+        \}\
+        // Ricochet: bullet that bounces back in a straight line if it misses\
+        case "ricochet": \{\
+          setPlayerBullets((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE - 1,\
+              y: playerPos.y,\
+              direction: "left",\
+              isRicochet: true,\
+              hasBounced: false,\
+            \},\
+          ]);\
+          break;\
+        \}\
+        // Thorn shield: activate, blocks next hit and fires thorn bullet dealing 30 DMG\
+        case "thorn shield":\
+          setThornShieldActive(true);\
+          break;\
+        // Vine snare: lay vine trap on random enemy tile, 10 DMG + long stun\
+        case "vine snare": \{\
+          const rx = Math.floor(Math.random() * GRID_SIZE),\
+            ry = Math.floor(Math.random() * GRID_SIZE);\
+          setLilyPadTraps((p) => [\
+            ...p,\
+            \{ x: rx, y: ry, ttl: 150, effectType: "vinesnare" \},\
+          ]);\
+          break;\
+        \}\
+        // Spore cloud: 5 DMG/tick, lingers 4 seconds (40 ticks)\
+        case "spore cloud": \{\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: opponentPos.x,\
+              y: opponentPos.y,\
+              ttl: 40,\
+              effectType: "sporecloud",\
+            \},\
+          ]);\
+          break;\
+        \}\
+        // Plague bite: 20 DMG initial + 5 DMG/s poison DOT for 5 seconds\
+        case "plague bite": \{\
+          if (opponentPos.y === playerPos.y) \{\
+            setOpponentHP((p) => Math.max(0, p - 20));\
+            setPoisonDotTimer(50); // 50 ticks = 5 seconds\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{\
+                x: opponentPos.x,\
+                y: opponentPos.y,\
+                ttl: 4,\
+                effectType: "ratpack",\
+              \},\
+            ]);\
+          \}\
+          break;\
+        \}\
+        // Tunnel: teleport to random tile\
+        case "tunnel": \{\
+          const rx = Math.floor(Math.random() * GRID_SIZE),\
+            ry = Math.floor(Math.random() * GRID_SIZE);\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE,\
+              y: playerPos.y,\
+              ttl: 3,\
+              effectType: "teleport",\
+            \},\
+            \{ x: rx + GRID_SIZE, y: ry, ttl: 3, effectType: "teleport" \},\
+          ]);\
+          setPlayerPos(\{ x: rx, y: ry \});\
+          break;\
+        \}\
+        // Scavenge: restore 3 mana\
+        case "scavenge":\
+          setPlayerMana((p) => Math.min(p + 3, MAX_MANA));\
+          break;\
+        // \uc0\u9472 \u9472  GRUNT MOVES \u9472 \u9472 \
+        case "plasma shot":\
+          setPlayerBullets((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE - 1,\
+              y: playerPos.y,\
+              direction: "left",\
+              isQuickdraw: true,\
+            \},\
+          ]);\
+          break;\
+        case "shield bash": \{\
+          const sbx =\
+            playerPos.x === 0 ? GRID_SIZE - 1 : playerPos.x - 1 + GRID_SIZE;\
+          setPunch(\{ x: sbx, y: playerPos.y, ttl: 1 \});\
+          if (sbx === opponentPos.x && opponentPos.y === playerPos.y)\
+            setOpponentStunned(10);\
+          break;\
+        \}\
+        case "overcharge":\
+          setMalipoleFrenzyActive(true);\
+          setMalipoleFrenzyTimer(30);\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE,\
+              y: playerPos.y,\
+              ttl: 8,\
+              effectType: "chorus",\
+            \},\
+          ]);\
+          break;\
+        case "emp blast": \{\
+          [\
+            \{ dx: -1, dy: 0 \},\
+            \{ dx: 1, dy: 0 \},\
+            \{ dx: 0, dy: -1 \},\
+            \{ dx: 0, dy: 1 \},\
+          ].forEach((a) => \{\
+            const ex = playerPos.x + a.dx + GRID_SIZE,\
+              ey = playerPos.y + a.dy;\
+            if (ey >= 0 && ey < GRID_SIZE && ex >= 0 && ex < GRID_SIZE * 2) \{\
+              setExplosionEffects((p) => [\
+                ...p,\
+                \{ x: ex, y: ey, ttl: 5, effectType: "explosion" \},\
+              ]);\
+              if (ex === opponentPos.x && ey === opponentPos.y) \{\
+                setOpponentHP((p) => Math.max(0, p - 15));\
+                setOpponentStunned(15);\
+              \}\
+            \}\
+          \});\
+          // EMP clears all traps and lingering effects\
+          setLilyPadTraps([]);\
+          setExplosionEffects((p) =>\
+            p.filter((e) => e.effectType === "explosion")\
+          );\
+          break;\
+        \}\
+        case "barrier": \{\
+          const bwx = playerPos.x + GRID_SIZE - 2;\
+          for (let i = 0; i < GRID_SIZE; i++)\
+            setBlocks((p) => [...p, \{ x: bwx, y: i, health: 1 \}]);\
+          break;\
+        \}\
+        case "gravity well":\
+          setTractorBeam(\{\
+            x: playerPos.x + GRID_SIZE - 1,\
+            y: playerPos.y,\
+            direction: "left",\
+            ttl: 1,\
+          \});\
+          break;\
+        case "power surge":\
+          setBeams((p) => [\
+            ...p,\
+            \{ x: playerPos.x, y: playerPos.y, direction: "left", ttl: 1 \},\
+          ]);\
+          break;\
+        // \uc0\u9472 \u9472  SLIME MOVES \u9472 \u9472 \
+        case "slime ball": \{\
+          const sb1 =\
+            playerPos.x === 0 ? GRID_SIZE - 1 : playerPos.x - 1 + GRID_SIZE;\
+          const sb2 =\
+            playerPos.x <= 1\
+              ? GRID_SIZE - 2 + playerPos.x\
+              : playerPos.x - 2 + GRID_SIZE;\
+          [sb1, sb2].forEach((sx) => \{\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{ x: sx, y: playerPos.y, ttl: 5, effectType: "explosion" \},\
+            ]);\
+            if (sx === opponentPos.x && playerPos.y === opponentPos.y)\
+              setOpponentHP((p) => Math.max(0, p - 10));\
+          \});\
+          // Leave poison trap at the farther tile\
+          setLilyPadTraps((p) => [\
+            ...p,\
+            \{ x: sb2, y: playerPos.y, ttl: 100, effectType: "poisontrap" \},\
+          ]);\
+          break;\
+        \}\
+        case "slime trail": \{\
+          const h1 = \{\
+            x: Math.floor(Math.random() * GRID_SIZE) + GRID_SIZE,\
+            y: Math.floor(Math.random() * GRID_SIZE),\
+          \};\
+          const h2 = \{\
+            x: Math.floor(Math.random() * GRID_SIZE) + GRID_SIZE,\
+            y: Math.floor(Math.random() * GRID_SIZE),\
+          \};\
+          setLilyPadTraps((p) => [\
+            ...p,\
+            \{ x: h1.x, y: h1.y, ttl: 120, effectType: "healpuddle" \},\
+            \{ x: h2.x, y: h2.y, ttl: 120, effectType: "healpuddle" \},\
+          ]);\
+          break;\
+        \}\
+        case "dissolve":\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: opponentPos.x,\
+              y: opponentPos.y,\
+              ttl: 40,\
+              effectType: "sporecloud",\
+            \},\
+          ]);\
+          break;\
+        case "bounce": \{\
+          const brx = Math.floor(Math.random() * GRID_SIZE),\
+            bry = Math.floor(Math.random() * GRID_SIZE);\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE,\
+              y: playerPos.y,\
+              ttl: 3,\
+              effectType: "teleport",\
+            \},\
+            \{ x: brx + GRID_SIZE, y: bry, ttl: 3, effectType: "teleport" \},\
+          ]);\
+          setPlayerPos(\{ x: brx, y: bry \});\
+          break;\
+        \}\
+        case "goo trap": \{\
+          const grx = Math.floor(Math.random() * GRID_SIZE),\
+            gry = Math.floor(Math.random() * GRID_SIZE);\
+          // Uses poisontrap: stun + poison on contact\
+          setLilyPadTraps((p) => [\
+            ...p,\
+            \{ x: grx, y: gry, ttl: 150, effectType: "poisontrap" \},\
+          ]);\
+          break;\
+        \}\
+        case "absorb": \{\
+          if (opponentStunned > 0 || poisonDotTimer > 0) \{\
+            setPlayerHP((p) => Math.min(100, p + 20));\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{\
+                x: playerPos.x + GRID_SIZE,\
+                y: playerPos.y,\
+                ttl: 8,\
+                effectType: "chorus",\
+              \},\
+            ]);\
+          \} else \{\
+            // Refund partial mana if enemy not stunned/poisoned\
+            setPlayerMana((p) => Math.min(p + 1, MAX_MANA));\
+            setExplosionEffects((p) => [\
+              ...p,\
+              \{\
+                x: playerPos.x + GRID_SIZE,\
+                y: playerPos.y,\
+                ttl: 3,\
+                effectType: "explosion",\
+              \},\
+            ]);\
+          \}\
+          break;\
+        \}\
+        case "toxic wave": \{\
+          const twe: TimedEffect[] = [];\
+          for (let i = 0; i < GRID_SIZE; i++) \{\
+            twe.push(\{\
+              x: i,\
+              y: playerPos.y,\
+              ttl: 15,\
+              effectType: "leafstorm",\
+            \});\
+            if (opponentPos.x === i && opponentPos.y === playerPos.y) \{\
+              setOpponentHP((p) => Math.max(0, p - 20));\
+              setOpponentStunned(15);\
+            \}\
+          \}\
+          setExplosionEffects((p) => [...p, ...twe]);\
+          break;\
+        \}\
+        // \uc0\u9472 \u9472  BAT MOVES \u9472 \u9472 \
+        case "sonic screech":\
+          setBeams((p) => [\
+            ...p,\
+            \{ x: playerPos.x, y: playerPos.y, direction: "left", ttl: 1 \},\
+          ]);\
+          break;\
+        case "wing slash": \{\
+          const wsx =\
+            playerPos.x === 0 ? GRID_SIZE - 1 : playerPos.x - 1 + GRID_SIZE;\
+          setPunch(\{ x: wsx, y: playerPos.y, ttl: 1 \});\
+          break;\
+        \}\
+        case "sonar jam": \{\
+          setSilenceTimer(40); // 2 seconds at 50ms tick\
+          setManaBoostTimer(40);\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE,\
+              y: playerPos.y,\
+              ttl: 10,\
+              effectType: "chorus",\
+            \},\
+            \{\
+              x: opponentPosRef.current.x,\
+              y: opponentPosRef.current.y,\
+              ttl: 10,\
+              effectType: "dustdevil",\
+            \},\
+          ]);\
+          break;\
+        \}\
+        case "swoop":\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: playerPos.x + GRID_SIZE - 1,\
+              y: playerPos.y,\
+              ttl: GRID_SIZE * 2 + 1,\
+              effectType: "flyingsword",\
+            \},\
+          ]);\
+          break;\
+        case "blood drain": \{\
+          if (opponentPos.y === playerPos.y) \{\
+            setOpponentHP((p) => Math.max(0, p - 10));\
+            setPlayerHP((p) => Math.min(100, p + 10));\
+            // Visual: red sweep across the row + heal glow on player\
+            const bde: TimedEffect[] = [];\
+            for (let i = 0; i < GRID_SIZE; i++)\
+              bde.push(\{ x: i, y: playerPos.y, ttl: 8, effectType: "ratpack" \});\
+            bde.push(\{\
+              x: playerPos.x + GRID_SIZE,\
+              y: playerPos.y,\
+              ttl: 10,\
+              effectType: "chorus",\
+            \});\
+            setExplosionEffects((p) => [...p, ...bde]);\
+          \}\
+          break;\
+        \}\
+        case "shadow dive": \{\
+          setOpponentHP((p) => Math.max(0, p - 5));\
+          const sdx = Math.floor(Math.random() * GRID_SIZE),\
+            sdy = Math.floor(Math.random() * GRID_SIZE);\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: opponentPos.x,\
+              y: opponentPos.y,\
+              ttl: 5,\
+              effectType: "teleport",\
+            \},\
+            \{ x: sdx, y: sdy, ttl: 5, effectType: "teleport" \},\
+          ]);\
+          const sdPos = \{ x: sdx, y: sdy \};\
+          setOpponentPos(sdPos);\
+          opponentPosRef.current = sdPos;\
+          break;\
+        \}\
+        case "night shriek": \{\
+          const nse: TimedEffect[] = [];\
+          for (let i = 0; i < 4; i++) \{\
+            const nry = Math.max(\
+              0,\
+              Math.min(GRID_SIZE - 1, Math.round(playerPos.y + (i - 1.5)))\
+            );\
+            nse.push(\{\
+              x: playerPos.x + GRID_SIZE,\
+              y: nry,\
+              ttl: 50,\
+              effectType: "ratstorm",\
+            \});\
+          \}\
+          setExplosionEffects((p) => [...p, ...nse]);\
+          break;\
+        \}\
+      \}\
+    \},\
+    [\
+      gameOver,\
+      hand,\
+      playerMana,\
+      playerPos,\
+      opponentPos,\
+      selectedCharacter,\
+      opponentHP,\
+      opponentStunned,\
+      poisonDotTimer,\
+      currentEnemy,\
+      caughtMonsterNames,\
+      currentEnemyIndex,\
+      enemyWave,\
+      onCatchMonster,\
+    ]\
+  );\
+\
+  const drawCard = useCallback(() => \{\
+    if (hand.length >= MAX_HAND_SIZE || deck.length === 0) return;\
+    const ci = Math.floor(Math.random() * deck.length);\
+    setHand((p) => [...p, deck[ci]]);\
+    setDeck((p) => p.filter((_, i) => i !== ci));\
+  \}, [hand, deck]);\
+\
+  const moveOpponent = useCallback(() => \{\
+    if (gameOver) return;\
+    const dx = Math.floor(Math.random() * 3) - 1,\
+      dy = Math.floor(Math.random() * 3) - 1;\
+    const nx = Math.max(0, Math.min(GRID_SIZE - 1, opponentPos.x + dx)),\
+      ny = Math.max(0, Math.min(GRID_SIZE - 1, opponentPos.y + dy));\
+    if (!blocks.some((b) => b.x === nx && b.y === ny)) \{\
+      const newPos = \{ x: nx, y: ny \};\
+      setOpponentPos(newPos);\
+      opponentPosRef.current = newPos; // Immediate sync \'97 ensures all damage checks this tick use correct position\
+    \}\
+    if (\
+      Math.random() < (currentEnemy?.shootChance ?? 0.3) &&\
+      opponentBullets.length < MAX_SHOTS &&\
+      silenceTimer <= 0\
+    )\
+      fireBullet(false);\
+  \}, [\
+    gameOver,\
+    opponentBullets.length,\
+    fireBullet,\
+    blocks,\
+    opponentPos,\
+    currentEnemy,\
+    silenceTimer,\
+  ]);\
+\
+  // \uc0\u9472 \u9472  GAME LOOP \u9472 \u9472 \
+  useEffect(() => \{\
+    const gl = setInterval(() => \{\
+      if (gameOver) return;\
+      // Pause game during catch animation\
+      if (catchAnim === "attempting" || catchAnim === "success") \{\
+        if (catchTimer > 0) setCatchTimer((p) => p - 1);\
+        return;\
+      \}\
+      if (catchAnim && catchTimer > 0) \{\
+        setCatchTimer((p) => p - 1);\
+        if (catchTimer <= 1) setCatchAnim(null);\
+        return;\
+      \}\
+      setTickCount((p) => p + 1);\
+      if (\
+        isCharging &&\
+        (selectedCharacter.name === "Rat King" ||\
+          selectedCharacter.name === "Malipole")\
+      )\
+        setChargeTime((p) => p + 1);\
+      if (malipoleFrenzyActive) \{\
+        setMalipoleFrenzyTimer((p) => p - 1);\
+        if (malipoleFrenzyTimer <= 0) setMalipoleFrenzyActive(false);\
+      \}\
+      if (tongueWhipActive) \{\
+        setTongueWhipActive((p) => (p ? \{ ...p, ttl: p.ttl - 1 \} : null));\
+        if (tongueWhipActive.ttl <= 0) setTongueWhipActive(null);\
+      \}\
+      if (silenceTimer > 0) setSilenceTimer((p) => p - 1);\
+      if (manaBoostTimer > 0) setManaBoostTimer((p) => p - 1);\
+\
+      // Plague bite poison DOT: 5 DMG every 10 ticks (1 second) for 5 seconds\
+      if (poisonDotTimer > 0) \{\
+        setPoisonDotTimer((p) => p - 1);\
+        if (poisonDotTimer % 10 === 0) \{\
+          setOpponentHP((p) => Math.max(0, p - 5));\
+          setExplosionEffects((p) => [\
+            ...p,\
+            \{\
+              x: opponentPosRef.current.x,\
+              y: opponentPosRef.current.y,\
+              ttl: 3,\
+              effectType: "poisondot",\
+            \},\
+          ]);\
+        \}\
+      \}\
+\
+      // Move opponent FIRST, then check traps \'97 ensures stepping onto a trap triggers same tick\
+      prevOpponentPosRef.current = \{ ...opponentPosRef.current \};\
+      if (\
+        tickCount % (currentEnemy?.speed ?? OPPONENT_MOVE_INTERVAL) === 0 &&\
+        opponentStunned === 0\
+      )\
+        moveOpponent();\
+      const manaInterval = manaBoostTimer > 0 ? 5 : 10;\
+      if (tickCount % manaInterval === 0) \{\
+        setPlayerMana((p) => Math.min(p + 1, MAX_MANA));\
+        if (hand.length < MAX_HAND_SIZE) drawCard();\
+      \}\
+\
+      // Trap checking: lily pad, vine snare, poison trap (enemy side) + heal puddle (player side)\
+      setLilyPadTraps((p) =>\
+        p\
+          .map((t) => (\{ ...t, ttl: t.ttl - 1 \}))\
+          .filter((t) => \{\
+            // Heal puddles: player-side, check against player position\
+            if (t.effectType === "healpuddle") \{\
+              if (t.x === playerPos.x + GRID_SIZE && t.y === playerPos.y) \{\
+                setPlayerHP((h) => Math.min(100, h + 10));\
+                setExplosionEffects((pe) => [\
+                  ...pe,\
+                  \{ x: t.x, y: t.y, ttl: 6, effectType: "chorus" \},\
+                ]);\
+                return false;\
+              \}\
+              return t.ttl > 0;\
+            \}\
+            // Enemy-side traps: check against opponent position\
+            if (\
+              t.x === opponentPosRef.current.x &&\
+              t.y === opponentPosRef.current.y\
+            ) \{\
+              if (t.effectType === "vinesnare") \{\
+                setOpponentHP((h) => Math.max(0, h - 10));\
+                setOpponentStunned(30);\
+              \} else if (t.effectType === "poisontrap") \{\
+                setOpponentHP((h) => Math.max(0, h - 10));\
+                setOpponentStunned(30);\
+                setPoisonDotTimer(50);\
+              \} else \{\
+                setOpponentHP((h) => Math.max(0, h - 10));\
+                setOpponentStunned(10);\
+              \}\
+              return false;\
+            \}\
+            return t.ttl > 0;\
+          \})\
+      );\
+\
+      // \uc0\u9472 \u9472  EFFECTS UPDATE \u9472 \u9472 \
+      setExplosionEffects((prev) => \{\
+        const updated = prev.map((e) => \{\
+          if (e.effectType === "flyingsword")\
+            return \{ ...e, x: e.x - 1, ttl: e.ttl - 1 \};\
+          if (e.effectType === "clawingsword")\
+            return \{ ...e, x: e.x + 1, ttl: e.ttl - 1 \};\
+          if (e.effectType === "ratpack") return \{ ...e, ttl: e.ttl - 1 \};\
+          if (e.effectType === "ratstorm") \{\
+            if (e.ttl % 5 === 0) \{\
+              const rdx =\
+                Math.random() < 0.7 ? -1 : Math.floor(Math.random() * 3) - 1;\
+              const rdy = Math.floor(Math.random() * 3) - 1;\
+              return \{\
+                ...e,\
+                x: Math.max(0, Math.min(GRID_SIZE * 2 - 1, e.x + rdx)),\
+                y: Math.max(0, Math.min(GRID_SIZE - 1, e.y + rdy)),\
+                ttl: e.ttl - 1,\
+              \};\
+            \}\
+            return \{ ...e, ttl: e.ttl - 1 \};\
+          \}\
+          // Spore cloud: 2 DMG every tick while enemy is inside (guaranteed hit on pass-through)\
+          if (e.effectType === "sporecloud") \{\
+            if (\
+              e.x === opponentPosRef.current.x &&\
+              e.y === opponentPosRef.current.y\
+            )\
+              setOpponentHP((p) => Math.max(0, p - 2));\
+            return \{ ...e, ttl: e.ttl - 1 \};\
+          \}\
+          // Croak beam: moves 1 tile left every 3 ticks, damages once per tile arrival\
+          if (e.effectType === "croakbeam") \{\
+            if (e.ttl % 3 === 0) \{\
+              const moved = \{\
+                ...e,\
+                x: e.x - 1,\
+                ttl: e.ttl - 1,\
+                hasDamaged: false,\
+              \};\
+              return moved;\
+            \}\
+            return \{ ...e, ttl: e.ttl - 1 \};\
+          \}\
+          return \{ ...e, ttl: e.ttl - 1 \};\
+        \});\
+        return updated.filter((e) => \{\
+          if (e.effectType === "flyingsword") \{\
+            if (\
+              e.x === opponentPosRef.current.x &&\
+              e.y === opponentPosRef.current.y\
+            )\
+              setOpponentHP((p) => Math.max(0, p - 15));\
+            return e.ttl > 0 && e.x >= 0;\
+          \}\
+          if (e.effectType === "clawingsword") \{\
+            if (\
+              e.x === opponentPosRef.current.x &&\
+              e.y === opponentPosRef.current.y\
+            )\
+              setOpponentHP((p) => Math.max(0, p - 30));\
+            return e.ttl > 0 && e.x < GRID_SIZE * 2;\
+          \}\
+          if (e.effectType === "ratpack") \{\
+            if (\
+              e.x === opponentPosRef.current.x &&\
+              e.y === opponentPosRef.current.y\
+            )\
+              setOpponentHP((p) => Math.max(0, p - 10));\
+            return e.ttl > 0;\
+          \}\
+          if (e.effectType === "ratstorm") \{\
+            if (\
+              e.x === opponentPosRef.current.x &&\
+              e.y === opponentPosRef.current.y\
+            ) \{\
+              setOpponentHP((p) => Math.max(0, p - 10));\
+              return false;\
+            \}\
+            return (\
+              e.ttl > 0 &&\
+              e.x >= 0 &&\
+              e.x < GRID_SIZE * 2 &&\
+              e.y >= 0 &&\
+              e.y < GRID_SIZE\
+            );\
+          \}\
+          // Croak beam: damage on tile arrival (when hasDamaged is false after a move)\
+          if (e.effectType === "croakbeam") \{\
+            if (\
+              !e.hasDamaged &&\
+              e.x === opponentPosRef.current.x &&\
+              e.y === opponentPosRef.current.y\
+            ) \{\
+              setOpponentHP((p) => Math.max(0, p - 20));\
+              e.hasDamaged = true;\
+            \}\
+            return e.ttl > 0 && e.x >= 0;\
+          \}\
+          return e.ttl > 0;\
+        \});\
+      \});\
+\
+      // \uc0\u9472 \u9472  PLAYER BULLETS (quickdraw 2\'d7 speed, ricochet bounce) \u9472 \u9472 \
+      setPlayerBullets((prev) => \{\
+        const moved = prev.map((b) => \{\
+          if (b.isRat) \{\
+            const rdy = Math.floor(Math.random() * 3) - 1;\
+            return \{\
+              ...b,\
+              x: b.x - 1,\
+              y: Math.max(0, Math.min(GRID_SIZE - 1, b.y + rdy)),\
+            \};\
+          \}\
+          if (b.isQuickdraw) return \{ ...b, x: b.x - 2 \}; // 2\'d7 speed\
+          if (b.isRicochet && b.hasBounced) return \{ ...b, x: b.x + 1 \}; // bouncing back right\
+          return \{ ...b, x: b.x - 1 \};\
+        \});\
+        return moved.filter((b) => \{\
+          const opp = opponentPosRef.current;\
+          const prevOpp = prevOpponentPosRef.current;\
+          // Hit check: current pos, previous opponent pos, or bullet's previous pos vs opponent current\
+          const prevBulletX =\
+            b.isRicochet && b.hasBounced\
+              ? b.x - 1\
+              : b.isQuickdraw\
+              ? b.x + 2\
+              : b.x + 1;\
+          const hitCurrent = b.x === opp.x && b.y === opp.y;\
+          const hitPrevOpp = b.x === prevOpp.x && b.y === prevOpp.y;\
+          const hitPassThrough = prevBulletX === opp.x && b.y === opp.y;\
+          if (hitCurrent || hitPrevOpp || hitPassThrough) \{\
+            let dmg = 10;\
+            if (b.chargePower) \{\
+              dmg = b.chargePower * 10;\
+              setMalipoleBulletHits((p) => \{\
+                const n = p + 1;\
+                if (n >= 3) \{\
+                  setMalipoleFrenzyActive(true);\
+                  setMalipoleFrenzyTimer(50);\
+                  setMalipoleBulletHits(0);\
+                \}\
+                return n;\
+              \});\
+            \} else if (b.isRat) dmg = 20;\
+            else if (b.isQuickdraw) dmg = 25;\
+            else if (b.isRicochet) dmg = 15;\
+            else if (b.isThorn) dmg = 30;\
+            if (malipoleFrenzyActive && selectedCharacter.name === "Malipole")\
+              dmg = Math.min(50, Math.floor(dmg * (Math.random() * 4 + 1)));\
+            setOpponentHP((p) => Math.max(0, p - dmg));\
+            return false;\
+          \}\
+          // Quickdraw could skip over opponent (check intermediate tile for 2\'d7 speed)\
+          if (b.isQuickdraw && b.x + 1 === opp.x && b.y === opp.y) \{\
+            setOpponentHP((p) => Math.max(0, p - 25));\
+            return false;\
+          \}\
+          // Ricochet: bounce at left wall if hasn't bounced yet\
+          if (b.isRicochet && !b.hasBounced && b.x < 0) \{\
+            return false; // remove and spawn bounced version\
+          \}\
+          // Bounced ricochet exits right side\
+          if (b.isRicochet && b.hasBounced && b.x >= GRID_SIZE * 2)\
+            return false;\
+          return b.x >= 0 && b.x < GRID_SIZE * 2;\
+        \});\
+      \});\
+\
+      // Handle ricochet bounce spawn separately (add bounced bullets)\
+      setPlayerBullets((prev) => \{\
+        const bouncedNew: Bullet[] = [];\
+        const remaining = prev.filter((b) => \{\
+          if (b.isRicochet && !b.hasBounced && b.x <= 0) \{\
+            bouncedNew.push(\{\
+              x: 0,\
+              y: b.y,\
+              direction: "right",\
+              isRicochet: true,\
+              hasBounced: true,\
+            \});\
+            return false;\
+          \}\
+          return true;\
+        \});\
+        return [...remaining, ...bouncedNew];\
+      \});\
+\
+      // \uc0\u9472 \u9472  OPPONENT BULLETS (thorn shield retaliation) \u9472 \u9472 \
+      setOpponentBullets((prev) =>\
+        prev\
+          .map((b) => (\{ ...b, x: b.x + 1 \}))\
+          .filter((b) => \{\
+            const hb = blocks.find((bl) => bl.x === b.x && bl.y === b.y);\
+            if (hb) \{\
+              setBlocks((p) =>\
+                p.filter((bl) => bl.x !== hb.x || bl.y !== hb.y)\
+              );\
+              return false;\
+            \}\
+            if (b.x === playerPos.x + GRID_SIZE && b.y === playerPos.y) \{\
+              if (thornShieldActive) \{\
+                setThornShieldActive(false);\
+                // Fire thorn bullet back dealing 30 DMG\
+                setPlayerBullets((p) => [\
+                  ...p,\
+                  \{\
+                    x: playerPos.x + GRID_SIZE - 1,\
+                    y: playerPos.y,\
+                    direction: "left",\
+                    isThorn: true,\
+                  \},\
+                ]);\
+                return false;\
+              \}\
+              setPlayerHP((p) => Math.max(0, p - 10));\
+              return false;\
+            \}\
+            return b.x >= 0 && b.x < GRID_SIZE * 2;\
+          \})\
+      );\
+\
+      setBeams((p) =>\
+        p.map((b) => (\{ ...b, ttl: b.ttl - 1 \})).filter((b) => b.ttl > 0)\
+      );\
+      setSlash((p) =>\
+        p.map((s) => (\{ ...s, ttl: s.ttl - 1 \})).filter((s) => s.ttl > 0)\
+      );\
+\
+      setDelayBombs((prev) => \{\
+        const ub = prev.map((b) => (\{ ...b, timer: b.timer - 1 \}));\
+        const ne: TimedEffect[] = [];\
+        ub.forEach((b) => \{\
+          if (b.timer <= 0) \{\
+            [\
+              \{ x: b.x, y: b.y \},\
+              \{ x: b.x - 1, y: b.y \},\
+              \{ x: b.x + 1, y: b.y \},\
+              \{ x: b.x, y: b.y - 1 \},\
+              \{ x: b.x, y: b.y + 1 \},\
+              \{ x: b.x - 1, y: b.y - 1 \},\
+              \{ x: b.x - 1, y: b.y + 1 \},\
+              \{ x: b.x + 1, y: b.y - 1 \},\
+              \{ x: b.x + 1, y: b.y + 1 \},\
+            ].forEach((t) => \{\
+              ne.push(\{ ...t, ttl: 5, effectType: "explosion" \});\
+              if (\
+                t.x === opponentPosRef.current.x &&\
+                t.y === opponentPosRef.current.y\
+              )\
+                setOpponentHP((p) =>\
+                  Math.max(0, p - (t.x === b.x && t.y === b.y ? 40 : 10))\
+                );\
+            \});\
+          \}\
+        \});\
+        setExplosionEffects((p) => [...p, ...ne]);\
+        return ub.filter((b) => b.timer > 0);\
+      \});\
+\
+      setBoomerang((prev) => \{\
+        if (!prev) return null;\
+        let nx = prev.x,\
+          ny = prev.y,\
+          np = prev.phase,\
+          nd = prev.distanceTraveled;\
+        if (prev.phase === "forward") \{\
+          if (prev.distanceTraveled < 3) \{\
+            nx -= 1;\
+            nd += 1;\
+          \} else if (prev.distanceTraveled === 3) \{\
+            nx -= 1;\
+            ny -= 1;\
+            nd += 1;\
+          \} else np = "backward";\
+        \} else nx += 1;\
+        if (nx === opponentPosRef.current.x && ny === opponentPosRef.current.y)\
+          setOpponentHP((p) => Math.max(0, p - 30));\
+        if (nx === playerPos.x + GRID_SIZE - 1 && ny === playerPos.y) \{\
+          setHand((ph) => \{\
+            const bm = CHARACTERS[0].moves.find((m) => m.name === "boomerang");\
+            return bm ? [bm, ...ph.slice(1)] : ph;\
+          \});\
+          return null;\
+        \}\
+        if (nx < 0 || nx >= GRID_SIZE * 2) return null;\
+        return \{ x: nx, y: ny, phase: np, distanceTraveled: nd \};\
+      \});\
+\
+      if (lasso) \{\
+        if (\
+          lasso.x === opponentPosRef.current.x &&\
+          lasso.y === opponentPosRef.current.y\
+        ) \{\
+          setOpponentHP((p) => Math.max(0, p - 15));\
+          const lassoPos = \{ ...opponentPosRef.current, x: GRID_SIZE - 1 \};\
+          setOpponentPos(lassoPos);\
+          opponentPosRef.current = lassoPos;\
+          setOpponentStunned(15);\
+        \}\
+        setLasso(null);\
+      \}\
+      if (opponentStunned > 0) setOpponentStunned((p) => p - 1);\
+      beams.forEach((b) => \{\
+        if (\
+          b.y === opponentPosRef.current.y &&\
+          opponentPosRef.current.x < GRID_SIZE\
+        )\
+          setOpponentHP((p) => Math.max(0, p - 20));\
+      \});\
+      if (punch) \{\
+        if (\
+          punch.x === opponentPosRef.current.x &&\
+          punch.y === opponentPosRef.current.y\
+        )\
+          setOpponentHP((p) => Math.max(0, p - 40));\
+        setPunch(null);\
+      \}\
+      slash.forEach((s) => \{\
+        if (\
+          s.x === opponentPosRef.current.x &&\
+          s.y === opponentPosRef.current.y\
+        )\
+          setOpponentHP((p) => Math.max(0, p - 30));\
+      \});\
+      bombs.forEach((b) => \{\
+        if (\
+          b.x === opponentPosRef.current.x &&\
+          b.y === opponentPosRef.current.y\
+        ) \{\
+          setOpponentHP((p) => Math.max(0, p - 40));\
+          setBombs((p) => p.filter((bb) => bb !== b));\
+        \}\
+      \});\
+      if (tractorBeam) \{\
+        if (\
+          opponentPosRef.current.y === tractorBeam.y &&\
+          opponentPosRef.current.x < tractorBeam.x &&\
+          opponentPosRef.current.x >= 0\
+        ) \{\
+          setOpponentHP((p) => Math.max(0, p - 10));\
+          const nx2 = Math.min(opponentPosRef.current.x + 2, tractorBeam.x - 1);\
+          if (\
+            !blocks.some(\
+              (bl) => bl.x === nx2 && bl.y === opponentPosRef.current.y\
+            )\
+          ) \{\
+            const tbPos = \{ ...opponentPosRef.current, x: nx2 \};\
+            setOpponentPos(tbPos);\
+            opponentPosRef.current = tbPos;\
+          \}\
+        \}\
+        setTractorBeam(null);\
+      \}\
+      if (playerHP <= 0) setGameOver(true);\
+      if (opponentHP <= 0 && !gameOver && !waveTransitioning.current) \{\
+        if (currentEnemyIndex < enemyWave.length - 1) \{\
+          waveTransitioning.current = true;\
+          const nextIdx = currentEnemyIndex + 1;\
+          const next = enemyWave[nextIdx];\
+          setCurrentEnemyIndex(nextIdx);\
+          setOpponentHP(next.hp);\
+          setOpponentMaxHP(next.hp);\
+          const wavePos = \{\
+            x: Math.floor(Math.random() * GRID_SIZE),\
+            y: Math.floor(Math.random() * GRID_SIZE),\
+          \};\
+          setOpponentPos(wavePos);\
+          opponentPosRef.current = wavePos;\
+          setOpponentBullets([]);\
+          setOpponentStunned(0);\
+          setTimeout(() => \{\
+            waveTransitioning.current = false;\
+          \}, 200);\
+        \} else \{\
+          setGameOver(true);\
+        \}\
+      \}\
+    \}, GAME_TICK);\
+    return () => clearInterval(gl);\
+  \});\
+\
+  useEffect(() => \{\
+    if (gameOver && !battleEndRef.current) \{\
+      battleEndRef.current = true;\
+      const hp = playerHPRef.current;\
+      setTimeout(\
+        () => onBattleEnd(hp <= 0 ? "lose" : "win", hp <= 0 ? 100 : hp),\
+        2000\
+      );\
+    \}\
+  \}, [gameOver, onBattleEnd]);\
+\
+  useEffect(() => \{\
+    const kd = (e: KeyboardEvent) => \{\
+      if (gameOver) return;\
+      if (\
+        e.key === " " &&\
+        (selectedCharacter.name === "Rat King" ||\
+          selectedCharacter.name === "Malipole") &&\
+        isCharging\
+      )\
+        return;\
+      switch (e.key) \{\
+        case "ArrowUp":\
+          movePlayer(0, -1);\
+          break;\
+        case "ArrowDown":\
+          movePlayer(0, 1);\
+          break;\
+        case "ArrowLeft":\
+          movePlayer(-1, 0);\
+          break;\
+        case "ArrowRight":\
+          movePlayer(1, 0);\
+          break;\
+        case " ":\
+          if (\
+            selectedCharacter.name === "Rat King" ||\
+            selectedCharacter.name === "Malipole"\
+          )\
+            setIsCharging(true);\
+          else fireBullet(true);\
+          break;\
+        case "1":\
+          if (hand[0]) useMove(hand[0].name);\
+          break;\
+        case "2":\
+          if (hand[1]) useMove(hand[1].name);\
+          break;\
+      \}\
+    \};\
+    const ku = (e: KeyboardEvent) => \{\
+      if (gameOver) return;\
+      if (\
+        e.key === " " &&\
+        (selectedCharacter.name === "Rat King" ||\
+          selectedCharacter.name === "Malipole") &&\
+        isCharging\
+      )\
+        fireBullet(true);\
+    \};\
+    window.addEventListener("keydown", kd);\
+    window.addEventListener("keyup", ku);\
+    return () => \{\
+      window.removeEventListener("keydown", kd);\
+      window.removeEventListener("keyup", ku);\
+    \};\
+  \}, [\
+    gameOver,\
+    movePlayer,\
+    fireBullet,\
+    useMove,\
+    hand,\
+    isCharging,\
+    selectedCharacter,\
+  ]);\
+\
+  // \uc0\u9472 \u9472  BATTLE RENDER \u9472 \u9472 \
+  return (\
+    <div\
+      style=\{\{\
+        width: "100vw",\
+        height: "100vh",\
+        background: "#e3decb",\
+        fontFamily: "'Courier New', monospace",\
+        overflow: "hidden",\
+        userSelect: "none",\
+        position: "relative",\
+      \}\}\
+    >\
+      <div\
+        style=\{\{\
+          display: "grid",\
+          gridTemplateColumns: "300px 1fr 350px",\
+          gridTemplateRows: "80px 1fr 280px",\
+          height: "100%",\
+          padding: "2rem",\
+          gap: "1.5rem",\
+        \}\}\
+      >\
+        <header\
+          style=\{\{\
+            gridColumn: "1 / -1",\
+            display: "flex",\
+            justifyContent: "space-between",\
+            alignItems: "flex-start",\
+            borderBottom: "2px solid #080808",\
+            paddingBottom: "1rem",\
+          \}\}\
+        >\
+          <div\
+            style=\{\{\
+              width: 400,\
+              height: 48,\
+              background:\
+                "linear-gradient(90deg, #0d1f22 0%, #3e3221 50%, #2d5a52 100%)",\
+              display: "flex",\
+              alignItems: "center",\
+              padding: "0 1rem",\
+              color: "#dcb",\
+              fontSize: "0.7rem",\
+              letterSpacing: "2px",\
+              boxShadow: "4px 4px 0 rgba(0,0,0,0.2)",\
+            \}\}\
+          >\
+            SANITY THRESHOLD<span style=\{\{ marginLeft: "auto" \}\}>ACTIVE</span>\
+          </div>\
+          <div\
+            style=\{\{\
+              flexGrow: 1,\
+              textAlign: "center",\
+              fontSize: "0.7rem",\
+              opacity: 0.6,\
+              paddingTop: "1rem",\
+            \}\}\
+          >\
+            SECTOR: BATTLEFIELD // PROTOCOL: COMBAT\
+          </div>\
+          <div style=\{\{ textAlign: "right" \}\}>\
+            <h1\
+              style=\{\{\
+                fontFamily: "Impact, sans-serif",\
+                fontSize: "3rem",\
+                lineHeight: "0.8",\
+                margin: 0,\
+                textTransform: "uppercase",\
+                letterSpacing: "-2px",\
+                transform: "scaleY(0.9)",\
+              \}\}\
+            >\
+              COMBAT\
+            </h1>\
+            <span\
+              style=\{\{\
+                display: "block",\
+                fontSize: "0.7rem",\
+                letterSpacing: "4px",\
+                borderTop: "1px solid #080808",\
+                marginTop: 4,\
+                paddingTop: 2,\
+              \}\}\
+            >\
+              ACTIVE\
+            </span>\
+          </div>\
+        </header>\
+        <aside\
+          style=\{\{\
+            gridColumn: 1,\
+            gridRow: 2,\
+            display: "flex",\
+            flexDirection: "column",\
+            gap: "2rem",\
+          \}\}\
+        >\
+          <div style=\{\{ borderLeft: "4px solid #080808", paddingLeft: "1rem" \}\}>\
+            <h3\
+              style=\{\{\
+                fontFamily: "Impact, sans-serif",\
+                fontSize: "1.5rem",\
+                margin: "0 0 0.5rem 0",\
+                textTransform: "uppercase",\
+              \}\}\
+            >\
+              OPERATIVE\
+            </h3>\
+            \{[\
+              ["STATUS", playerHP > 50 ? "OPERATIONAL" : "CRITICAL"],\
+              [\
+                "HP",\
+                "[" +\
+                  "|".repeat(Math.floor(playerHP / 10)) +\
+                  "-".repeat(10 - Math.floor(playerHP / 10)) +\
+                  "]",\
+              ],\
+              [\
+                "MANA",\
+                "[" +\
+                  "|".repeat(Math.floor(playerMana)) +\
+                  "-".repeat(10 - Math.floor(playerMana)) +\
+                  "]",\
+              ],\
+              ["DECK", `$\{deck.length\} REMAINING`],\
+              [\
+                "CLASS",\
+                `$\{selectedCharacter.name.toUpperCase()\} $\{\
+                  selectedCharacter.emoji\
+                \}`,\
+              ],\
+            ].map(([k, v]) => (\
+              <div\
+                key=\{k\}\
+                style=\{\{\
+                  display: "flex",\
+                  justifyContent: "space-between",\
+                  fontSize: "0.8rem",\
+                  marginBottom: "0.4rem",\
+                  borderBottom: "1px dashed #080808",\
+                  paddingBottom: 2,\
+                \}\}\
+              >\
+                <span>\{k\}</span>\
+                <span>\{v\}</span>\
+              </div>\
+            ))\}\
+            \{thornShieldActive && (\
+              <div\
+                style=\{\{\
+                  fontSize: "0.7rem",\
+                  color: "#4d9a2a",\
+                  fontWeight: "bold",\
+                  marginTop: 4,\
+                \}\}\
+              >\
+                \uc0\u55357 \u57057  THORN SHIELD ACTIVE\
+              </div>\
+            )\}\
+            \{poisonDotTimer > 0 && (\
+              <div\
+                style=\{\{\
+                  fontSize: "0.7rem",\
+                  color: "#99ff00",\
+                  fontWeight: "bold",\
+                  marginTop: 4,\
+                \}\}\
+              >\
+                \uc0\u9760  POISON ACTIVE (\{Math.ceil(poisonDotTimer / 10)\}s)\
+              </div>\
+            )\}\
+            \{manaBoostTimer > 0 && (\
+              <div\
+                style=\{\{\
+                  fontSize: "0.7rem",\
+                  color: "#44aaff",\
+                  fontWeight: "bold",\
+                  marginTop: 4,\
+                \}\}\
+              >\
+                \uc0\u9889  MANA BOOST (\{Math.ceil(manaBoostTimer / 20)\}s)\
+              </div>\
+            )\}\
+            \{silenceTimer > 0 && (\
+              <div\
+                style=\{\{\
+                  fontSize: "0.7rem",\
+                  color: "#c4a060",\
+                  fontWeight: "bold",\
+                  marginTop: 4,\
+                \}\}\
+              >\
+                \uc0\u55357 \u56583  ENEMY SILENCED (\{Math.ceil(silenceTimer / 20)\}s)\
+              </div>\
+            )\}\
+          </div>\
+          <div\
+            style=\{\{\
+              borderLeft: "4px solid #080808",\
+              paddingLeft: "1rem",\
+              marginTop: "auto",\
+            \}\}\
+          >\
+            <div\
+              style=\{\{\
+                fontSize: "0.6rem",\
+                marginBottom: "0.5rem",\
+                textDecoration: "underline",\
+              \}\}\
+            >\
+              LOG_OUTPUT:\
+            </div>\
+            <div\
+              style=\{\{ fontSize: "0.6rem", lineHeight: "1.4", opacity: 0.8 \}\}\
+            >\
+              \{gameOver ? (\
+                <>\
+                  &gt; COMBAT ENDED\
+                  <br />\
+                  &gt;\{" "\}\
+                  \{playerHP <= 0\
+                    ? "OPERATIVE DEFEATED"\
+                    : `$\{enemyWave.length\} HOSTILES NEUTRALIZED`\}\
+                  <br />\
+                  &gt; RETURNING TO OVERWORLD...\
+                </>\
+              ) : (\
+                <>\
+                  &gt; ARROWS: MOVE\
+                  <br />\
+                  &gt; SPACE: FIRE/CHARGE\
+                  <br />\
+                  &gt; 1,2: USE ABILITY\
+                  <br />\
+                  &gt; ENEMIES: \{currentEnemyIndex + 1\}/\{enemyWave.length\}\
+                  <br />\
+                  \{isCharging && (\
+                    <>\
+                      &gt; CHARGING...\{Math.floor(chargeTime / 10)\}\
+                      <br />\
+                    </>\
+                  )\}\
+                  \{malipoleFrenzyActive && (\
+                    <>\
+                      &gt; FRENZY ACTIVE!\
+                      <br />\
+                    </>\
+                  )\}\
+                </>\
+              )\}\
+            </div>\
+          </div>\
+        </aside>\
+        <main style=\{\{ gridColumn: 2, gridRow: 2, position: "relative" \}\}>\
+          <div style=\{\{ position: "absolute", inset: 0 \}\}>\
+            <Canvas\
+              shadows\
+              camera=\{\{ position: [8, 12, 12], fov: 50 \}\}\
+              gl=\{\{ antialias: true \}\}\
+            >\
+              <GameScene3D\
+                playerPos=\{playerPos\}\
+                opponentPos=\{opponentPos\}\
+                playerBullets=\{playerBullets\}\
+                opponentBullets=\{opponentBullets\}\
+                blocks=\{blocks\}\
+                beams=\{beams\}\
+                explosionEffects=\{explosionEffects\}\
+                bombs=\{bombs\}\
+                delayBombs=\{delayBombs\}\
+                boomerang=\{boomerang\}\
+                tractorBeam=\{tractorBeam\}\
+                selectedCharacter=\{selectedCharacter\}\
+                opponentStunned=\{opponentStunned\}\
+                isCharging=\{isCharging\}\
+                malipoleFrenzyActive=\{malipoleFrenzyActive\}\
+                lilyPadTraps=\{lilyPadTraps\}\
+                tongueWhipActive=\{tongueWhipActive\}\
+                slash=\{slash\}\
+                punch=\{punch\}\
+                lasso=\{lasso\}\
+                enemyEmoji=\{currentEnemy?.emoji ?? "\uc0\u55357 \u56446 "\}\
+              />\
+              <OrbitControls\
+                enablePan=\{false\}\
+                enableZoom=\{true\}\
+                minDistance=\{8\}\
+                maxDistance=\{20\}\
+                maxPolarAngle=\{Math.PI / 2.5\}\
+              />\
+            </Canvas>\
+          </div>\
+        </main>\
+        <aside\
+          style=\{\{\
+            gridColumn: 3,\
+            gridRow: 2,\
+            border: "2px solid #080808",\
+            padding: "1rem",\
+            background: "#f5f0e1",\
+            boxShadow: "8px 8px 0 rgba(0,0,0,0.1)",\
+            position: "relative",\
+          \}\}\
+        >\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              top: -2,\
+              left: -2,\
+              width: 20,\
+              height: 20,\
+              borderTop: "4px solid #080808",\
+              borderLeft: "4px solid #080808",\
+            \}\}\
+          />\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              bottom: -2,\
+              right: -2,\
+              width: 20,\
+              height: 20,\
+              borderBottom: "4px solid #080808",\
+              borderRight: "4px solid #080808",\
+            \}\}\
+          />\
+          <div\
+            style=\{\{\
+              width: "100%",\
+              height: 120,\
+              border: "2px solid #080808",\
+              marginBottom: "1rem",\
+              display: "flex",\
+              justifyContent: "center",\
+              alignItems: "center",\
+              background: "#ddd",\
+              position: "relative",\
+              overflow: "hidden",\
+            \}\}\
+          >\
+            <div\
+              style=\{\{\
+                position: "absolute",\
+                width: "100%",\
+                height: 2,\
+                background: "#080808",\
+                top: "50%",\
+                animation: "scan 2s linear infinite",\
+                opacity: 0.3,\
+              \}\}\
+            />\
+            <div\
+              style=\{\{\
+                width: 60,\
+                height: 80,\
+                background: "#333",\
+                clipPath:\
+                  "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",\
+              \}\}\
+            />\
+          </div>\
+          <div style=\{\{ fontSize: "0.6rem", letterSpacing: "2px" \}\}>\
+            THREAT LEVEL: \{opponentHP > opponentMaxHP / 2 ? "HIGH" : "CRITICAL"\}\
+          </div>\
+          \{opponentHP > 0 && opponentHP <= 20 && (\
+            <div\
+              style=\{\{\
+                fontSize: "0.7rem",\
+                letterSpacing: "2px",\
+                color: "#6644aa",\
+                fontWeight: "bold",\
+                marginTop: 4,\
+                animation: "blink 1s infinite",\
+              \}\}\
+            >\
+              \uc0\u55358 \u56996  CATCHABLE!\
+            </div>\
+          )\}\
+          <h2\
+            style=\{\{\
+              fontFamily: "Impact, sans-serif",\
+              fontSize: "2rem",\
+              margin: "0.5rem 0",\
+              textTransform: "uppercase",\
+            \}\}\
+          >\
+            \{currentEnemy?.type?.toUpperCase() ?? "ENEMY"\}\{" "\}\
+            \{currentEnemy?.emoji ?? "\uc0\u55357 \u56446 "\}\
+          </h2>\
+          <div\
+            style=\{\{\
+              fontSize: "0.65rem",\
+              marginBottom: "0.5rem",\
+              letterSpacing: "1px",\
+            \}\}\
+          >\
+            WAVE: \{currentEnemyIndex + 1\} / \{enemyWave.length\}\
+          </div>\
+          <div style=\{\{ display: "flex", gap: 4, marginBottom: "0.5rem" \}\}>\
+            \{enemyWave.map((e, i) => (\
+              <div\
+                key=\{i\}\
+                style=\{\{\
+                  width: 24,\
+                  height: 24,\
+                  border: "1px solid #080808",\
+                  background:\
+                    i < currentEnemyIndex\
+                      ? "#4d9a2a"\
+                      : i === currentEnemyIndex\
+                      ? "#ffcc00"\
+                      : "#ddd",\
+                  display: "flex",\
+                  alignItems: "center",\
+                  justifyContent: "center",\
+                  fontSize: "0.7rem",\
+                \}\}\
+              >\
+                \{i < currentEnemyIndex ? "\uc0\u10003 " : e.emoji\}\
+              </div>\
+            ))\}\
+          </div>\
+          <div\
+            style=\{\{\
+              height: 2,\
+              background:\
+                "repeating-linear-gradient(90deg, #080808 0, #080808 10px, transparent 10px, transparent 20px)",\
+              marginBottom: "1rem",\
+            \}\}\
+          />\
+          <div\
+            style=\{\{\
+              display: "grid",\
+              gridTemplateColumns: "1fr 1fr",\
+              gap: 10,\
+              marginTop: "1rem",\
+            \}\}\
+          >\
+            <div\
+              style=\{\{\
+                background: "#eee",\
+                padding: 4,\
+                border: "1px solid #000",\
+              \}\}\
+            >\
+              <div style=\{\{ fontSize: "0.5rem" \}\}>HP</div>\
+              <div style=\{\{ fontSize: "1.2rem", fontWeight: "bold" \}\}>\
+                \{opponentHP\}\
+              </div>\
+            </div>\
+            <div\
+              style=\{\{\
+                background: "#eee",\
+                padding: 4,\
+                border: "1px solid #000",\
+              \}\}\
+            >\
+              <div style=\{\{ fontSize: "0.5rem" \}\}>AMMO</div>\
+              <div style=\{\{ fontSize: "1.2rem", fontWeight: "bold" \}\}>\
+                \{MAX_SHOTS - opponentBullets.length\}\
+              </div>\
+            </div>\
+          </div>\
+        </aside>\
+        <footer\
+          style=\{\{\
+            gridColumn: "1 / -1",\
+            gridRow: 3,\
+            display: "flex",\
+            alignItems: "stretch",\
+            gap: "1rem",\
+            position: "relative",\
+          \}\}\
+        >\
+          <div style=\{\{ display: "flex", gap: "1rem", flexGrow: 1 \}\}>\
+            \{hand.map((move, index) => \{\
+              const isCatch = move.name === "catch";\
+              const canUse =\
+                playerMana >= move.manaCost && (!isCatch || !catchAnim);\
+              return (\
+                <div\
+                  key=\{index\}\
+                  onClick=\{() => useMove(move.name)\}\
+                  style=\{\{\
+                    width: 220,\
+                    background: isCatch ? "#e8e0f0" : "white",\
+                    border: `2px solid $\{isCatch ? "#6644aa" : "#080808"\}`,\
+                    boxShadow: `6px 6px 0 $\{\
+                      isCatch ? "rgba(102,68,170,0.3)" : "rgba(0,0,0,0.2)"\
+                    \}`,\
+                    cursor: canUse ? "pointer" : "not-allowed",\
+                    opacity: canUse ? 1 : 0.5,\
+                    transition: "all 0.1s",\
+                    padding: "0.75rem",\
+                    display: "flex",\
+                    flexDirection: "column",\
+                  \}\}\
+                  onMouseEnter=\{(e) => \{\
+                    if (canUse) \{\
+                      e.currentTarget.style.transform = "translateY(-8px)";\
+                    \}\
+                  \}\}\
+                  onMouseLeave=\{(e) => \{\
+                    e.currentTarget.style.transform = "translateY(0)";\
+                  \}\}\
+                >\
+                  <div\
+                    style=\{\{\
+                      width: "100%",\
+                      height: 60,\
+                      background: isCatch ? "#3a2266" : "#1a1a1a",\
+                      marginBottom: "0.5rem",\
+                      border: "1px solid #080808",\
+                      display: "flex",\
+                      alignItems: "center",\
+                      justifyContent: "center",\
+                    \}\}\
+                  >\
+                    <span\
+                      style=\{\{\
+                        fontFamily: "Impact, sans-serif",\
+                        fontSize: "2rem",\
+                        color: "#d4d0c8",\
+                      \}\}\
+                    >\
+                      \{isCatch ? "\uc0\u55358 \u56996 " : move.manaCost\}\
+                    </span>\
+                  </div>\
+                  <span\
+                    style=\{\{\
+                      fontSize: "0.55rem",\
+                      letterSpacing: "1px",\
+                      textTransform: "uppercase",\
+                      opacity: 0.7,\
+                      marginBottom: "0.25rem",\
+                      color: isCatch ? "#6644aa" : "inherit",\
+                    \}\}\
+                  >\
+                    \{isCatch ? "CAPTURE" : "ABILITY"\}\
+                  </span>\
+                  <div\
+                    style=\{\{\
+                      fontFamily: "Impact, sans-serif",\
+                      fontSize: "1.2rem",\
+                      textTransform: "uppercase",\
+                      marginBottom: "0.5rem",\
+                      letterSpacing: "1px",\
+                      color: isCatch ? "#6644aa" : "inherit",\
+                    \}\}\
+                  >\
+                    \{move.name\}\
+                  </div>\
+                  <div\
+                    style=\{\{\
+                      fontSize: "0.65rem",\
+                      lineHeight: "1.3",\
+                      marginBottom: "0.5rem",\
+                      flexGrow: 1,\
+                    \}\}\
+                  >\
+                    \{move.description\}\
+                  </div>\
+                  <div\
+                    style=\{\{\
+                      display: "flex",\
+                      justifyContent: "space-between",\
+                      fontSize: "0.6rem",\
+                      borderTop: `1px solid $\{isCatch ? "#6644aa" : "#080808"\}`,\
+                      paddingTop: "0.5rem",\
+                    \}\}\
+                  >\
+                    <span>COST: \{move.manaCost\}</span>\
+                    <span>KEY: \{index + 1\}</span>\
+                  </div>\
+                </div>\
+              );\
+            \})\}\
+            \{Array.from(\{ length: MAX_HAND_SIZE - hand.length \}).map((_, i) => (\
+              <div\
+                key=\{`empty-$\{i\}`\}\
+                style=\{\{\
+                  width: 220,\
+                  background: "rgba(255,255,255,0.3)",\
+                  border: "2px dashed rgba(8,8,8,0.3)",\
+                  display: "flex",\
+                  justifyContent: "center",\
+                  alignItems: "center",\
+                  color: "rgba(8,8,8,0.5)",\
+                  fontSize: "0.7rem",\
+                  fontWeight: "600",\
+                  letterSpacing: "2px",\
+                \}\}\
+              >\
+                [EMPTY SLOT]\
+              </div>\
+            ))\}\
+          </div>\
+          <button\
+            onClick=\{() => drawCard()\}\
+            style=\{\{\
+              fontFamily: "Impact, sans-serif",\
+              fontSize: "1.8rem",\
+              textTransform: "uppercase",\
+              marginLeft: "2rem",\
+              transition: "all 0.1s",\
+              background: "#080808",\
+              color: "#e3decb",\
+              border: "none",\
+              padding: "1rem 2rem",\
+              cursor: "pointer",\
+              boxShadow: "8px 8px 0 rgba(0,0,0,0.2)",\
+              letterSpacing: "2px",\
+            \}\}\
+            onMouseEnter=\{(e) => \{\
+              e.currentTarget.style.background = "#2a2a2a";\
+              e.currentTarget.style.transform =\
+                "translateX(4px) translateY(4px)";\
+              e.currentTarget.style.boxShadow = "none";\
+            \}\}\
+            onMouseLeave=\{(e) => \{\
+              e.currentTarget.style.background = "#080808";\
+              e.currentTarget.style.transform = "translateX(0) translateY(0)";\
+              e.currentTarget.style.boxShadow = "8px 8px 0 rgba(0,0,0,0.2)";\
+            \}\}\
+          >\
+            DRAW\
+            <br />\
+            CARD\
+          </button>\
+        </footer>\
+      </div>\
+      \{catchAnim && (\
+        <div\
+          style=\{\{\
+            position: "fixed",\
+            inset: 0,\
+            background: "rgba(0,0,0,0.75)",\
+            display: "flex",\
+            alignItems: "center",\
+            justifyContent: "center",\
+            zIndex: 90,\
+            fontFamily: "'Courier New', monospace",\
+          \}\}\
+        >\
+          <div\
+            style=\{\{\
+              background: "#e3decb",\
+              padding: "2.5rem 4rem",\
+              border: "4px solid #080808",\
+              textAlign: "center",\
+              boxShadow: "16px 16px 0 rgba(0,0,0,0.3)",\
+            \}\}\
+          >\
+            \{catchAnim === "attempting" && (\
+              <>\
+                <div\
+                  style=\{\{\
+                    fontSize: "4rem",\
+                    marginBottom: "1rem",\
+                    animation: "catchSpin 0.5s linear infinite",\
+                  \}\}\
+                >\
+                  \uc0\u55358 \u56996 \
+                </div>\
+                <h2\
+                  style=\{\{\
+                    fontFamily: "Impact, sans-serif",\
+                    fontSize: "2.5rem",\
+                    textTransform: "uppercase",\
+                    letterSpacing: "-1px",\
+                    margin: 0,\
+                  \}\}\
+                >\
+                  CAPTURING...\
+                </h2>\
+                <p\
+                  style=\{\{\
+                    fontSize: "0.8rem",\
+                    opacity: 0.6,\
+                    marginTop: "0.5rem",\
+                  \}\}\
+                >\
+                  \{currentEnemy?.emoji\} \{currentEnemy?.type?.toUpperCase()\} is\
+                  resisting!\
+                </p>\
+              </>\
+            )\}\
+            \{catchAnim === "success" && (\
+              <>\
+                <div style=\{\{ fontSize: "4rem", marginBottom: "1rem" \}\}>\uc0\u9989 </div>\
+                <h2\
+                  style=\{\{\
+                    fontFamily: "Impact, sans-serif",\
+                    fontSize: "2.5rem",\
+                    textTransform: "uppercase",\
+                    color: "#4d9a2a",\
+                    letterSpacing: "-1px",\
+                    margin: 0,\
+                  \}\}\
+                >\
+                  CAPTURED!\
+                </h2>\
+                <p style=\{\{ fontSize: "0.9rem", marginTop: "0.5rem" \}\}>\
+                  \{currentEnemy?.emoji\} \{currentEnemy?.type?.toUpperCase()\}\{" "\}\
+                  joined your team!\
+                </p>\
+                <p\
+                  style=\{\{\
+                    fontSize: "0.7rem",\
+                    opacity: 0.5,\
+                    marginTop: "0.3rem",\
+                  \}\}\
+                >\
+                  Check loadout to customize their deck.\
+                </p>\
+              </>\
+            )\}\
+            \{catchAnim === "fail" && (\
+              <>\
+                <div style=\{\{ fontSize: "4rem", marginBottom: "1rem" \}\}>\uc0\u55357 \u56488 </div>\
+                <h2\
+                  style=\{\{\
+                    fontFamily: "Impact, sans-serif",\
+                    fontSize: "2.5rem",\
+                    textTransform: "uppercase",\
+                    color: "#cc3333",\
+                    letterSpacing: "-1px",\
+                    margin: 0,\
+                  \}\}\
+                >\
+                  BROKE FREE!\
+                </h2>\
+                <p\
+                  style=\{\{\
+                    fontSize: "0.8rem",\
+                    opacity: 0.6,\
+                    marginTop: "0.5rem",\
+                  \}\}\
+                >\
+                  The \{currentEnemy?.type\} escaped the trap.\
+                </p>\
+              </>\
+            )\}\
+            \{catchAnim === "toostrong" && (\
+              <>\
+                <div style=\{\{ fontSize: "4rem", marginBottom: "1rem" \}\}>\uc0\u10060 </div>\
+                <h2\
+                  style=\{\{\
+                    fontFamily: "Impact, sans-serif",\
+                    fontSize: "2rem",\
+                    textTransform: "uppercase",\
+                    letterSpacing: "-1px",\
+                    margin: 0,\
+                  \}\}\
+                >\
+                  TOO STRONG!\
+                </h2>\
+                <p\
+                  style=\{\{\
+                    fontSize: "0.8rem",\
+                    opacity: 0.6,\
+                    marginTop: "0.5rem",\
+                  \}\}\
+                >\
+                  Weaken enemy below 20 HP first. (\{opponentHP\} HP)\
+                </p>\
+              </>\
+            )\}\
+            \{catchAnim === "already" && (\
+              <>\
+                <div style=\{\{ fontSize: "4rem", marginBottom: "1rem" \}\}>\uc0\u55357 \u56580 </div>\
+                <h2\
+                  style=\{\{\
+                    fontFamily: "Impact, sans-serif",\
+                    fontSize: "2rem",\
+                    textTransform: "uppercase",\
+                    letterSpacing: "-1px",\
+                    margin: 0,\
+                  \}\}\
+                >\
+                  ALREADY CAUGHT!\
+                </h2>\
+                <p\
+                  style=\{\{\
+                    fontSize: "0.8rem",\
+                    opacity: 0.6,\
+                    marginTop: "0.5rem",\
+                  \}\}\
+                >\
+                  You already have this monster on your team.\
+                </p>\
+              </>\
+            )\}\
+          </div>\
+        </div>\
+      )\}\
+      \{gameOver && (\
+        <div\
+          style=\{\{\
+            position: "fixed",\
+            inset: 0,\
+            background: "rgba(0,0,0,0.8)",\
+            display: "flex",\
+            alignItems: "center",\
+            justifyContent: "center",\
+            zIndex: 100,\
+          \}\}\
+        >\
+          <div\
+            style=\{\{\
+              background: "#e3decb",\
+              padding: "3rem",\
+              border: "4px solid #080808",\
+              textAlign: "center",\
+              boxShadow: "16px 16px 0 rgba(0,0,0,0.3)",\
+            \}\}\
+          >\
+            <h1\
+              style=\{\{\
+                fontFamily: "Impact, sans-serif",\
+                fontSize: "4rem",\
+                marginBottom: "1rem",\
+                textTransform: "uppercase",\
+                letterSpacing: "-2px",\
+              \}\}\
+            >\
+              \{playerHP <= 0 ? "MISSION FAILED" : "ALL HOSTILES ELIMINATED"\}\
+            </h1>\
+            <p style=\{\{ fontSize: "0.9rem", opacity: 0.6 \}\}>\
+              \{playerHP <= 0\
+                ? "Returning to overworld..."\
+                : `$\{enemyWave.length\} enem$\{\
+                    enemyWave.length === 1 ? "y" : "ies"\
+                  \} neutralized. Returning to overworld...`\}\
+            </p>\
+          </div>\
+        </div>\
+      )\}\
+      <style>\{`@keyframes scan \{ 0% \{ top: 0%; \} 100% \{ top: 100%; \} \} @keyframes catchSpin \{ 0% \{ transform: rotate(0deg) scale(1); \} 50% \{ transform: rotate(180deg) scale(1.2); \} 100% \{ transform: rotate(360deg) scale(1); \} \} @keyframes blink \{ 0%, 100% \{ opacity: 1; \} 50% \{ opacity: 0.3; \} \}`\}</style>\
+    </div>\
+  );\
+\};\
+\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+// MAIN APP\
+// \uc0\u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \u9552 \
+\
+const App = () => \{\
+  const [appMode, setAppMode] = useState<"title" | "overworld" | "battle">(\
+    "title"\
+  );\
+  const [selectedCharacter, setSelectedCharacter] = useState<Character>(\
+    CHARACTERS[0]\
+  );\
+  const [playerHP, setPlayerHP] = useState(100);\
+  const [owPlayerPos, setOwPlayerPos] = useState(\{ x: 9, y: 6 \});\
+  const [owPlayerDir, setOwPlayerDir] = useState("down");\
+  const [animFrame, setAnimFrame] = useState(0);\
+  const [stepCount, setStepCount] = useState(0);\
+  const [battlesWon, setBattlesWon] = useState(0);\
+  const [encounterFlash, setEncounterFlash] = useState(false);\
+  const [transitionPhase, setTransitionPhase] = useState(0);\
+  const [showLoadout, setShowLoadout] = useState(false);\
+  const [deckConfigs, setDeckConfigs] = useState<Record<string, string[]>>(\
+    () => \{\
+      const cfg: Record<string, string[]> = \{\};\
+      CHARACTERS.forEach((c) => \{\
+        cfg[c.name] = getDefaultDeck(c.name);\
+      \});\
+      return cfg;\
+    \}\
+  );\
+  const [caughtMonsters, setCaughtMonsters] = useState<string[]>([]);\
+  const owRef = useRef<HTMLDivElement>(null);\
+\
+  const allCharacters = useMemo(() => \{\
+    const caught = MONSTER_CHARACTERS.filter((mc) =>\
+      caughtMonsters.includes(mc.name)\
+    );\
+    return [...CHARACTERS, ...caught];\
+  \}, [caughtMonsters]);\
+\
+  useEffect(() => \{\
+    const i = setInterval(() => setAnimFrame((f) => f + 1), 100);\
+    return () => clearInterval(i);\
+  \}, []);\
+  useEffect(() => \{\
+    if (appMode === "overworld" && owRef.current && !showLoadout)\
+      owRef.current.focus();\
+  \}, [appMode, showLoadout]);\
+\
+  const swapCharacter = useCallback((c: Character) => \{\
+    setSelectedCharacter(c);\
+  \}, []);\
+\
+  const handleCatchMonster = useCallback((monsterName: string) => \{\
+    setCaughtMonsters((prev) =>\
+      prev.includes(monsterName) ? prev : [...prev, monsterName]\
+    );\
+    setDeckConfigs((prev) =>\
+      prev[monsterName]\
+        ? prev\
+        : \{ ...prev, [monsterName]: getDefaultDeck(monsterName) \}\
+    );\
+  \}, []);\
+\
+  const isWalkable = useCallback((x: number, y: number) => \{\
+    if (x < 0 || x >= OW_COLS || y < 0 || y >= OW_ROWS) return false;\
+    const t = WORLD_MAP[y][x];\
+    return t !== TL.WATER && t !== TL.TREE && t !== TL.ROCK && t !== TL.HOUSE;\
+  \}, []);\
+\
+  const triggerEncounter = useCallback(() => \{\
+    setEncounterFlash(true);\
+    setTimeout(() => \{\
+      setEncounterFlash(false);\
+      setTransitionPhase(1);\
+      setTimeout(() => \{\
+        setTransitionPhase(2);\
+        setTimeout(() => \{\
+          setTransitionPhase(0);\
+          setAppMode("battle");\
+        \}, 600);\
+      \}, 400);\
+    \}, 500);\
+  \}, []);\
+\
+  const getActiveDeck = useCallback((): Move[] => \{\
+    const names = deckConfigs[selectedCharacter.name] || [];\
+    return names\
+      .map((n) => \{\
+        if (n === "catch") return CATCH_MOVE;\
+        return selectedCharacter.moves.find((m) => m.name === n);\
+      \})\
+      .filter(Boolean) as Move[];\
+  \}, [deckConfigs, selectedCharacter]);\
+\
+  const handleOverworldKey = useCallback(\
+    (e: React.KeyboardEvent) => \{\
+      if (appMode !== "overworld") return;\
+      if (e.key === "p" || e.key === "P") \{\
+        setShowLoadout((s) => !s);\
+        e.preventDefault();\
+        return;\
+      \}\
+      if (showLoadout) return;\
+      let dx = 0,\
+        dy = 0,\
+        dir = owPlayerDir;\
+      switch (e.key) \{\
+        case "ArrowUp":\
+        case "w":\
+          dy = -1;\
+          dir = "up";\
+          break;\
+        case "ArrowDown":\
+        case "s":\
+          dy = 1;\
+          dir = "down";\
+          break;\
+        case "ArrowLeft":\
+        case "a":\
+          dx = -1;\
+          dir = "left";\
+          break;\
+        case "ArrowRight":\
+        case "d":\
+          dx = 1;\
+          dir = "right";\
+          break;\
+        default:\
+          return;\
+      \}\
+      e.preventDefault();\
+      const nx = owPlayerPos.x + dx,\
+        ny = owPlayerPos.y + dy;\
+      setOwPlayerDir(dir);\
+      if (isWalkable(nx, ny)) \{\
+        setOwPlayerPos(\{ x: nx, y: ny \});\
+        setStepCount((s) => s + 1);\
+        if (\
+          WORLD_MAP[ny][nx] === TL.TALL_GRASS &&\
+          Math.random() < ENCOUNTER_RATE\
+        )\
+          triggerEncounter();\
+      \}\
+    \},\
+    [\
+      appMode,\
+      owPlayerPos,\
+      owPlayerDir,\
+      isWalkable,\
+      triggerEncounter,\
+      showLoadout,\
+    ]\
+  );\
+\
+  const handleBattleEnd = useCallback(\
+    (result: "win" | "lose", remainingHP: number) => \{\
+      if (result === "win") \{\
+        setBattlesWon((w) => w + 1);\
+        setPlayerHP(Math.min(100, remainingHP + 15));\
+      \} else \{\
+        setPlayerHP(100);\
+        setOwPlayerPos(\{ x: 9, y: 6 \});\
+      \}\
+      setAppMode("overworld");\
+    \},\
+    []\
+  );\
+\
+  const toggleDeckMove = (moveName: string) => \{\
+    setDeckConfigs((prev) => \{\
+      const cur = prev[selectedCharacter.name] || [];\
+      if (cur.includes(moveName))\
+        return \{\
+          ...prev,\
+          [selectedCharacter.name]: cur.filter((n) => n !== moveName),\
+        \};\
+      if (cur.length >= MAX_DECK_SIZE) return prev;\
+      return \{ ...prev, [selectedCharacter.name]: [...cur, moveName] \};\
+    \});\
+  \};\
+\
+  const viewW = 960,\
+    viewH = 560;\
+  const cameraX = useMemo(\
+    () =>\
+      Math.min(\
+        0,\
+        Math.max(\
+          -(OW_COLS * OW_TILE - viewW),\
+          -(owPlayerPos.x * OW_TILE - viewW / 2 + OW_TILE / 2)\
+        )\
+      ),\
+    [owPlayerPos.x]\
+  );\
+  const cameraY = useMemo(\
+    () =>\
+      Math.min(\
+        0,\
+        Math.max(\
+          -(OW_ROWS * OW_TILE - viewH),\
+          -(owPlayerPos.y * OW_TILE - viewH / 2 + OW_TILE / 2)\
+        )\
+      ),\
+    [owPlayerPos.y]\
+  );\
+\
+  // \uc0\u9472 \u9472  TITLE SCREEN \u9472 \u9472 \
+  if (appMode === "title") \{\
+    return (\
+      <div\
+        style=\{\{\
+          background: "#0d1f22",\
+          height: "100vh",\
+          width: "100vw",\
+          display: "flex",\
+          flexDirection: "column",\
+          justifyContent: "center",\
+          alignItems: "center",\
+          fontFamily: "'Courier New', monospace",\
+          userSelect: "none",\
+          color: "#e3decb",\
+          position: "relative",\
+          overflow: "hidden",\
+        \}\}\
+        onClick=\{() => setAppMode("overworld")\}\
+        onKeyDown=\{(e) => \{\
+          if (e.key === "Enter") setAppMode("overworld");\
+        \}\}\
+        tabIndex=\{0\}\
+      >\
+        <div style=\{\{ position: "absolute", inset: 0, opacity: 0.05 \}\}>\
+          \{Array.from(\{ length: 20 \}).map((_, i) => (\
+            <div\
+              key=\{i\}\
+              style=\{\{\
+                position: "absolute",\
+                left: 0,\
+                right: 0,\
+                height: 1,\
+                top: `$\{(i * 5 + animFrame * 0.3) % 100\}%`,\
+                background: "#4d9a2a",\
+              \}\}\
+            />\
+          ))\}\
+        </div>\
+        <div style=\{\{ position: "relative", zIndex: 1, textAlign: "center" \}\}>\
+          <div\
+            style=\{\{\
+              fontSize: "0.7rem",\
+              letterSpacing: "6px",\
+              opacity: 0.4,\
+              marginBottom: "1rem",\
+            \}\}\
+          >\
+            island boyz games\
+          </div>\
+          <h1\
+            style=\{\{\
+              fontFamily: "Impact, sans-serif",\
+              fontSize: "6rem",\
+              fontWeight: "700",\
+              color: "#e3decb",\
+              textTransform: "uppercase",\
+              letterSpacing: "-3px",\
+              lineHeight: 0.9,\
+              margin: "0 0 0.5rem 0",\
+              textShadow: "4px 4px 0 rgba(0,0,0,0.5)",\
+            \}\}\
+          >\
+            reverie of\
+            <br />\
+            monsters\
+          </h1>\
+          <div\
+            style=\{\{\
+              height: 3,\
+              background:\
+                "linear-gradient(90deg, transparent, #4d9a2a, transparent)",\
+              margin: "1rem auto",\
+              width: 300,\
+            \}\}\
+          />\
+          <div\
+            style=\{\{\
+              fontSize: "0.8rem",\
+              letterSpacing: "4px",\
+              opacity: 0.6,\
+              marginBottom: "3rem",\
+            \}\}\
+          >\
+            TACTICAL COMBAT SYSTEM v2.0\
+          </div>\
+          <div\
+            style=\{\{\
+              fontSize: "1.2rem",\
+              letterSpacing: "3px",\
+              animation: "blink 1.5s infinite",\
+              color: "#4d9a2a",\
+            \}\}\
+          >\
+            [ PRESS ENTER OR CLICK TO START ]\
+          </div>\
+          <div\
+            style=\{\{\
+              display: "flex",\
+              gap: "2rem",\
+              justifyContent: "center",\
+              marginTop: "3rem",\
+            \}\}\
+          >\
+            \{CHARACTERS.map((c) => (\
+              <div key=\{c.name\} style=\{\{ textAlign: "center", opacity: 0.5 \}\}>\
+                <div style=\{\{ fontSize: "2rem" \}\}>\{c.emoji\}</div>\
+                <div style=\{\{ fontSize: "0.6rem", letterSpacing: 2 \}\}>\
+                  \{c.name.toUpperCase()\}\
+                </div>\
+              </div>\
+            ))\}\
+          </div>\
+        </div>\
+        <style>\{`@keyframes blink \{ 0%, 100% \{ opacity: 1; \} 50% \{ opacity: 0.3; \} \}`\}</style>\
+      </div>\
+    );\
+  \}\
+\
+  // \uc0\u9472 \u9472  BATTLE \u9472 \u9472 \
+  if (appMode === "battle")\
+    return (\
+      <BattleScreen\
+        selectedCharacter=\{selectedCharacter\}\
+        persistentHP=\{playerHP\}\
+        activeDeck=\{getActiveDeck()\}\
+        onBattleEnd=\{handleBattleEnd\}\
+        onCatchMonster=\{handleCatchMonster\}\
+        caughtMonsterNames=\{caughtMonsters\}\
+      />\
+    );\
+\
+  // \uc0\u9472 \u9472  OVERWORLD \u9472 \u9472 \
+  return (\
+    <div\
+      ref=\{owRef\}\
+      tabIndex=\{0\}\
+      onKeyDown=\{handleOverworldKey\}\
+      style=\{\{\
+        width: "100vw",\
+        height: "100vh",\
+        display: "flex",\
+        flexDirection: "row",\
+        background: "#0d1f22",\
+        fontFamily: "'Courier New', monospace",\
+        color: "#e3decb",\
+        outline: "none",\
+        position: "relative",\
+        overflow: "hidden",\
+        userSelect: "none",\
+      \}\}\
+    >\
+      \{/* SIDEBAR */\}\
+      <div\
+        style=\{\{\
+          width: 72,\
+          background: "#0a1510",\
+          borderRight: "2px solid #2a4a1a",\
+          display: "flex",\
+          flexDirection: "column",\
+          alignItems: "center",\
+          paddingTop: 12,\
+          gap: 6,\
+          flexShrink: 0,\
+          zIndex: 20,\
+        \}\}\
+      >\
+        <div\
+          style=\{\{\
+            fontSize: "0.5rem",\
+            letterSpacing: 1,\
+            opacity: 0.4,\
+            marginBottom: 4,\
+            textAlign: "center",\
+          \}\}\
+        >\
+          SWAP\
+        </div>\
+        \{allCharacters.map((c) => \{\
+          const isA = c.name === selectedCharacter.name;\
+          const isCaught = caughtMonsters.includes(c.name);\
+          return (\
+            <div\
+              key=\{c.name\}\
+              onClick=\{() => swapCharacter(c)\}\
+              title=\{c.name\}\
+              style=\{\{\
+                width: 54,\
+                height: 54,\
+                display: "flex",\
+                flexDirection: "column",\
+                alignItems: "center",\
+                justifyContent: "center",\
+                background: isA ? "#1a3a1a" : "#111a10",\
+                border: `2px solid $\{\
+                  isA ? "#4d9a2a" : isCaught ? "#4466aa" : "#2a3a1a"\
+                \}`,\
+                cursor: "pointer",\
+                transition: "all 0.15s",\
+                borderRadius: 4,\
+              \}\}\
+            >\
+              <div style=\{\{ fontSize: 22 \}\}>\{c.emoji\}</div>\
+              <div\
+                style=\{\{\
+                  fontSize: "0.45rem",\
+                  letterSpacing: 1,\
+                  opacity: isA ? 1 : 0.5,\
+                  color: isA ? "#4d9a2a" : isCaught ? "#6688cc" : "#e3decb",\
+                  marginTop: 2,\
+                \}\}\
+              >\
+                \{c.name.slice(0, 4).toUpperCase()\}\
+              </div>\
+              \{isCaught && (\
+                <div\
+                  style=\{\{\
+                    fontSize: "0.3rem",\
+                    color: "#6688cc",\
+                    marginTop: -1,\
+                  \}\}\
+                >\
+                  CAUGHT\
+                </div>\
+              )\}\
+            </div>\
+          );\
+        \})\}\
+        <div style=\{\{ marginTop: "auto", marginBottom: 12 \}\}>\
+          <div\
+            onClick=\{() => setShowLoadout(true)\}\
+            style=\{\{\
+              width: 54,\
+              height: 40,\
+              background: "#111a10",\
+              border: "2px solid #2a3a1a",\
+              display: "flex",\
+              alignItems: "center",\
+              justifyContent: "center",\
+              cursor: "pointer",\
+              borderRadius: 4,\
+              fontSize: "0.5rem",\
+              letterSpacing: 1,\
+              opacity: 0.6,\
+            \}\}\
+            title="Loadout (P)"\
+          >\
+            <div style=\{\{ textAlign: "center" \}\}>\
+              \uc0\u9881 <br />\
+              DECK\
+            </div>\
+          </div>\
+        </div>\
+      </div>\
+      \{/* MAIN */\}\
+      <div style=\{\{ flex: 1, display: "flex", flexDirection: "column" \}\}>\
+        <div\
+          style=\{\{\
+            height: 52,\
+            background: "#111a10",\
+            borderBottom: "2px solid #4d9a2a",\
+            display: "flex",\
+            alignItems: "center",\
+            justifyContent: "space-between",\
+            padding: "0 28px",\
+            flexShrink: 0,\
+            zIndex: 10,\
+          \}\}\
+        >\
+          <div style=\{\{ display: "flex", gap: 20, alignItems: "center" \}\}>\
+            <span style=\{\{ fontSize: 22 \}\}>\{selectedCharacter.emoji\}</span>\
+            <span\
+              style=\{\{\
+                fontFamily: "Impact, sans-serif",\
+                fontSize: "1.1rem",\
+                color: "#4d9a2a",\
+                letterSpacing: 3,\
+                textTransform: "uppercase",\
+              \}\}\
+            >\
+              \{selectedCharacter.name\}\
+            </span>\
+            <span style=\{\{ opacity: 0.6, fontSize: "0.8rem" \}\}>\
+              HP:\{" "\}\
+              \{"[" +\
+                "|".repeat(Math.floor(playerHP / 10)) +\
+                "-".repeat(10 - Math.floor(playerHP / 10)) +\
+                "]"\}\{" "\}\
+              \{playerHP\}/100\
+            </span>\
+          </div>\
+          <div style=\{\{ display: "flex", gap: 20, alignItems: "center" \}\}>\
+            <span\
+              style=\{\{ opacity: 0.4, fontSize: "0.7rem", letterSpacing: 2 \}\}\
+            >\
+              DECK: \{(deckConfigs[selectedCharacter.name] || []).length\}/\
+              \{MAX_DECK_SIZE\}\
+            </span>\
+            <span\
+              style=\{\{ opacity: 0.4, fontSize: "0.7rem", letterSpacing: 2 \}\}\
+            >\
+              VICTORIES: \{battlesWon\}\
+            </span>\
+            <span\
+              style=\{\{\
+                opacity: 0.4,\
+                fontSize: "0.7rem",\
+                letterSpacing: 2,\
+                color: caughtMonsters.length > 0 ? "#6688cc" : "inherit",\
+              \}\}\
+            >\
+              CAUGHT: \{caughtMonsters.length\}/3\
+            </span>\
+            <span\
+              style=\{\{ opacity: 0.4, fontSize: "0.7rem", letterSpacing: 2 \}\}\
+            >\
+              STEPS: \{stepCount\}\
+            </span>\
+          </div>\
+        </div>\
+        <div style=\{\{ flex: 1, position: "relative", overflow: "hidden" \}\}>\
+          <div\
+            style=\{\{\
+              position: "absolute",\
+              width: OW_COLS * OW_TILE,\
+              height: OW_ROWS * OW_TILE,\
+              transform: `translate($\{cameraX\}px, $\{cameraY\}px)`,\
+              transition: "transform 0.12s ease-out",\
+              left: "50%",\
+              top: "50%",\
+              marginLeft: -(viewW / 2),\
+              marginTop: -(viewH / 2),\
+            \}\}\
+          >\
+            \{WORLD_MAP.map((row, y) =>\
+              row.map((tile, x) => (\
+                <OverworldTile\
+                  key=\{`$\{x\}-$\{y\}`\}\
+                  type=\{tile\}\
+                  x=\{x\}\
+                  y=\{y\}\
+                  animFrame=\{animFrame\}\
+                />\
+              ))\
+            )\}\
+            <div\
+              style=\{\{\
+                position: "absolute",\
+                left: owPlayerPos.x * OW_TILE,\
+                top: owPlayerPos.y * OW_TILE,\
+                width: OW_TILE,\
+                height: OW_TILE,\
+                display: "flex",\
+                alignItems: "center",\
+                justifyContent: "center",\
+                fontSize: 26,\
+                zIndex: 10,\
+                transition: "left 0.1s ease-out, top 0.1s ease-out",\
+                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))",\
+                transform: `scaleX($\{owPlayerDir === "left" ? -1 : 1\})`,\
+              \}\}\
+            >\
+              \{selectedCharacter.emoji\}\
+              <div\
+                style=\{\{\
+                  position: "absolute",\
+                  bottom: 0,\
+                  left: "50%",\
+                  transform: "translateX(-50%)",\
+                  width: 20,\
+                  height: 5,\
+                  background: "rgba(0,0,0,0.35)",\
+                  borderRadius: "50%",\
+                \}\}\
+              />\
+            </div>\
+          </div>\
+          \{encounterFlash && (\
+            <div\
+              style=\{\{\
+                position: "absolute",\
+                inset: 0,\
+                zIndex: 100,\
+                background: "white",\
+                animation: "encounterFlash 0.5s ease-out",\
+              \}\}\
+            />\
+          )\}\
+          \{transitionPhase > 0 && (\
+            <div\
+              style=\{\{\
+                position: "absolute",\
+                inset: 0,\
+                zIndex: 100,\
+                display: "flex",\
+                flexDirection: "column",\
+                overflow: "hidden",\
+              \}\}\
+            >\
+              \{Array.from(\{ length: 10 \}).map((_, i) => (\
+                <div\
+                  key=\{i\}\
+                  style=\{\{\
+                    flex: 1,\
+                    background: "#0a0a0a",\
+                    transform: `translateX($\{\
+                      transitionPhase >= 2 ? 0 : i % 2 === 0 ? -110 : 110\
+                    \}%)`,\
+                    transition: "transform 0.4s ease-in-out",\
+                    transitionDelay: `$\{i * 0.03\}s`,\
+                  \}\}\
+                />\
+              ))\}\
+            </div>\
+          )\}\
+        </div>\
+        <div\
+          style=\{\{\
+            height: 48,\
+            background: "#111a10",\
+            borderTop: "1px solid #2a4a1a",\
+            display: "flex",\
+            alignItems: "center",\
+            justifyContent: "center",\
+            gap: 28,\
+            flexShrink: 0,\
+            padding: "0 28px",\
+          \}\}\
+        >\
+          <div style=\{\{ display: "flex", alignItems: "center", gap: 8 \}\}>\
+            <div\
+              style=\{\{\
+                width: 18,\
+                height: 18,\
+                background: "#4d9a2a",\
+                border: "1px solid #3a7a1a",\
+                display: "flex",\
+                alignItems: "center",\
+                justifyContent: "center",\
+                fontSize: 9,\
+                color: "#2a5a0a",\
+              \}\}\
+            >\
+              \uc0\u5169 \
+            </div>\
+            <span style=\{\{ fontSize: "0.75rem", opacity: 0.7 \}\}>\
+              TALL GRASS = ENCOUNTERS\
+            </span>\
+          </div>\
+          <span style=\{\{ fontSize: "0.75rem", opacity: 0.3 \}\}>|</span>\
+          <span style=\{\{ fontSize: "0.75rem", opacity: 0.6 \}\}>\
+            WASD / ARROWS: MOVE\
+          </span>\
+          <span style=\{\{ fontSize: "0.75rem", opacity: 0.3 \}\}>|</span>\
+          <span style=\{\{ fontSize: "0.75rem", opacity: 0.6, color: "#4d9a2a" \}\}>\
+            P: LOADOUT\
+          </span>\
+          <span style=\{\{ fontSize: "0.75rem", opacity: 0.3 \}\}>|</span>\
+          <span style=\{\{ fontSize: "0.75rem", opacity: 0.5 \}\}>\
+            SIDEBAR: SWAP CHARACTER\
+          </span>\
+        </div>\
+      </div>\
+      \{showLoadout && (\
+        <LoadoutScreen\
+          character=\{selectedCharacter\}\
+          selectedMoves=\{deckConfigs[selectedCharacter.name] || []\}\
+          onToggleMove=\{toggleDeckMove\}\
+          onClose=\{() => setShowLoadout(false)\}\
+        />\
+      )\}\
+      <style>\{`@keyframes encounterFlash \{ 0% \{ opacity: 0; \} 25% \{ opacity: 1; \} 40% \{ opacity: 0; \} 60% \{ opacity: 1; \} 80% \{ opacity: 0.5; \} 100% \{ opacity: 0; \} \}`\}</style>\
+    </div>\
+  );\
+\};\
+\
+export default App;\
+}

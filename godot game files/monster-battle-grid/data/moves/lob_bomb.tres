@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faado7jr8kmx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "lob_bomb"
+display_name = "Lob Bomb"
+move_type = "dark"
+mana_cost = 4
+cooldown_ms = 1500
+description = "Roll a slow bomb forward. On contact, plus-shape explosion deals 10 DMG to all 5 cells (can self-damage)."
+effect_id = "lob_bomb"
+damage = 10

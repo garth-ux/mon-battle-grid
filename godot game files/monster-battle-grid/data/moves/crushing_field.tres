@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e883sr1k1tyx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "crushing_field"
+display_name = "Crushing Field"
+move_type = "mind"
+mana_cost = 5
+cooldown_ms = 1000
+description = "Claim the column nearest you on the enemy grid for 3s. Push opp off + 20 DMG + stun. The column behind it ticks 5 DMG/s."
+effect_id = "zone_steal"
+damage = 20
+is_movement_card = true

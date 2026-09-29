@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trwherew03"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "phantom_fang"
+display_name = "Phantom Fang"
+description = "SECRET: replaces Shadow Strike — releasing SPACE turns you invisible 2s and hurls a boomerang shadow (8 dmg) that shoves outbound victims to their rear column and drags return-leg victims to their front."
+rarity = 0.2
+effects = {
+"phantom_fang": true
+}

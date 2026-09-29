@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://beup4irpgx7ox"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "tongue_whip"
+display_name = "Tongue Whip"
+move_type = "mind"
+mana_cost = 2
+cooldown_ms = 1000
+description = "15 DMG + 2s stun. Sticky tongue darts 3 tiles ahead — hits first enemy or wall."
+effect_id = "tongue_whip"
+damage = 15
+status_id = "stun"
+status_duration_ms = 2000

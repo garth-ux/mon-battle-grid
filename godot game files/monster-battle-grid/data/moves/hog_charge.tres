@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movehog_charge"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "hog_charge"
+display_name = "Hog Charge"
+move_type = "grass"
+mana_cost = 2
+cooldown_ms = 1100
+description = "Dash forward 1 tile. 25 DMG at landing."
+effect_id = "dash_attack"
+damage = 25
+caster_offset = Vector2i(1, 0)

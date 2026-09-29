@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://cnktjnhqjyvnj"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "iai"
+display_name = "Iai"
+move_type = "water"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Rush forward. On hit: 40 DMG + 30 DMG horizontal slash behind the target. On miss: 20 DMG to self."
+effect_id = "iai"
+damage = 40
+is_movement_card = true

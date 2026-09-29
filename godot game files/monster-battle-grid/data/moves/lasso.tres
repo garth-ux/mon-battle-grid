@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faadbp1snamx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "lasso"
+display_name = "Lasso"
+move_type = "dark"
+mana_cost = 2
+cooldown_ms = 1000
+description = "15 DMG + stun. Catch enemy in 3-cell reach, pull to your front + drag through tiles."
+effect_id = "lasso"
+damage = 15
+status_id = "stun"
+status_duration_ms = 1680

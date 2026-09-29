@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0031"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "loyal_heart"
+display_name = "Loyal Heart"
+description = "Every 5th basic hit heals 5 HP."
+rarity = 0.4
+effects = {
+"combo_heal_every": 5, "combo_heal_amount": 5
+}

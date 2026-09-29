@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0021"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dark_tithe"
+display_name = "Dark Tithe"
+description = "Dark cards heal 5 HP on use."
+rarity = 0.2
+effects = {
+"card_type_heal_dark": 5
+}

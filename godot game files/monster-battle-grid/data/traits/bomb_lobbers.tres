@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0053"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "bomb_lobbers"
+display_name = "Bomb Lobbers"
+description = "Your guards lob bombs: guard shots deal 12 DMG."
+rarity = 0.4
+effects = {
+"guard_bombs": true
+}

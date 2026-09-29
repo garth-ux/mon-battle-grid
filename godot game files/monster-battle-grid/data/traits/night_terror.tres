@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trdroop001"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "night_terror"
+display_name = "Night Terror"
+description = "Your basic attacks that damage a SLEEPING enemy stun them for 0.5s."
+rarity = 0.4
+effects = {
+"sleep_hit_stun_ms": 500
+}

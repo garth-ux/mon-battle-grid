@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faakurvj7mvk"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "stunning_gleam"
+display_name = "Stunning Gleam"
+move_type = "wind"
+mana_cost = 4
+cooldown_ms = 1000
+description = "20 DMG + stun. Cone: 1 tile front + 3 behind it."
+effect_id = "cone_attack"
+damage = 20
+status_id = "stun"
+status_duration_ms = 1120

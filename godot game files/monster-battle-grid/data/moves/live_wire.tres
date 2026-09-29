@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faadjsm0400x"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "live_wire"
+display_name = "Live Wire"
+move_type = "electric"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Sparking wire on a random enemy tile — 10 DMG + 3.4s stun on contact."
+effect_id = "vine_snare"
+tile_lifetime_ms = 16800

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvkindle04"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kindlekit_immolation_point"
+display_name = "Immolation Point"
+move_type = "fire"
+mana_cost = 6
+cooldown_ms = 1000
+description = "Set your OWN tile ablaze (it burns you too). While standing in the fire: damage x1.5 and faster mana."
+effect_id = "immolation_point"

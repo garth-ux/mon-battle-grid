@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvgo0o0001"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gozo_sanctified_ground"
+display_name = "Sanctified Ground"
+move_type = "light"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Bless your centre 2x2: standing inside, take 30% less damage and heal 3/s. Breaks after soaking 45 damage."
+effect_id = "sanctified_ground"

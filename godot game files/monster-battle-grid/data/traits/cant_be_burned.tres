@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0026"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "cant_be_burned"
+display_name = "Can't Be Burned"
+description = "Immune to poison and burn damage."
+rarity = 0.4
+effects = {
+"immune_poison": true,
+"immune_burn": true
+}

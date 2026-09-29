@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveslime_trail"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "slime_trail"
+display_name = "Slime Trail"
+move_type = "mind"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Lay 2 healing puddles at random tiles on your grid. Owner heals 3 HP/s."
+effect_id = "slime_trail"
+tile_lifetime_ms = 13000

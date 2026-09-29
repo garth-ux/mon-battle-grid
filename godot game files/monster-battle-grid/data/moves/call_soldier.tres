@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e883bitwbtyp"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "call_soldier"
+display_name = "Call Soldier"
+move_type = "wind"
+mana_cost = 4
+cooldown_ms = 1500
+description = "Roaming turret 1 tile ahead — moves every 1.5s, fires 5 DMG."
+effect_id = "call_soldier"
+damage = 5

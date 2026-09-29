@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e884jsmfbuwx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "divebomb"
+display_name = "Divebomb"
+move_type = "dark"
+mana_cost = 4
+cooldown_ms = 1500
+description = "Rush across your row. On contact: 60 DMG to target + 30 recoil to self. Slow return — you stay vulnerable on the path back."
+effect_id = "divebomb"
+damage = 60
+is_movement_card = true

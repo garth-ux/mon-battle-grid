@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://hajafe4lpt3b"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "giant_hammer_down"
+display_name = "Hammer Down"
+move_type = "earth"
+mana_cost = 4
+cooldown_ms = 1000
+description = "1.5s wind-up (frozen). 50 DMG hammer slam — the tile ahead + a 3-wide head behind it."
+effect_id = "hammer_down"
+damage = 50
+hammer_faithful = true

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0009"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "rat_flood"
+display_name = "Rat Flood"
+description = "Your rat attacks deal +10 DMG."
+rarity = 0.2
+effects = {
+"rat_dmg_bonus": 10
+}

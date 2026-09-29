@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=13 format=3 uid="uid://b1mondeflmml"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/lemmel.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/gutter_feast.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/tunnel_rats.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/rat_flood.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/rat_pack.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/trash_toss.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/street_swarm.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/plague_bite.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/scavenge.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/medical_mouse.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/poison_swarm.tres" id="12_m7"]
+
+[resource]
+script = ExtResource("1_script")
+id = "lemmel"
+display_name = "Lemmel"
+monster_type = "time"
+max_hp = 80
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "lemmel_basic"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

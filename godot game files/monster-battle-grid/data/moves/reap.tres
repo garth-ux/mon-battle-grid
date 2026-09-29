@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://cnktjwlh8yvnj"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "reap"
+display_name = "Reap"
+move_type = "wind"
+mana_cost = 2
+cooldown_ms = 1000
+description = "15 DMG to 3 cells at depth 2. Pushes hit enemies 1 cell toward you."
+effect_id = "reap"
+damage = 15

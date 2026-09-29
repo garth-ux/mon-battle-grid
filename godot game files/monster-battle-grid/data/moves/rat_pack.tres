@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://cnktjwh17767j"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "rat_pack"
+display_name = "Rat Pack"
+move_type = "dark"
+mana_cost = 1
+cooldown_ms = 1000
+description = "10 DMG each. Two-cell front punch."
+effect_id = "rat_pack"
+damage = 10

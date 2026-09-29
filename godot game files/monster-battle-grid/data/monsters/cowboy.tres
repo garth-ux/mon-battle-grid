@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=15 format=3 uid="uid://b1mondefcwby"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/cowboy.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/deadeye.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/demolitionist.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/horn_catch.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/slash.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/beam.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/punch.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/bomb.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/lasso.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/boomerang.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/quickdraw.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/ricochet.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/dynamite.tres" id="14_m9"]
+
+[resource]
+script = ExtResource("1_script")
+id = "cowboy"
+display_name = "Lunapra"
+monster_type = "dark"
+max_hp = 100
+max_mana = 10
+max_ammo = 1
+reload_ms = 3000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "cowboy_basic"
+basic_attack_kind = "boomerang"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

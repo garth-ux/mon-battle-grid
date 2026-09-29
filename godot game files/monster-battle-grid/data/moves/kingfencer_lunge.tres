@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dldq0r3m5m1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kingfencer_lunge"
+display_name = "Lunge"
+move_type = "light"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Lightning-fast 2x speed thrust — 25 DMG."
+effect_id = "quickdraw"
+damage = 25

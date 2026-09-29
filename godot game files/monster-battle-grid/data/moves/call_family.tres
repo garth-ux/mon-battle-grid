@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e883bitivvmx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "call_family"
+display_name = "Call Family"
+move_type = "wind"
+mana_cost = 5
+cooldown_ms = 2000
+description = "Summon 2 turrets at opponent's back corners (15 HP, 5 DMG, 0.5s rate)."
+effect_id = "call_family"
+damage = 5

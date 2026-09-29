@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e888fu2l7nfx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "hex_tiles"
+display_name = "Hex Tiles"
+move_type = "mind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Drop 2 hex tiles ahead — each rolls one of 8 random curses: vine snare, bomb, poison, frozen, burn, stun, broken, or block."
+effect_id = "hex_tiles"
+damage = 0

@@ -1,0 +1,699 @@
+<html lang="en" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Protocol: OMISSION // RPG Interface</title>
+    <style vid="5">
+        :root {
+            --paper-bg: #e3decb;
+            --ink-black: #080808;
+            --ink-dim: #2a2a2a;
+            --highlight-tape: #1a1a1a;
+            --accent-gradient: linear-gradient(90deg, #0d1f22 0%, #3e3221 50%, #2d5a52 100%);
+            --acid-burn: #a89f81;
+            --font-display: 'Impact', 'Arial Black', 'Helvetica Inserat', sans-serif;
+            --font-mono: 'Courier New', 'Courier', monospace;
+            --grain-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
+        }
+
+        * {
+            box-sizing: border-box;
+            cursor: crosshair; 
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--paper-bg);
+            color: var(--ink-black);
+            font-family: var(--font-mono);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            perspective: 1200px; 
+        }
+
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: var(--grain-url);
+            opacity: 0.15;
+            mix-blend-mode: multiply;
+            z-index: 9999;
+            animation: grainShift 2s steps(4) infinite;
+        }
+
+        .scratches {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(transparent 95%, rgba(0,0,0,0.02) 96%, transparent 98%),
+                radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.1) 100%);
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        @keyframes grainShift {
+            0% { transform: translate(0,0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(5%, 5%); }
+            30% { transform: translate(-5%, 5%); }
+            100% { transform: translate(0,0); }
+        }
+
+        
+        .ui-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            grid-template-rows: 80px 1fr 280px;
+            height: 100%;
+            padding: 2rem;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        
+        .header-strip {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--ink-black);
+            padding-bottom: 1rem;
+            position: relative;
+        }
+
+        .header-strip::after {
+            
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 14px;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='14' viewBox='0 0 40 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 7 L10 2 L20 7 L30 12 L40 7 M10 2 L10 12 M30 2 L30 12' stroke='%23080808' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+        }
+
+        .gradient-meter {
+            width: 400px;
+            height: 48px;
+            background: var(--accent-gradient);
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            color: #dcb;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+        }
+
+        .gradient-meter::before {
+            content: "SANITY THRESHOLD";
+            mix-blend-mode: overlay;
+        }
+
+        .turn-counter {
+            text-align: right;
+        }
+
+        .turn-counter h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            transform: scaleY(0.9);
+        }
+
+        .turn-counter span {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            border-top: 1px solid var(--ink-black);
+            margin-top: 4px;
+            padding-top: 2px;
+        }
+
+        
+        .panel-left {
+            grid-column: 1;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .data-block {
+            border-left: 4px solid var(--ink-black);
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .data-block h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.4rem;
+            border-bottom: 1px dashed var(--ink-black);
+            padding-bottom: 2px;
+        }
+
+        .vertical-text-decoration {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        
+        .game-board-container {
+            grid-column: 2;
+            grid-row: 2;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .iso-plane {
+            width: 500px;
+            height: 500px;
+            transform: rotateX(60deg) rotateZ(-45deg);
+            transform-style: preserve-3d;
+            background-color: rgba(0,0,0,0.03);
+            border: 2px solid var(--ink-black);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            box-shadow: 20px 20px 0 rgba(0,0,0,0.1);
+        }
+
+        .tile {
+            border: 1px solid rgba(0,0,0,0.15);
+            position: relative;
+            transition: all 0.2s;
+            background: var(--paper-bg);
+        }
+
+        .tile:hover {
+            background: #d6d1c2;
+            transform: translateZ(10px);
+            border-color: var(--ink-black);
+        }
+
+        
+        .unit-player {
+            grid-column: 2;
+            grid-row: 2;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: translateZ(20px);
+            transform-style: preserve-3d;
+        }
+        
+        .unit-player::after {
+            
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 120px;
+            background: var(--ink-black);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateZ(45deg) rotateX(-60deg) translateY(-40px);
+            
+            background-image: linear-gradient(45deg, #111 25%, #222 25%, #222 50%, #111 50%, #111 75%, #222 75%, #222 100%);
+            background-size: 4px 4px;
+            border: 1px solid white;
+            box-shadow: 0 0 0 2px var(--ink-black);
+        }
+
+        .unit-shadow {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: rgba(0,0,0,0.2);
+            left: 10%;
+            top: 10%;
+            filter: blur(4px);
+        }
+
+        
+        .unit-enemy {
+            grid-column: 3;
+            grid-row: 3;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: translateZ(20px);
+        }
+
+        .unit-enemy::after {
+            content: "TARGET";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--paper-bg);
+            font-size: 0.6rem;
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            background: #5a2d2d;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateZ(45deg) rotateX(-60deg) translateY(-30px);
+            border: 1px solid var(--ink-black);
+        }
+
+        
+        .panel-right {
+            grid-column: 3;
+            grid-row: 2;
+            border: 1px solid var(--ink-black);
+            padding: 1rem;
+            background: white;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at top right, transparent 0%, transparent 10px, var(--ink-black) 10.5px, var(--ink-black) 11.5px, transparent 12px);
+        }
+
+        .portrait-frame {
+            width: 100%;
+            height: 150px;
+            background: var(--ink-black);
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portrait-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(150%) brightness(80%);
+            mix-blend-mode: luminosity;
+            opacity: 0.8;
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: rgba(255,255,255,0.5);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .enemy-stats h2 {
+            font-family: var(--font-display);
+            margin: 0;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        .caution-tape {
+            background: repeating-linear-gradient(
+                45deg,
+                var(--ink-black),
+                var(--ink-black) 10px,
+                var(--paper-bg) 10px,
+                var(--paper-bg) 20px
+            );
+            height: 12px;
+            width: 100%;
+            margin: 1rem 0;
+            border: 1px solid var(--ink-black);
+        }
+
+        
+        .bottom-zone {
+            grid-column: 1 / -1;
+            grid-row: 3;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-top: 1rem;
+            position: relative;
+        }
+
+        
+        .crop-mark {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-style: solid;
+            border-color: var(--ink-black);
+            pointer-events: none;
+        }
+        .bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+        .br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+        .tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+
+        
+        .hand-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            height: 100%;
+            align-items: flex-end;
+            perspective: 800px;
+        }
+
+        .card {
+            width: 180px;
+            height: 260px;
+            background: #f0ebe0;
+            border: 2px solid var(--ink-black);
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+            box-shadow: -5px 5px 0 rgba(0,0,0,0.15);
+            transform-origin: bottom center;
+        }
+
+        .card:hover {
+            transform: translateY(-40px) scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: -10px 10px 0 rgba(0,0,0,0.25);
+            background: #fffbf0;
+        }
+
+        .card-image {
+            height: 100px;
+            background: #222;
+            margin-bottom: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--ink-black);
+        }
+        
+        
+        .card-image::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L20 20 M20 0 L0 20' stroke='rgba(255,255,255,0.1)' stroke-width='1'/%3E%3C/svg%3E");
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+            letter-spacing: -1px;
+            color: var(--ink-black);
+        }
+
+        .card-type {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            border: 1px solid var(--ink-black);
+            align-self: flex-start;
+            padding: 2px 4px;
+            margin-bottom: 0.5rem;
+            background: var(--ink-black);
+            color: var(--paper-bg);
+        }
+
+        .card-desc {
+            font-size: 0.65rem;
+            line-height: 1.2;
+            opacity: 0.9;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--ink-black);
+            padding-top: 4px;
+            font-size: 0.6rem;
+            font-weight: bold;
+        }
+
+        
+        .card:nth-child(1) { transform: rotate(-5deg) translateY(10px); }
+        .card:nth-child(2) { transform: rotate(-2deg) translateY(0px); }
+        .card:nth-child(3) { transform: rotate(2deg) translateY(0px); }
+        .card:nth-child(4) { transform: rotate(5deg) translateY(10px); }
+
+        
+        .end-turn-btn {
+            width: 200px;
+            height: 80px;
+            background: var(--ink-black);
+            color: var(--paper-bg);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            position: relative;
+            margin-left: 2rem;
+            transition: all 0.1s;
+        }
+
+        .end-turn-btn:hover {
+            background: #2a2a2a;
+            transform: translateX(4px) translateY(4px);
+            box-shadow: none;
+        }
+        
+        
+        .end-turn-btn {
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .end-turn-btn::before {
+            content: "EXECUTE";
+        }
+
+        .end-turn-btn::after {
+            content: "";
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        
+        .floating-glyph {
+            position: absolute;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glyph-1 { top: 15%; left: 25%; font-size: 4rem; opacity: 0.1; }
+        .glyph-2 { bottom: 25%; right: 20%; font-size: 6rem; opacity: 0.05; transform: rotate(15deg); }
+
+        
+        .tooltip-data {
+            position: absolute;
+            background: white;
+            border: 1px solid black;
+            padding: 4px;
+            font-size: 0.6rem;
+            pointer-events: none;
+            display: none;
+        }
+
+    </style>
+</head>
+<body vid="6">
+
+    <div class="noise-overlay" vid="7"></div>
+    <div class="scratches" vid="8"></div>
+
+    <div class="ui-grid" vid="9">
+        
+        <header class="header-strip" vid="10">
+            <div class="gradient-meter" vid="11">
+                <span style="margin-left: auto;" vid="12">468224450002</span>
+            </div>
+            <div style="flex-grow: 1; text-align: center; font-size: 0.7rem; opacity: 0.6; padding-top: 1rem;" vid="13">
+                SECTOR: NULL // PROTOCOL: ACTIVE
+            </div>
+            <div class="turn-counter" vid="14">
+                <h1 vid="15">Turn 04</h1>
+                <span vid="16">PHASE: RESOLUTION</span>
+            </div>
+        </header>
+
+        
+        <aside class="panel-left" vid="17">
+            <div class="vertical-text-decoration" vid="18">
+                <span vid="19">S</span><span vid="20">Y</span><span vid="21">S</span><span vid="22">T</span><span vid="23">E</span><span vid="24">M</span>
+            </div>
+            <div class="data-block" vid="25">
+                <h3 vid="26">OPERATOR</h3>
+                <div class="stat-row" vid="27"><span vid="28">STATUS</span><span vid="29">CRITICAL</span></div>
+                <div class="stat-row" vid="30"><span vid="31">HP</span><span vid="32">[||||||----]</span></div>
+                <div class="stat-row" vid="33"><span vid="34">AP</span><span vid="35">[|||-------]</span></div>
+                <div class="stat-row" vid="36"><span vid="37">DECK</span><span vid="38">14 REMAINING</span></div>
+            </div>
+
+            <div class="data-block" style="margin-top: auto;" vid="39">
+                <div style="font-size: 0.6rem; margin-bottom: 0.5rem; text-decoration: underline;" vid="40">LOG_OUTPUT:</div>
+                <div style="font-size: 0.6rem; line-height: 1.4; opacity: 0.8;" vid="41">
+                    &gt; ENTITY DETECTED<br vid="42">
+                    &gt; SHIELD FAILURE<br vid="43">
+                    &gt; REROLL SEQUENCE INITIATED...<br vid="44">
+                    &gt; ERROR: INT OMISSION
+                </div>
+            </div>
+        </aside>
+
+        
+        <main class="game-board-container" vid="45">
+            <div class="iso-plane" vid="46">
+                
+                <div class="tile" vid="47"></div><div class="tile" vid="48"></div><div class="tile" vid="49"></div><div class="tile" vid="50"></div>
+                <div class="tile" vid="51"></div><div class="tile" vid="52"></div><div class="tile" vid="53"></div><div class="tile" vid="54"></div>
+                <div class="tile" vid="55"></div><div class="tile" vid="56"></div><div class="tile" vid="57"></div><div class="tile" vid="58"></div>
+                <div class="tile" vid="59"></div><div class="tile" vid="60"></div><div class="tile" vid="61"></div><div class="tile" vid="62"></div>
+
+                
+                <div class="unit-player" vid="63">
+                    <div class="unit-shadow" vid="64"></div>
+                </div>
+                <div class="unit-enemy" vid="65">
+                    <div class="unit-shadow" vid="66"></div>
+                </div>
+            </div>
+            
+            <div class="floating-glyph glyph-1" vid="67">(null)</div>
+            <div class="floating-glyph glyph-2" vid="68">&amp;</div>
+        </main>
+
+        
+        <aside class="panel-right" vid="69">
+            <div class="crop-mark tl" vid="70"></div>
+            <div class="crop-mark br" vid="71"></div>
+            
+            <div class="portrait-frame" vid="72">
+                <div class="scan-line" vid="73"></div>
+                
+                <div style="width: 60px; height: 80px; background: #333; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);" vid="74"></div>
+            </div>
+            
+            <div class="enemy-stats" vid="75">
+                <div style="font-size: 0.6rem; letter-spacing: 2px;" vid="76">THREAT LEVEL: HIGH</div>
+                <h2 vid="77">WRAITH</h2>
+                <div class="caution-tape" vid="78"></div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1rem;" vid="79">
+                    <div style="background: #eee; padding: 4px; border: 1px solid #000;" vid="80">
+                        <div style="font-size: 0.5rem;" vid="81">ATK</div>
+                        <div style="font-size: 1.2rem; font-weight: bold;" vid="82">24</div>
+                    </div>
+                    <div style="background: #eee; padding: 4px; border: 1px solid #000;" vid="83">
+                        <div style="font-size: 0.5rem;" vid="84">DEF</div>
+                        <div style="font-size: 1.2rem; font-weight: bold;" vid="85">08</div>
+                    </div>
+                </div>
+                
+                <p style="font-size: 0.65rem; margin-top: 1rem; line-height: 1.4;" vid="86">
+                    NOTE: Subject phases through physical matter. Recommend thermal disruption.
+                </p>
+            </div>
+        </aside>
+
+        
+        <footer class="bottom-zone" vid="87">
+            <div class="crop-mark bl" vid="88"></div>
+            <div class="crop-mark br" vid="89"></div>
+
+            <div class="hand-container" vid="90">
+                
+                <div class="card" vid="91">
+                    <div class="card-image" style="background: #1a1a1a;" vid="92"></div>
+                    <span class="card-type" vid="93">OFFENSE</span>
+                    <div class="card-title" vid="94">SPIKE</div>
+                    <div class="card-desc" vid="95">Deal 12 DMG. Ignore Shields if target is Glitched.</div>
+                    <div class="card-footer" vid="96">
+                        <span vid="97">COST: 2</span>
+                        <span vid="98">ID: A-04</span>
+                    </div>
+                </div>
+
+                
+                <div class="card" vid="99">
+                    <div class="card-image" style="background: #3e3221;" vid="100"></div>
+                    <span class="card-type" vid="101">UTILITY</span>
+                    <div class="card-title" vid="102">PURGE</div>
+                    <div class="card-desc" vid="103">Remove all debuffs. Draw 1 card for each removed.</div>
+                    <div class="card-footer" vid="104">
+                        <span vid="105">COST: 1</span>
+                        <span vid="106">ID: B-11</span>
+                    </div>
+                </div>
+
+                
+                <div class="card" vid="107">
+                    <div class="card-image" style="background: #2d5a52;" vid="108"></div>
+                    <span class="card-type" vid="109">DEFENSE</span>
+                    <div class="card-title" vid="110">STATIC</div>
+                    <div class="card-desc" vid="111">Apply 8 Armor. Next incoming attack reflects 50% DMG.</div>
+                    <div class="card-footer" vid="112">
+                        <span vid="113">COST: 2</span>
+                        <span vid="114">ID: D-09</span>
+                    </div>
+                </div>
+
+                
+                <div class="card" vid="115">
+                    <div class="card-image" style="background: #5a2d2d;" vid="116"></div>
+                    <span class="card-type" vid="117">ULTIMATE</span>
+                    <div class="card-title" vid="118">WIPE</div>
+                    <div class="card-desc" vid="119">CONSUME all Energy. Deal 5x DMG to all units.</div>
+                    <div class="card-footer" vid="120">
+                        <span vid="121">COST: X</span>
+                        <span vid="122">ID: X-99</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="end-turn-btn" vid="123"></button>
+        </footer>
+    </div>
+
+
+</body></html>

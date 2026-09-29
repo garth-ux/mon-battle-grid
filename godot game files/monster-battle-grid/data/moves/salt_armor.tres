@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movesalt_armor"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "salt_armor"
+display_name = "Salt Armor"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1500
+description = "Take 25% less damage for 5s."
+effect_id = "self_buff"
+self_buff_id = "armor"
+buff_mult = 0.75
+buff_duration_ms = 5000

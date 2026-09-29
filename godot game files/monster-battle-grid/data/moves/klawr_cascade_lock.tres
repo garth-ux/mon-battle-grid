@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvklawr005"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "klawr_cascade_lock"
+display_name = "Cascade Lock"
+move_type = "ice"
+mana_cost = 8
+cooldown_ms = 1000
+description = "Flood the enemy's four corner tiles for 5s — anyone entering one is shunted a random cell. Steals movement, not health."
+effect_id = "cascade_lock"

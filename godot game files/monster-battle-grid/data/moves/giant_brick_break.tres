@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://gew8wlih32sm"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "giant_brick_break"
+display_name = "Brick Break"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Smash the nearest block within 2 tiles ahead — any owner — and heal 15 HP. No block: refund 1 mana."
+effect_id = "brick_break"
+self_heal = 15

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca56e4p6xjm1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_fire_and_ice"
+display_name = "Fire and Ice"
+move_type = "fire"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Swap your body + all water/fire cards between water and fire. Lasts until re-cast."
+effect_id = "fire_and_ice"

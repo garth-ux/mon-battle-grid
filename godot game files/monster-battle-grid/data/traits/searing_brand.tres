@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trkrrrn03"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "searing_brand"
+display_name = "Searing Brand"
+description = "SECRET: when your Ram hits, the enemy BURNS for 30s (fire DoT + takes x1.2) — cleared early only if they swap out."
+rarity = 0.2
+effects = {
+"burn_enemy_on_ram": true
+}

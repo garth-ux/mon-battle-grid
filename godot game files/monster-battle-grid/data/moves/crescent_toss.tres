@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movecrescent_"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "crescent_toss"
+display_name = "Crescent Toss"
+move_type = "dark"
+mana_cost = 3
+cooldown_ms = 1500
+description = "25 DMG/hit. Boomerang — hits forward + on return."
+effect_id = "boomerang"
+damage = 25
+range_tiles = 4

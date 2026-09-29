@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=15 format=3 uid="uid://b1mondefmlpl"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/malipole.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/slick_skin.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/guarded_mind.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/chrono_shield.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/tongue_whip.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/mud_slap.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/absorb.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/random_hop.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/hex_tiles.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/spawn_tadpole.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/frog_chorus.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/croak_blast.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/lily_pad_trap.tres" id="14_m9"]
+
+[resource]
+script = ExtResource("1_script")
+id = "malipole"
+display_name = "Malipole"
+monster_type = "mind"
+max_hp = 85
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "malipole_basic"
+basic_attack_kind = "charged_bullet"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

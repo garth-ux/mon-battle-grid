@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=15 format=3 uid="uid://b1mondefdrgn"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/dragone.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/night_veil.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/shadow_step.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/dark_tithe.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/sonic_screech.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/wing_slash.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/sonar_jam.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/swoop.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/blood_drain.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/shadow_dive.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/vampiric_mist.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/divebomb.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/lob_bomb.tres" id="14_m9"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dragone"
+display_name = "Dragone"
+monster_type = "dark"
+max_hp = 45
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "dragone_basic"
+basic_attack_kind = "drain_shot"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

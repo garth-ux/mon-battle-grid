@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trgo0o0002"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "stonebreaker_faith"
+display_name = "Stonebreaker Faith"
+description = "Demolishing a block heals you 10 HP."
+rarity = 0.4
+effects = {
+"heal_on_block_break": 10
+}

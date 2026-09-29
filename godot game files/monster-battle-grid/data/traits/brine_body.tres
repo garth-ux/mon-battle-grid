@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trklawr002"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "brine_body"
+display_name = "Brine Body"
+description = "Poison and poisoned ground HEAL you instead of damaging."
+rarity = 0.4
+effects = {
+"heal_on_poison": true
+}

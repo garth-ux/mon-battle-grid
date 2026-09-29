@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=8 format=3 uid="uid://bfj44b1tcid4"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/baarister.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/moves/drakecho_chronofracture.tres" id="3_m1"]
+[ext_resource type="Resource" path="res://data/moves/drakecho_rewind_fork.tres" id="4_m2"]
+[ext_resource type="Resource" path="res://data/moves/gozo_judgment_slab.tres" id="5_m3"]
+[ext_resource type="Resource" path="res://data/moves/fudo_glare.tres" id="6_m4"]
+[ext_resource type="Resource" path="res://data/moves/meteor_drop.tres" id="7_m5"]
+
+[resource]
+script = ExtResource("1_script")
+id = "baarister"
+display_name = "Baarister"
+monster_type = "time"
+max_hp = 105
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "baarister_basic"
+basic_attack_kind = "bullet"
+deck = [ExtResource("3_m1"), ExtResource("4_m2"), ExtResource("5_m3"), ExtResource("6_m4"), ExtResource("7_m5")]
+trait_pool = []

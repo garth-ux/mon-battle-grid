@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trwherew01"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "lingering_shadow"
+display_name = "Lingering Shadow"
+description = "When swapped out, your shadow prowls the enemy's tiles — touching it stuns them 1s (once per swap-out)."
+rarity = 0.4
+effects = {
+"lingering_shadow": true
+}

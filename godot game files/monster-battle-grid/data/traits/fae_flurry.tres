@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0022"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fae_flurry"
+display_name = "Fae Flurry"
+description = "+1 basic attack ammo."
+rarity = 0.4
+effects = {
+"ammo_bonus": 1
+}

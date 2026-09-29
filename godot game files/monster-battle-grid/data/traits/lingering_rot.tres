@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trdandeox1"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "lingering_rot"
+display_name = "Lingering Rot"
+description = "Status effects you inflict on enemies last 0.5s longer."
+rarity = 0.4
+effects = {
+"status_prolong_ms": 500
+}

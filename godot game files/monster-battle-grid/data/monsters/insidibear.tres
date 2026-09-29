@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=13 format=3 uid="uid://b1moninsidib"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/insidibear.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/shift_change.tres" id="3_t1"]
+[ext_resource type="Resource" path="res://data/traits/short_fuse.tres" id="4_t2"]
+[ext_resource type="Resource" path="res://data/traits/inside_job.tres" id="5_t3"]
+[ext_resource type="Resource" path="res://data/moves/punch.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/slash.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/grunt_cross_counter.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/grunt_bullet_punch.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/blood_drain.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/vampiric_mist.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/lasso.tres" id="12_m7"]
+
+[resource]
+script = ExtResource("1_script")
+id = "insidibear"
+display_name = "Insidibear"
+monster_type = "dark"
+max_hp = 95
+max_mana = 10
+max_ammo = 2
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "insidibear_basic"
+basic_attack_kind = "rage_shot"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7")]
+trait_pool = [ExtResource("3_t1"), ExtResource("4_t2"), ExtResource("5_t3")]

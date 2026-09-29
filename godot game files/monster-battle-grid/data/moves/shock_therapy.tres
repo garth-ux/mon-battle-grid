@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://d202745mgb2ot"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "shock_therapy"
+display_name = "Shock Therapy"
+move_type = "electric"
+mana_cost = 4
+cooldown_ms = 1000
+description = "15 DMG + stun across 4 adjacent cells. Clears all tiles from the field."
+effect_id = "shock_therapy"
+damage = 15
+status_id = "stun"
+status_duration_ms = 1680

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movebounce_000"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "bounce"
+display_name = "Bounce"
+move_type = "mind"
+mana_cost = 1
+cooldown_ms = 900
+description = "Teleport to a random safe tile on your grid."
+effect_id = "teleport"
+damage = 0

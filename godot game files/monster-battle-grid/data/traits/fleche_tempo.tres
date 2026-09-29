@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0046"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fleche_tempo"
+display_name = "Fleche Tempo"
+description = "Basic attack reloads 25% faster."
+rarity = 0.4
+effects = {
+"reload_mult": 0.75
+}

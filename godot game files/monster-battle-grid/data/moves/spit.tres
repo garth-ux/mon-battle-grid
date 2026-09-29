@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movespit_00000"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "spit"
+display_name = "Spit"
+move_type = "mind"
+mana_cost = 2
+cooldown_ms = 900
+description = "30 DMG. Acid spit 1 tile ahead."
+effect_id = "punch"
+damage = 30
+range_tiles = 1

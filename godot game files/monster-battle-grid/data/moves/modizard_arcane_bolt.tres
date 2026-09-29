@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca51nond7ym1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_arcane_bolt"
+display_name = "Arcane Bolt"
+move_type = "water"
+mana_cost = 5
+cooldown_ms = 1000
+description = "Homing bomb hunts the enemy for 5s — detours around blocks. Contact or timeout: 50 DMG + 5 splash."
+effect_id = "arcane_bolt"
+damage = 50

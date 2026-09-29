@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trinsidi02"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "short_fuse"
+display_name = "Short Fuse"
+description = "Start every fight (and every swap-in) RAGING — but rage lasts 10s and you take 1.2x damage while it burns."
+rarity = 0.4
+effects = {
+"rage_at_start": true
+}

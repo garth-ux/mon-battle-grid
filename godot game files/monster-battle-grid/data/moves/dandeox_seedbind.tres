@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdandeox1"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dandeox_seedbind"
+display_name = "Seedbind"
+move_type = "grass"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Plant a dormant seed under the enemy. It arms at 3s: stepping on it ROOTS 2s and heals you 25. Gone at 6s."
+effect_id = "seedbind"

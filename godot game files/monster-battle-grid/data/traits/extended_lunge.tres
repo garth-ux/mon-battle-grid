@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0047"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "extended_lunge"
+display_name = "Extended Lunge"
+description = "Every 2nd basic hit follows up with a 3-wide slash."
+rarity = 0.4
+effects = {
+"wide_slash_every": 2
+}

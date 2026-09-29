@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvgo0o0005"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gozo_consecrate"
+display_name = "Consecrate"
+move_type = "light"
+mana_cost = 7
+cooldown_ms = 999999000
+description = "Once per battle: heal 25, then consume ALL your terrain — blessed tiles, rubble, walls — for 15 holy damage each."
+effect_id = "consecrate"
+self_heal = 25

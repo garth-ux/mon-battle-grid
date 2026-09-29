@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvgo0o0002"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gozo_aegis_pillar"
+display_name = "Aegis Pillar"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Raise a 40 HP pillar 3 tiles ahead. Gain SHATTER on key 3 — detonate it for its remaining HP to all adjacent tiles."
+effect_id = "aegis_pillar"

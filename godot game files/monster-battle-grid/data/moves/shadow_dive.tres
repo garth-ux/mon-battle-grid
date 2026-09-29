@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faakia5g440x"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "shadow_dive"
+display_name = "Shadow Dive"
+move_type = "dark"
+mana_cost = 1
+cooldown_ms = 1000
+description = "10 DMG if same row. Both fighters dash to their front column."
+effect_id = "shadow_dive"
+damage = 10
+is_movement_card = true

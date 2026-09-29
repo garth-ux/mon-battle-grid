@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e881cpwuwyfl"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "absorb_poison"
+display_name = "Absorb Poison"
+move_type = "grass"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Cure self of poison + 3s window: poison tiles heal you instead of hurting."
+effect_id = "absorb_poison"

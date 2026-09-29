@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0018"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "refract"
+display_name = "Refract"
+description = "Fire cards deal 1.5x damage."
+rarity = 0.2
+effects = {
+"card_type_mult_fire": 1.5
+}

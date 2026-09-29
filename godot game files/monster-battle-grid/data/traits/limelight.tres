@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trjester01"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "limelight"
+display_name = "Limelight"
+description = "Halo Beam hits MARK the enemy for 3s — marked enemies take x1.2 damage from everything."
+rarity = 0.4
+effects = {
+"limelight": true
+}

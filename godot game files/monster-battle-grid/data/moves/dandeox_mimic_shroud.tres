@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdandeox4"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dandeox_mimic_shroud"
+display_name = "Mimic Shroud"
+move_type = "dark"
+mana_cost = 5
+cooldown_ms = 1000
+description = "A 1 HP decoy wearing your face appears for 4s, copying your movements. If it's killed, heal 35 and gain 2 mana."
+effect_id = "mimic_shroud"

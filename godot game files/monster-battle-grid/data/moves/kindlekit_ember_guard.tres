@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvkindle03"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kindlekit_ember_guard"
+display_name = "Ember Guard"
+move_type = "fire"
+mana_cost = 2
+cooldown_ms = 1000
+description = "For 5s, every hit you take sets the tile the enemy stands on ablaze (3s burn)."
+effect_id = "ember_guard"

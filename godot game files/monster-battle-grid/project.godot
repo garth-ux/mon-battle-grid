@@ -1,0 +1,38 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="monster-battle-grid"
+run/main_scene="res://intro.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+SceneManager="*res://scripts/scene_manager.gd"
+
+[display]
+
+; Base resolution the game is authored at. stretch/mode "canvas_items" renders
+; everything (3D world + all UI) at this size and scales the final frame to the
+; actual window, so the menu and cards auto-scale when the window is resized.
+; "expand" avoids black bars (a wider/taller window just reveals a little more
+; world). Change viewport_width/height if you want a different reference size.
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/resizable=true
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+textures/default_filters/use_nearest_mipmap_filter=true

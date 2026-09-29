@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trkindle02"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "predator_instinct"
+display_name = "Predator Instinct"
+description = "Deal 1.2x damage to GRASS and MIND monsters."
+rarity = 0.4
+effects = {
+"dmg_mult_vs_grass": 1.2,
+"dmg_mult_vs_mind": 1.2
+}

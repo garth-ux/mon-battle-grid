@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0008"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "tunnel_rats"
+display_name = "Tunnel Rats"
+description = "Demolished blocks release a rat that homes at the enemy."
+rarity = 0.4
+effects = {
+"rat_on_block_break": true
+}

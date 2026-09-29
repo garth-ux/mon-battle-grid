@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movesix_shoot"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "six_shooter"
+display_name = "Six Shooter"
+move_type = "dark"
+mana_cost = 3
+cooldown_ms = 1200
+description = "20 DMG per cell. Piercing barrage 3 tiles ahead."
+effect_id = "pierce_line"
+damage = 20
+range_tiles = 3

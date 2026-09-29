@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trdrake001"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "chrono_leech"
+display_name = "Chrono Leech"
+description = "Time cards heal you for 10% of the damage they deal."
+rarity = 0.4
+effects = {
+"card_type_lifesteal_time": 0.1
+}

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trait0039"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "insulated"
+display_name = "Insulated"
+description = "Immune to poison and stun."
+rarity = 0.2
+effects = {
+"immune_poison": true, "immune_stun": true
+}

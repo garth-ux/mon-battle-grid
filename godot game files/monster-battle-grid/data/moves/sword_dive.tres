@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faakxl0gyric"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "sword_dive"
+display_name = "Sword Dive"
+move_type = "water"
+mana_cost = 4
+cooldown_ms = 1000
+description = "35 DMG. Pierce 4 tiles ahead — passes through walls AND opponents, damaging each."
+effect_id = "sword_dive"
+damage = 35
+range_tiles = 4

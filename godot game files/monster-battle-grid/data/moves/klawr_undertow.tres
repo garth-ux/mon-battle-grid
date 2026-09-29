@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvklawr001"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "klawr_undertow"
+display_name = "Undertow"
+move_type = "water"
+mana_cost = 2
+cooldown_ms = 1000
+description = "First enemy inline takes 20 and is dragged a tile toward you. Blocked drags crunch them into the barrier for +15."
+effect_id = "undertow"
+damage = 20

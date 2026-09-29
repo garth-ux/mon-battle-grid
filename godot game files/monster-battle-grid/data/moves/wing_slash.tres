@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaojkov7jff"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "wing_slash"
+display_name = "Wing Slash"
+move_type = "fighting"
+mana_cost = 1
+cooldown_ms = 1000
+description = "25 DMG. Melee strike 1 tile ahead."
+effect_id = "punch"
+damage = 25
+range_tiles = 1

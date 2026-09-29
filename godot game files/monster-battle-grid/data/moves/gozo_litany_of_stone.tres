@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvgo0o0004"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gozo_litany_of_stone"
+display_name = "Litany of Stone"
+move_type = "earth"
+mana_cost = 5
+cooldown_ms = 1000
+description = "Channel 3s: rooted, incoming hits reduced by 25 (absorbs refund 1 mana), and your row is pulsed for 20 each second."
+effect_id = "litany_of_stone"
+damage = 20

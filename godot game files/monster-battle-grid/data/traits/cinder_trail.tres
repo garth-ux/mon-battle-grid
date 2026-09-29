@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trkrrrn02"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "cinder_trail"
+display_name = "Cinder Trail"
+description = "When your Ram hits, every tile along the charge lane is set ablaze (burn tiles) as you recoil."
+rarity = 0.4
+effects = {
+"burn_trail_on_ram": true
+}

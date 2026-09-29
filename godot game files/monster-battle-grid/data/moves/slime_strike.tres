@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveslime_strike"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "slime_strike"
+display_name = "Slime Strike"
+move_type = "mind"
+mana_cost = 2
+cooldown_ms = 1000
+description = "25 DMG. Wide arc 1 tile ahead."
+effect_id = "slash_arc"
+damage = 25
+range_tiles = 3

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dic6e81y7w5dt"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fudo_crush_earth"
+display_name = "Crush Earth"
+move_type = "earth"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Plus shape 3 tiles ahead: shove the enemy onto its center — still there 0.5s later, they take 50."
+effect_id = "crush_earth"
+damage = 50
+is_movement_card = true

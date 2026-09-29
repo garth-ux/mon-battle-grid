@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movespore_cld"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "spore_cloud"
+display_name = "Spore Cloud"
+move_type = "grass"
+mana_cost = 4
+cooldown_ms = 1000
+description = "2 DMG/tick acid cloud on the front cell for 4.5s."
+effect_id = "place_tile"
+tile_effect_id = "acid_pool"
+tile_lifetime_ms = 4500
+tile_owner_only = false

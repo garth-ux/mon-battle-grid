@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://bet7pkk6kvfx8"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "capacitor"
+display_name = "Capacitor"
+move_type = "electric"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Charge up — 1.5× outgoing damage for 3s."
+effect_id = "self_buff"
+self_buff_id = "overcharge"
+buff_mult = 1.5
+buff_duration_ms = 3000

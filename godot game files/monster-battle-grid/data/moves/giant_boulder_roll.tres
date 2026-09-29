@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://gew2r1puw3sm"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "giant_boulder_roll"
+display_name = "Boulder Roll"
+move_type = "earth"
+mana_cost = 4
+cooldown_ms = 1500
+description = "Slow boulder rolls down your row — 30 DMG on contact. Shot twice (20 DMG) or on hitting a block it explodes: 15 DMG plus-blast that hurts anyone."
+effect_id = "boulder_roll"
+damage = 30

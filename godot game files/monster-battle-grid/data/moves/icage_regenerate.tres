@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b31euunlk3rmm"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "icage_regenerate"
+display_name = "Regenerate"
+move_type = "ice"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Create a heal tile in front — restores your HP while you stand on it (5s)."
+effect_id = "place_tile"
+tile_effect_id = "heal_font"
+tile_lifetime_ms = 5000

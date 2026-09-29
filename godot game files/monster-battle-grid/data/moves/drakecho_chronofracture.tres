@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdrake005"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "drakecho_chronofracture"
+display_name = "Chronofracture"
+move_type = "time"
+mana_cost = 10
+cooldown_ms = 1000
+description = "A bomb with a public 8s countdown on the enemy's tile: 80 centre + 40 around. You drink back half of what it deals."
+effect_id = "chronofracture"
+damage = 80

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movegoo_slick0"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "goo_slick"
+display_name = "Goo Slick"
+move_type = "mind"
+mana_cost = 2
+cooldown_ms = 1300
+description = "Place a goo patch — 1 DMG/s to enemies for 3s."
+effect_id = "place_tile"
+tile_effect_id = "poison_trap"
+tile_lifetime_ms = 3000
+tile_owner_only = false

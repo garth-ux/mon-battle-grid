@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trinsidi03"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "inside_job"
+display_name = "Inside Job"
+description = "When swapped out, Insidibear lurks BEHIND the enemy field, pacing the back edge and pot-shotting them when they linger in their rear tiles."
+rarity = 0.2
+effects = {
+"inside_job": true
+}

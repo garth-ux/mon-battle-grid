@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://j8gro1poqasm"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "grunt_barrier"
+display_name = "Barrier"
+move_type = "fighting"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Brace up: gain 15 Armor (bonus HP that absorbs damage before your HP)."
+effect_id = "gain_armor"
+armor_gain = 15

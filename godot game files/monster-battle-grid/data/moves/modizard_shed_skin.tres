@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca6kdqph6na1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_shed_skin"
+display_name = "Shed Skin"
+move_type = "water"
+mana_cost = 2
+cooldown_ms = 1000
+description = "Molt: stun yourself for 3s, healing 15 HP every second."
+effect_id = "shed_skin"
+self_heal = 15
+status_duration_ms = 3000

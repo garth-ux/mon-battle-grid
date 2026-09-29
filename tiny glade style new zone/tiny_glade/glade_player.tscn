@@ -1,0 +1,84 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://tiny_glade/scripts/glade_player.gd" id="1_player"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_0.png" id="2_i0"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_1.png" id="3_i1"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_2.png" id="4_i2"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_3.png" id="5_i3"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_4.png" id="6_i4"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_5.png" id="7_i5"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/idle_6.png" id="8_i6"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/run_0.png" id="9_r0"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/run_1.png" id="10_r1"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/run_2.png" id="11_r2"]
+[ext_resource type="Texture2D" path="res://tiny_glade/art/player/run_3.png" id="12_r3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_anims"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_i0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_i1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_i2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_i3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_i4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_i5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_i6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_r0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_r1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_r2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_r3")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="capsule"]
+radius = 0.28
+height = 1.1
+
+[node name="GladePlayer" type="CharacterBody3D"]
+floor_max_angle = 0.87
+floor_snap_length = 0.45
+script = ExtResource("1_player")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("capsule")
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64, 0)
+billboard = 2
+shaded = true
+texture_filter = 0
+pixel_size = 0.04
+alpha_cut = 1
+sprite_frames = SubResource("SpriteFrames_anims")
+animation = &"idle"
+autoplay = "idle"

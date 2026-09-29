@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://bet77jlfdm0y2"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "croak_blast"
+display_name = "Croak Blast"
+move_type = "water"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Slow sweeping croak across the enemy's row — 20 DMG per cell, ~300ms cadence."
+effect_id = "croak_blast"
+damage = 20

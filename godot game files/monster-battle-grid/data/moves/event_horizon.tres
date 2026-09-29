@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveevthor000"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "event_horizon"
+display_name = "Event Horizon"
+move_type = "mind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Turn the 4 center tiles of the enemy grid into gravity tiles for 3s — leaving one costs 2 movement commands."
+effect_id = "event_horizon"
+damage = 0
+tile_lifetime_ms = 3000

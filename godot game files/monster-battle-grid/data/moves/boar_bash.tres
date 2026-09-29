@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveboar_bash"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "boar_bash"
+display_name = "Boar Bash"
+move_type = "grass"
+mana_cost = 2
+cooldown_ms = 1100
+description = "15 DMG + shove the front enemy 1 tile back."
+effect_id = "displace"
+damage = 15
+target_displacement = Vector2i(1, 0)

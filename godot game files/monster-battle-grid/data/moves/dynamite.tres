@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movedynamite0"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dynamite"
+display_name = "Dynamite"
+move_type = "dark"
+mana_cost = 4
+cooldown_ms = 1500
+description = "40 DMG center / 10 DMG ring AoE after 1.5s fuse."
+effect_id = "time_bomb"
+damage = 40
+area_radius = 1

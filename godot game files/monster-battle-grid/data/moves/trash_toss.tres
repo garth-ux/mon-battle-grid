@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faalr61lgxfq"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "trash_toss"
+display_name = "Trash Toss"
+move_type = "dark"
+mana_cost = 2
+cooldown_ms = 1000
+description = "10 DMG. Throws debris 3 cells ahead — on a miss, spawns a wandering rat."
+effect_id = "trash_toss"
+damage = 10

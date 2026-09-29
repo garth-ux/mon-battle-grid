@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faakpk1gemxf"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "sonic_screech"
+display_name = "Sonic Screech"
+move_type = "wind"
+mana_cost = 2
+cooldown_ms = 1000
+description = "20 DMG. Sweeping beam across your row."
+effect_id = "beam"
+damage = 20

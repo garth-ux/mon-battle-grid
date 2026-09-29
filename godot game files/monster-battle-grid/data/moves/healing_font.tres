@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e888e6tjbwgx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "healing_font"
+display_name = "Healing Font"
+move_type = "wind"
+mana_cost = 4
+cooldown_ms = 1500
+description = "Place a healing puddle (3 HP/s for 6s, you only)."
+effect_id = "place_tile"
+tile_effect_id = "heal_font"
+tile_lifetime_ms = 6000
+tile_owner_only = true

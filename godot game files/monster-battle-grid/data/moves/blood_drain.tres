@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e882mlwhei4l"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "blood_drain"
+display_name = "Blood Drain"
+move_type = "dark"
+mana_cost = 3
+cooldown_ms = 1000
+description = "10 DMG + heal 10 HP. 5-cell forward reach on your row."
+effect_id = "blood_drain"
+damage = 10

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdrake003"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "drakecho_overclock"
+display_name = "Overclock"
+move_type = "electric"
+mana_cost = 4
+cooldown_ms = 1000
+description = "5s of triple mana regen. When it ends, you're locked out of cards for 6s."
+effect_id = "overclock"

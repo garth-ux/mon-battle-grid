@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveholy_tile_"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "holy_tile"
+display_name = "Holy Ground"
+move_type = "light"
+mana_cost = 2
+cooldown_ms = 1300
+description = "Place a holy tile: heals 3 HP/s for 3s (anyone)."
+effect_id = "place_tile"
+tile_effect_id = "holy_tile"
+tile_lifetime_ms = 3000
+tile_owner_only = false

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://j8g636q13w6m"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "grunt_power_surge"
+display_name = "Power Surge"
+move_type = "electric"
+mana_cost = 3
+cooldown_ms = 1000
+description = "20 DMG beam across the entire row."
+effect_id = "beam"
+damage = 20

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=14 format=3 uid="uid://b1mondefatmp"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/atomippo.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/dense_matter.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/time_sip.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/event_guard.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/gravity_slam.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/meteor_drop.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/crushing_field.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/event_horizon.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/hog_wall.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/topple.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/graviton_beam.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/absorb.tres" id="13_m8"]
+
+[resource]
+script = ExtResource("1_script")
+id = "atomippo"
+display_name = "Atomippo"
+monster_type = "mind"
+max_hp = 130
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "atomippo_basic"
+basic_attack_kind = "warp_shot"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

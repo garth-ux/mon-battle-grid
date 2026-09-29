@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvdrake002"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "drakecho_rewind_fork"
+display_name = "Rewind Fork"
+move_type = "time"
+mana_cost = 6
+cooldown_ms = 1000
+description = "Record your tile and HP. For 4s, RETURN sits on key 3 (2 mana): snap back to both. The enemy fights knowing you have it."
+effect_id = "rewind_fork"

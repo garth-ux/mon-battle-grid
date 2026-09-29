@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movedissolve_"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "dissolve"
+display_name = "Dissolve"
+move_type = "mind"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Acid pool on the enemy's current tile — 2 DMG/s for 4.5s."
+effect_id = "dissolve"
+tile_lifetime_ms = 4500

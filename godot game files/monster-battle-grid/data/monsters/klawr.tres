@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=16 format=3 uid="uid://b1monklawr00"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/klawr.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/tidal_memory.tres" id="3_t1"]
+[ext_resource type="Resource" path="res://data/traits/brine_body.tres" id="4_t2"]
+[ext_resource type="Resource" path="res://data/traits/depth_charge.tres" id="5_t3"]
+[ext_resource type="Resource" path="res://data/moves/klawr_undertow.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/klawr_ripple_chain.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/klawr_glacial_step.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/klawr_tidal_read.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/klawr_cascade_lock.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/tidal_wave.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/water_breathing.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/croak_blast.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/bounce.tres" id="14_m9"]
+[ext_resource type="Resource" path="res://data/moves/absorb.tres" id="15_m10"]
+
+[resource]
+script = ExtResource("1_script")
+id = "klawr"
+display_name = "Klawr"
+monster_type = "water"
+max_hp = 95
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "klawr_basic"
+basic_attack_kind = "charged_claw"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9"), ExtResource("15_m10")]
+trait_pool = [ExtResource("3_t1"), ExtResource("4_t2"), ExtResource("5_t3")]

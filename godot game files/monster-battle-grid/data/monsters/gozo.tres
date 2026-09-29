@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=16 format=3 uid="uid://b1mongo0o000"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/gozo.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/phasing_light.tres" id="3_t1"]
+[ext_resource type="Resource" path="res://data/traits/stonebreaker_faith.tres" id="4_t2"]
+[ext_resource type="Resource" path="res://data/traits/sanctuary.tres" id="5_t3"]
+[ext_resource type="Resource" path="res://data/moves/gozo_sanctified_ground.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/gozo_aegis_pillar.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/gozo_judgment_slab.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/gozo_litany_of_stone.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/gozo_consecrate.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/giant_brick_break.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/topple.tres" id="12_m7"]
+[ext_resource type="Resource" path="res://data/moves/fudo_guardian_stance.tres" id="13_m8"]
+[ext_resource type="Resource" path="res://data/moves/stunning_gleam.tres" id="14_m9"]
+[ext_resource type="Resource" path="res://data/moves/healing_font.tres" id="15_m10"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gozo"
+display_name = "Gozo"
+monster_type = "light"
+max_hp = 105
+max_mana = 10
+max_ammo = 2
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "gozo_basic"
+basic_attack_kind = "stun_volley"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7"), ExtResource("13_m8"), ExtResource("14_m9"), ExtResource("15_m10")]
+trait_pool = [ExtResource("3_t1"), ExtResource("4_t2"), ExtResource("5_t3")]

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://j8gr03n1ytam"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "grunt_bullet_punch"
+display_name = "Bullet Punch"
+move_type = "fighting"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Stun yourself 1.5s and flurry-punch every tile ahead in sequence — 20 DMG each."
+effect_id = "bullet_punch"
+damage = 20

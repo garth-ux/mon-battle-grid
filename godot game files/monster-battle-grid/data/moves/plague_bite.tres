@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://cnktjushys8xd"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "plague_bite"
+display_name = "Plague Bite"
+move_type = "dark"
+mana_cost = 2
+cooldown_ms = 1000
+description = "20 DMG + 5 DMG/s poison for 5s. Same-row melee, 2 cells deep."
+effect_id = "plague_bite"
+damage = 20
+status_id = "poison"
+status_duration_ms = 5000
+status_dot = 5

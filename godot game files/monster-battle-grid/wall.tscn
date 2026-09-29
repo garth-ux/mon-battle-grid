@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b85qd8hed8i4g"]
+
+[ext_resource type="Script" path="res://scripts/wall.gd" id="1_wall"]
+[ext_resource type="PackedScene" path="res://art/battle art/blocks.glb" id="2_block"]
+
+[node name="Wall" type="Node3D"]
+script = ExtResource("1_wall")
+
+[node name="Block" parent="." instance=ExtResource("2_block")]
+transform = Transform3D(1.6, 0, 0, 0, 1.4, 0, 0, 0, 1.6, -2.4, 0, -2.4)

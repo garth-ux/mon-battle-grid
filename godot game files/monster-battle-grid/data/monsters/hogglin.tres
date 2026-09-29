@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=13 format=3 uid="uid://b1mondefhggn"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/hogglin.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/patchwork_plating.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/sturdy_scrap.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/reinforce.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/leafstorm.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/spore_cloud.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/hog_wall.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/topple.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/flying_sword.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/thorn_shield.tres" id="11_m6"]
+[ext_resource type="Resource" path="res://data/moves/vine_snare.tres" id="12_m7"]
+
+[resource]
+script = ExtResource("1_script")
+id = "hogglin"
+display_name = "Hogglin"
+monster_type = "grass"
+max_hp = 90
+max_mana = 10
+max_ammo = 2
+reload_ms = 4000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "hogglin_basic"
+basic_attack_kind = "block_builder"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6"), ExtResource("12_m7")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

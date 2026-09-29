@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaefaush10x"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "medical_mouse"
+display_name = "Medical Mouse"
+move_type = "light"
+mana_cost = 4
+cooldown_ms = 1800
+description = "Summon a 20 HP healing rat that roams your grid and drops a holy tile every 3s."
+effect_id = "medical_mouse"
+damage = 0

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1mvklawr004"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "klawr_tidal_read"
+display_name = "Tidal Read"
+move_type = "ice"
+mana_cost = 6
+cooldown_ms = 1000
+description = "Mark the tile 4 ahead. In exactly 7s it detonates: 85 + 1s stun to whoever stands there. Nobody home = 3 mana back."
+effect_id = "tidal_read"
+damage = 85

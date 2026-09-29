@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveheap_0000"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "heap"
+display_name = "Heap"
+move_type = "grass"
+mana_cost = 2
+cooldown_ms = 1500
+description = "Pile of junk — 2 DMG/s to enemies for 4s."
+effect_id = "place_tile"
+tile_effect_id = "acid_pool"
+tile_lifetime_ms = 4000
+tile_owner_only = false

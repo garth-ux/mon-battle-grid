@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://beub7jq6jqi11"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "frog_chorus"
+display_name = "Frog Chorus"
+move_type = "mind"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Frenzy buff for 5s — every hit deals a random 1.1×-2× damage."
+effect_id = "frog_chorus"
+damage = 0
+self_buff_id = "frenzy"
+buff_duration_ms = 5000

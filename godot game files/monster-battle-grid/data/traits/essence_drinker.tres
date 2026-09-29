@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trdrake003"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "essence_drinker"
+display_name = "Essence Drinker"
+description = "Stealing mana heals you 10 HP per point stolen."
+rarity = 0.2
+effects = {
+"heal_per_mana_stolen": 10
+}

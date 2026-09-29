@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca56hmx2wwgiu"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_flame_breath"
+display_name = "Flame Breath"
+move_type = "water"
+mana_cost = 4
+cooldown_ms = 1000
+description = "Beam across the row (20 DMG) + 3 burn tiles on the enemy grid at your row for 4s."
+effect_id = "flame_breath"
+damage = 20

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -n '1470,1530p' /Users/graemebirmingham/Documents/mon-battle-grid/src/App3D.tsx)",
+      "Bash(sed -n '2768,2800p' /Users/graemebirmingham/Documents/mon-battle-grid/src/App3D.tsx)",
+      "Bash(sed -n '1284,1330p' /Users/graemebirmingham/Documents/mon-battle-grid/src/App3D.tsx)",
+      "Bash(sed -n '2940,2990p' /Users/graemebirmingham/Documents/mon-battle-grid/src/App3D.tsx)",
+      "Bash(sed -n '2966,2998p' /Users/graemebirmingham/Documents/mon-battle-grid/src/App3D.tsx)",
+      "Bash(sed -n '1336,1400p' /Users/graemebirmingham/Documents/mon-battle-grid/src/App3D.tsx)"
+    ]
+  }
+}

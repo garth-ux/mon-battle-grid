@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faahvkklnamx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "punch"
+display_name = "Punch"
+move_type = "dark"
+mana_cost = 2
+cooldown_ms = 1000
+description = "40 DMG. Melee strike 1 tile ahead."
+effect_id = "punch"
+damage = 40
+range_tiles = 1

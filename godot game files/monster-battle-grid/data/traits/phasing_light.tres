@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trgo0o0001"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "phasing_light"
+display_name = "Phasing Light"
+description = "Your damaging cards pass through enemy blocks."
+rarity = 0.4
+effects = {
+"ignore_blocks": true
+}

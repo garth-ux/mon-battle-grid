@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://faaeva1ovymx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "mud_slap"
+display_name = "Mud Slap"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1000
+description = "35 DMG + 1s stun. Melee strike 1 tile ahead."
+effect_id = "punch"
+damage = 35
+range_tiles = 1
+status_id = "stun"
+status_duration_ms = 1000

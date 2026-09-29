@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://ca52hu0am5m1u"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "modizard_blink"
+display_name = "Blink"
+move_type = "water"
+mana_cost = 1
+cooldown_ms = 1000
+description = "Teleport to a random safe tile on your grid."
+effect_id = "teleport"
+damage = 0
+is_movement_card = true

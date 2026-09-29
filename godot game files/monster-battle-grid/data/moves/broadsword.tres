@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movebroadsword"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "broadsword"
+display_name = "Broadsword"
+move_type = "fighting"
+mana_cost = 2
+cooldown_ms = 1100
+description = "30 DMG. Wide slash hits 3 tiles in front."
+effect_id = "slash_arc"
+damage = 30
+range_tiles = 3

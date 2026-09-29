@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moveshell_block"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "shell_block"
+display_name = "Shell Block"
+move_type = "earth"
+mana_cost = 2
+cooldown_ms = 1500
+description = "Place a 1-HP wall in front + heal 8 HP."
+effect_id = "wall"
+self_heal = 8

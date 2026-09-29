@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movegrvbeam00"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "graviton_beam"
+display_name = "Graviton Beam"
+move_type = "mind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "20 DMG/cell sweeping beam. Locks you in place. Pushes the enemy 1 cell forward — wall hit deals bonus damage."
+effect_id = "graviton_beam"
+damage = 20
+is_movement_card = true

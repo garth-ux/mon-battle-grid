@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dic6jcgx4c67e"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fudo_guardian_stance"
+display_name = "Guardian Stance"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Heal 15 HP + raise a 2-HP wall column directly in front. Existing blocks are kept, gaps are filled."
+effect_id = "guardian_stance"
+self_heal = 15

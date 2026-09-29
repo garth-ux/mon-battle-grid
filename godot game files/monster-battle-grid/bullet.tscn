@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://blwskf7cn2rwc"]
+
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_bullet"]
+[ext_resource type="Texture2D" path="res://art/battle art/bullet-sprite.png" id="2_tracer"]
+
+[node name="Bullet" type="Node3D"]
+script = ExtResource("1_bullet")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+texture = ExtResource("2_tracer")
+pixel_size = 0.045
+billboard = 1
+texture_filter = 0
+shaded = false

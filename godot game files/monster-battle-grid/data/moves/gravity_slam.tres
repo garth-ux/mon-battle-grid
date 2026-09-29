@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://e887spteaamx"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "gravity_slam"
+display_name = "Gravity Slam"
+move_type = "mind"
+mana_cost = 4
+cooldown_ms = 1000
+description = "2s wind-up. Drags the enemy 1 tile closer every second, then slams for 50 DMG in a cone. Locks you in place."
+effect_id = "hammer_down"
+damage = 50
+is_movement_card = true

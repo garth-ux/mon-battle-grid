@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://beul044hct7u2"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "plasma_shot"
+display_name = "Plasma Shot"
+move_type = "electric"
+mana_cost = 1
+cooldown_ms = 1000
+description = "15 DMG. Fast energy projectile."
+effect_id = "quickdraw"
+damage = 15

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TraitDef" load_steps=2 format=3 uid="uid://b1trmoss0002"]
+
+[ext_resource type="Script" path="res://scripts/trait_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "earthen_ward"
+display_name = "Earthen Ward"
+description = "An earth card that damages the enemy grants you GUARDED (half damage) for 3s."
+rarity = 0.4
+effects = {
+"guarded_on_type_damage_earth": true
+}

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://dic6i2gx5keke"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fudo_glare"
+display_name = "Glare"
+move_type = "mind"
+mana_cost = 3
+cooldown_ms = 1000
+description = "Channel 1.5s (self-stun): 4 random enemy tiles are marked, then strike for 10 DMG + 3s stun."
+effect_id = "glare"
+damage = 10
+status_id = "stun"
+status_duration_ms = 3000

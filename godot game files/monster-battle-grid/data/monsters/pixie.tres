@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=12 format=3 uid="uid://b1mondefpixi"]
+
+[ext_resource type="Script" path="res://scripts/monster_def.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/monsters/pixie.png" id="2_sprite"]
+[ext_resource type="Resource" path="res://data/traits/fae_flurry.tres" id="3_t3"]
+[ext_resource type="Resource" path="res://data/traits/levitate.tres" id="4_t4"]
+[ext_resource type="Resource" path="res://data/traits/triple_echo.tres" id="5_t5"]
+[ext_resource type="Resource" path="res://data/moves/absorb.tres" id="6_m1"]
+[ext_resource type="Resource" path="res://data/moves/healing_font.tres" id="7_m2"]
+[ext_resource type="Resource" path="res://data/moves/stunning_gleam.tres" id="8_m3"]
+[ext_resource type="Resource" path="res://data/moves/call_family.tres" id="9_m4"]
+[ext_resource type="Resource" path="res://data/moves/reap.tres" id="10_m5"]
+[ext_resource type="Resource" path="res://data/moves/call_soldier.tres" id="11_m6"]
+
+[resource]
+script = ExtResource("1_script")
+id = "pixie"
+display_name = "Pixie"
+monster_type = "wind"
+max_hp = 75
+max_mana = 10
+max_ammo = 3
+reload_ms = 2000
+sprite = ExtResource("2_sprite")
+basic_attack_id = "pixie_basic"
+basic_attack_kind = "triple_shot"
+deck = [ExtResource("6_m1"), ExtResource("7_m2"), ExtResource("8_m3"), ExtResource("9_m4"), ExtResource("10_m5"), ExtResource("11_m6")]
+trait_pool = [ExtResource("3_t3"), ExtResource("4_t4"), ExtResource("5_t5")]

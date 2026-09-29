@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1moverefract_b"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "refract_buff"
+display_name = "Refract"
+move_type = "mind"
+mana_cost = 2
+cooldown_ms = 1500
+description = "Take 30% less damage for 4s."
+effect_id = "self_buff"
+self_buff_id = "armor"
+buff_mult = 0.7
+buff_duration_ms = 4000

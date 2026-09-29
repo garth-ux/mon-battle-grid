@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://gfiq2rqodism"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "giant_vanish"
+display_name = "Vanish"
+move_type = "earth"
+mana_cost = 3
+cooldown_ms = 8000
+description = "Turn intangible for 2s — basic attacks and bullets pass straight through you. Cards still hit."
+effect_id = "vanish"
+buff_duration_ms = 2000

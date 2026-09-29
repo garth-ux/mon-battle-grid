@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MoveDef" load_steps=2 format=3 uid="uid://b1movetoxic_wav"]
+
+[ext_resource type="Script" path="res://scripts/move_def.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "toxic_wave"
+display_name = "Toxic Wave"
+move_type = "mind"
+mana_cost = 5
+cooldown_ms = 1000
+description = "20 DMG + 1.7s stun. Sweeps all 4 tiles of opponent's row."
+effect_id = "toxic_wave"
+damage = 20
+status_id = "stun"
+status_duration_ms = 1680
